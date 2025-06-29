@@ -1,0 +1,160 @@
+{
+  "_metadata": {
+    "duEuler_foundation_file": true,
+    "category": "capacity-config",
+    "capacity": "du:capacity:nano",
+    "dependencies": ["FOUNDATION_METADATA.md"],
+    "related_files": ["../micro/du-capacity-micro-config.json"],
+    "errors_solved": ["resource over-allocation for small apps"],
+    "configuration": "1-1K users, 512MB RAM, 0.5 core, 5GB storage",
+    "upgrade_path": "nano -> micro: increase resources, enable monitoring",
+    "version_compatibility": "v2.0+",
+    "purpose": "Configuração mínima para aplicações pequenas (dentista, advogado)",
+    "usage": "Para apps com poucos usuários e recursos limitados",
+    "prerequisites": "Node.js 18+, SQLite ou PostgreSQL básico",
+    "error_handling": "Fail-safe com degradação graceful",
+    "performance_impact": "Otimizado para baixo uso de recursos",
+    "security_considerations": "Segurança básica apenas"
+  },
+  "capacity_level": "nano",
+  "capacity": {
+    "level": "nano",
+    "users_range": {
+      "min": 1,
+      "max": 1000
+    },
+    "resources": {
+      "ram_mb": 512,
+      "cpu_cores": 0.5,
+      "storage_gb": 5,
+      "bandwidth_mbps": 10
+    }
+  },
+  "services": {
+    "monitoring": {
+      "prometheus": {
+        "enabled": false,
+        "reason": "too resource intensive for nano"
+      },
+      "basic_logging": {
+        "enabled": true,
+        "level": "error",
+        "file_rotation": false
+      },
+      "error_tracking": {
+        "enabled": true,
+        "service": "winston",
+        "log_retention_days": 7,
+        "structured_logging": true
+      },
+      "analytics": {
+        "enabled": true,
+        "basic_tracking": true,
+        "page_views": true,
+        "events": true
+      }
+    },
+    "security": {
+      "rate_limiting": {
+        "enabled": true,
+        "requests_per_minute": 30,
+        "strategy": "simple_counter"
+      },
+      "secrets_management": {
+        "type": "env_only",
+        "encryption": false
+      },
+      "ssl_tls": {
+        "enabled": true,
+        "auto_redirect": true,
+        "headers": {
+          "helmet": true,
+          "compression": true
+        }
+      }
+    },
+    "communication": {
+      "email": {
+        "enabled": true,
+        "primary_provider": "nodemailer",
+        "fallback": "smtp",
+        "templates": ["welcome", "reset_password"]
+      }
+    },
+    "file_management": {
+      "uploads": {
+        "enabled": true,
+        "max_file_size": "5MB",
+        "allowed_types": ["image/jpeg", "image/png", "application/pdf"],
+        "storage": "local",
+        "optimization": {
+          "image_compression": true,
+          "auto_resize": true,
+          "max_dimensions": "1024x768"
+        }
+      },
+      "cdn": {
+        "enabled": false,
+        "static_serving": true,
+        "compression": true
+      }
+    },
+    "database": {
+      "sqlite": {
+        "enabled": true,
+        "max_connections": 5,
+        "backup_frequency": "weekly"
+      },
+      "postgresql": {
+        "enabled": false,
+        "reason": "too resource intensive"
+      }
+    },
+    "caching": {
+      "enabled": false,
+      "reason": "insufficient memory"
+    },
+    "health_monitoring": {
+      "enabled": true,
+      "endpoints": ["/api/health"],
+      "checks": ["database", "uploads", "email", "ssl"]
+    }
+  },
+  "performance": {
+    "response_time_target_ms": 500,
+    "throughput_rps": 10,
+    "availability_target": 95.0,
+    "error_rate_threshold": 5.0
+  },
+  "scaling": {
+    "auto_scale": false,
+    "upgrade_recommendations": {
+      "to_micro": {
+        "user_threshold": 800,
+        "performance_degradation": true,
+        "resource_utilization": 90
+      }
+    }
+  },
+  "deployment": {
+    "strategy": "single_process",
+    "backup_required": false,
+    "rollback_strategy": "manual",
+    "health_checks": {
+      "enabled": false,
+      "reason": "resource conservation"
+    }
+  },
+  "logging": {
+    "level": "warn",
+    "rotation": false,
+    "retention_days": 7,
+    "structured": false
+  },
+  "compliance": {
+    "data_retention_days": 30,
+    "audit_logging": false,
+    "gdpr_compliance": false,
+    "backup_encryption": false
+  }
+}

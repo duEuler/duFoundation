@@ -1,0 +1,43 @@
+{
+  "timestamp": "2025-06-28T15:12:22.911Z",
+  "results": {
+    "filesChecked": 7,
+    "compliantFiles": 4,
+    "violationFiles": 3,
+    "missingDocumentation": 3,
+    "orphanedFiles": 0
+  },
+  "errors": [
+    {
+      "file": "foundation-structure/anomalies/validation-report.json",
+      "type": "missing_documentation",
+      "severity": "high",
+      "message": "Missing required documentation fields: duEuler Foundation File, Category:, Capacity:, Dependencies:, Related Files:, Purpose:, Usage:, Prerequisites:",
+      "solution": "Add mandatory documentation header using template from FOUNDATION_METADATA.md"
+    },
+    {
+      "file": "foundation-structure/capacity-configs/nano/du-capacity-nano-config.json",
+      "type": "missing_documentation",
+      "severity": "high",
+      "message": "Missing required documentation fields: duEuler Foundation File, Category:, Capacity:, Dependencies:, Related Files:, Purpose:, Usage:, Prerequisites:",
+      "solution": "Add mandatory documentation header using template from FOUNDATION_METADATA.md"
+    },
+    {
+      "file": "foundation-structure/capacity-configs/small/du-capacity-small-config.json",
+      "type": "missing_documentation",
+      "severity": "high",
+      "message": "Missing required documentation fields: duEuler Foundation File, Category:, Capacity:, Dependencies:, Related Files:, Purpose:, Usage:, Prerequisites:",
+      "solution": "Add mandatory documentation header using template from FOUNDATION_METADATA.md"
+    }
+  ],
+  "warnings": [
+    {
+      "file": "foundation-structure/anomalies/validation-report.json",
+      "type": "naming_convention",
+      "severity": "low",
+      "message": "File doesn't follow naming convention. Expected prefix: du-, cap-, mon-, sec-, perf-, test-, ano-",
+      "solution": "Rename file to follow du-[component]-[capacity]-[version] pattern"
+    }
+  ],
+  "compliance_rate": "57.1"
+}

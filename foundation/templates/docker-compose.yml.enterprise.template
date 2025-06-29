@@ -1,0 +1,286 @@
+version: '3.8'
+
+services:
+  # API Gateway - Enterprise Load Balancing
+  api-gateway:
+    build:
+      context: .
+      dockerfile: services/api-gateway/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - JWT_SECRET=${JWT_SECRET:-default-jwt-secret}
+      - RATE_LIMIT_REQUESTS=10000
+      - RATE_LIMIT_WINDOW=900000
+      - REDIS_URL=redis://redis-cluster:6379
+      - DATABASE_URL=${DATABASE_URL}
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    depends_on:
+      - redis-cluster
+      - postgres-primary
+      - cost-monitor
+      - optimization-engine
+      - ml-service
+    networks:
+      - enterprise-network
+    restart: unless-stopped
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 4G
+        reservations:
+          cpus: '1.0'
+          memory: 2G
+    
+  # Cost Monitoring Service - Enterprise Analytics
+  cost-monitor:
+    build:
+      context: .
+      dockerfile: services/cost-monitor/Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - REDIS_URL=redis://redis-cluster:6379
+      - DATABASE_URL=${DATABASE_URL}
+      - METRICS_RETENTION_DAYS=365
+      - NODE_ENV=production
+      - PROMETHEUS_URL=http://prometheus:9090
+    volumes:
+      - ./data/metrics:/app/data
+      - ./logs:/app/logs
+    depends_on:
+      - redis-cluster
+      - postgres-primary
+      - prometheus
+    networks:
+      - enterprise-network
+    restart: unless-stopped
+    deploy:
+      replicas: 2
+    
+  # ML Service - Advanced Prediction Engine
+  ml-service:
+    build:
+      context: .
+      dockerfile: services/ml-service/Dockerfile
+    ports:
+      - "3006:3006"
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=redis://redis-cluster:6379
+      - MODEL_PATH=/app/models
+      - PYTHON_ENV=production
+      - GPU_ENABLED=true
+    volumes:
+      - ./models:/app/models
+      - ./data/training:/app/data/training
+    depends_on:
+      - postgres-primary
+      - redis-cluster
+    networks:
+      - enterprise-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 8G
+
+  # PostgreSQL Primary (Master)
+  postgres-primary:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-replit_optimizer}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_REPLICATION_MODE=master
+      - POSTGRES_REPLICATION_USER=replica
+      - POSTGRES_REPLICATION_PASSWORD=replica_password
+    volumes:
+      - postgres_primary_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - enterprise-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 4G
+
+  # PostgreSQL Read Replica
+  postgres-replica:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_MASTER_SERVICE=postgres-primary
+      - POSTGRES_REPLICATION_MODE=slave
+      - POSTGRES_REPLICATION_USER=replica
+      - POSTGRES_REPLICATION_PASSWORD=replica_password
+    volumes:
+      - postgres_replica_data:/var/lib/postgresql/data
+    depends_on:
+      - postgres-primary
+    networks:
+      - enterprise-network
+    restart: unless-stopped
+
+  # Redis Cluster for High Availability
+  redis-cluster:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_cluster_data:/data
+    command: >
+      redis-server 
+      --appendonly yes 
+      --maxmemory 2gb 
+      --maxmemory-policy allkeys-lru
+      --cluster-enabled yes
+      --cluster-config-file nodes.conf
+      --cluster-node-timeout 5000
+    networks:
+      - enterprise-network
+    restart: unless-stopped
+    deploy:
+      replicas: 6
+
+  # Elasticsearch for Advanced Search
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.8.0
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - enterprise-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 4G
+
+  # Kibana for Log Analytics
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.8.0
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+    networks:
+      - enterprise-network
+    restart: unless-stopped
+
+  # Nginx Load Balancer with SSL
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl:/etc/nginx/ssl
+      - ./nginx/sites-enabled:/etc/nginx/sites-enabled
+    depends_on:
+      - api-gateway
+    networks:
+      - enterprise-network
+    restart: unless-stopped
+
+  # Prometheus for Metrics Collection
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=365d'
+      - '--web.enable-lifecycle'
+    networks:
+      - enterprise-network
+    restart: unless-stopped
+
+  # Grafana for Visualization
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3007:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+      - GF_INSTALL_PLUGINS=grafana-kubernetes-app
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources
+    depends_on:
+      - prometheus
+    networks:
+      - enterprise-network
+    restart: unless-stopped
+
+  # Jaeger for Distributed Tracing
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686"
+      - "14268:14268"
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    networks:
+      - enterprise-network
+    restart: unless-stopped
+
+  # Consul for Service Discovery
+  consul:
+    image: consul:latest
+    ports:
+      - "8500:8500"
+    command: agent -server -bootstrap-expect=1 -data-dir=/consul/data -config-dir=/consul/config -ui -bind=0.0.0.0 -client=0.0.0.0
+    volumes:
+      - consul_data:/consul/data
+      - ./consul:/consul/config
+    networks:
+      - enterprise-network
+    restart: unless-stopped
+
+volumes:
+  postgres_primary_data:
+    driver: local
+  postgres_replica_data:
+    driver: local
+  redis_cluster_data:
+    driver: local
+  elasticsearch_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  consul_data:
+    driver: local
+
+networks:
+  enterprise-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

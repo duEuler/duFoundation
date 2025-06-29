@@ -1,0 +1,201 @@
+{
+  "_metadata": {
+    "duEuler_foundation_file": true,
+    "category": "capacity-config",
+    "capacity": "du:capacity:large",
+    "dependencies": ["FOUNDATION_METADATA.md", "prometheus", "grafana", "redis-cluster", "elasticsearch"],
+    "related_files": ["../medium/du-capacity-medium-config.json", "../enterprise/du-capacity-enterprise-config.json"],
+    "errors_solved": ["medium scale bottlenecks", "single point failures", "monitoring complexity"],
+    "configuration": "200K-1M users, 8GB RAM, 8 cores, 500GB storage",
+    "upgrade_path": "large -> enterprise: multi-region, microservices, advanced compliance",
+    "version_compatibility": "v2.0+",
+    "purpose": "Configuração para grandes empresas e aplicações de alta escala",
+    "usage": "Para aplicações com alto tráfego e requisitos críticos",
+    "prerequisites": "Node.js 18+, PostgreSQL cluster, Redis cluster, Elasticsearch",
+    "error_handling": "Advanced circuit breakers, bulkhead pattern, chaos engineering",
+    "performance_impact": "Otimizado para latência <25ms e alta disponibilidade",
+    "security_considerations": "Enterprise vault, zero-trust, advanced threat detection"
+  },
+  "capacity_level": "large",
+  "capacity": {
+    "level": "large",
+    "users_range": {
+      "min": 200000,
+      "max": 1000000
+    },
+    "resources": {
+      "ram_mb": 8192,
+      "cpu_cores": 8,
+      "storage_gb": 500,
+      "bandwidth_gbps": 1
+    }
+  },
+  "services": {
+    "monitoring": {
+      "prometheus": {
+        "enabled": true,
+        "retention_days": 90,
+        "scrape_interval": "10s",
+        "federation": true,
+        "high_availability": true,
+        "metrics": [
+          "http_requests_total",
+          "http_request_duration_seconds",
+          "nodejs_memory_usage_bytes",
+          "postgresql_connections",
+          "redis_connections",
+          "system_cpu_usage",
+          "business_metrics",
+          "custom_sla_metrics"
+        ]
+      },
+      "grafana": {
+        "enabled": true,
+        "high_availability": true,
+        "dashboards": ["system", "application", "business", "infrastructure", "security"],
+        "alerts": {
+          "cpu_threshold": 60,
+          "memory_threshold": 75,
+          "response_time_threshold": 50,
+          "error_rate_threshold": 0.1,
+          "sla_threshold": 99.9
+        }
+      },
+      "elasticsearch": {
+        "enabled": true,
+        "cluster_size": 3,
+        "log_retention_days": 180,
+        "index_management": true
+      },
+      "apm": {
+        "enabled": true,
+        "trace_sampling": 0.05,
+        "distributed_tracing": true,
+        "performance_profiling": true
+      }
+    },
+    "security": {
+      "rate_limiting": {
+        "enabled": true,
+        "requests_per_minute": 10000,
+        "burst_limit": 20000,
+        "strategy": "distributed_redis_cluster",
+        "adaptive": true
+      },
+      "secrets_management": {
+        "type": "enterprise_vault",
+        "vault_cluster": true,
+        "rotation_days": 7,
+        "encryption_algorithm": "AES-256-GCM",
+        "hsm_integration": true
+      },
+      "auth": {
+        "jwt_expiry": "30m",
+        "refresh_token_expiry": "24h",
+        "session_timeout": "8h",
+        "mfa_required": true
+      },
+      "waf": {
+        "enabled": true,
+        "ddos_protection": true,
+        "ip_reputation": true
+      }
+    },
+    "database": {
+      "postgresql": {
+        "enabled": true,
+        "cluster_mode": true,
+        "max_connections": 200,
+        "connection_timeout": 3000,
+        "pool_size": 50,
+        "backup_frequency": "every_2_hours",
+        "read_replicas": 3,
+        "write_replicas": 1,
+        "sharding": true
+      },
+      "redis": {
+        "enabled": true,
+        "cluster_mode": true,
+        "max_memory": "2gb",
+        "eviction_policy": "allkeys-lru",
+        "persistence": true,
+        "replication": true,
+        "sentinel": true
+      }
+    },
+    "caching": {
+      "enabled": true,
+      "strategy": "redis_cluster",
+      "ttl_seconds": 3600,
+      "max_size_gb": 4,
+      "cache_warming": true,
+      "cdn_integration": true
+    }
+  },
+  "performance": {
+    "response_time_target_ms": 25,
+    "throughput_rps": 10000,
+    "availability_target": 99.9,
+    "error_rate_threshold": 0.1
+  },
+  "scaling": {
+    "auto_scale": true,
+    "horizontal_scaling": true,
+    "scale_up_trigger": {
+      "cpu_percent": 60,
+      "memory_percent": 70,
+      "response_time_ms": 50
+    },
+    "scale_down_trigger": {
+      "cpu_percent": 20,
+      "memory_percent": 30,
+      "response_time_ms": 10
+    },
+    "upgrade_recommendations": {
+      "to_enterprise": {
+        "user_threshold": 900000,
+        "compliance_requirements": true,
+        "multi_region_needed": true
+      }
+    }
+  },
+  "deployment": {
+    "strategy": "canary",
+    "backup_required": true,
+    "rollback_strategy": "automated",
+    "health_checks": {
+      "interval_seconds": 10,
+      "timeout_seconds": 3,
+      "failure_threshold": 2
+    },
+    "canary": {
+      "enabled": true,
+      "traffic_percentage": 5,
+      "duration_minutes": 30
+    },
+    "blue_green": {
+      "enabled": true,
+      "zero_downtime": true
+    }
+  },
+  "logging": {
+    "level": "info",
+    "rotation": "hourly",
+    "retention_days": 365,
+    "structured": true,
+    "correlation_id": true,
+    "centralized": true,
+    "real_time_streaming": true
+  },
+  "compliance": {
+    "data_retention_days": 2555,
+    "audit_logging": true,
+    "gdpr_compliance": true,
+    "sox_compliance": true,
+    "iso27001_compliance": true,
+    "backup_encryption": true,
+    "data_masking": true,
+    "data_classification": true,
+    "incident_response": true
+  }
+}

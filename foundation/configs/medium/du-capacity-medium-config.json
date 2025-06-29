@@ -1,0 +1,165 @@
+{
+  "_metadata": {
+    "duEuler_foundation_file": true,
+    "category": "capacity-config",
+    "capacity": "du:capacity:medium",
+    "dependencies": ["FOUNDATION_METADATA.md", "prometheus", "grafana", "redis"],
+    "related_files": ["../small/du-capacity-small-config.json", "../large/du-capacity-large-config.json"],
+    "errors_solved": ["small scale bottlenecks", "monitoring gaps", "cache limitations"],
+    "configuration": "50K-200K users, 4GB RAM, 4 cores, 100GB storage",
+    "upgrade_path": "medium -> large: distributed systems, advanced monitoring",
+    "version_compatibility": "v2.0+",
+    "purpose": "Configuração para empresas médias e SaaS em crescimento",
+    "usage": "Para aplicações com tráfego moderado a alto",
+    "prerequisites": "Node.js 18+, PostgreSQL, Redis, Prometheus",
+    "error_handling": "Circuit breakers, retry policies, graceful degradation",
+    "performance_impact": "Otimizado para latência <50ms",
+    "security_considerations": "Vault integration, automated rotation, advanced monitoring"
+  },
+  "capacity_level": "medium",
+  "capacity": {
+    "level": "medium",
+    "users_range": {
+      "min": 50000,
+      "max": 200000
+    },
+    "resources": {
+      "ram_mb": 4096,
+      "cpu_cores": 4,
+      "storage_gb": 100,
+      "bandwidth_mbps": 500
+    }
+  },
+  "services": {
+    "monitoring": {
+      "prometheus": {
+        "enabled": true,
+        "retention_days": 30,
+        "scrape_interval": "15s",
+        "metrics": [
+          "http_requests_total",
+          "http_request_duration_seconds",
+          "nodejs_memory_usage_bytes",
+          "postgresql_connections",
+          "redis_connections",
+          "system_cpu_usage",
+          "business_metrics"
+        ]
+      },
+      "grafana": {
+        "enabled": true,
+        "dashboards": ["system", "application", "business", "infrastructure"],
+        "alerts": {
+          "cpu_threshold": 70,
+          "memory_threshold": 80,
+          "response_time_threshold": 100,
+          "error_rate_threshold": 1.0
+        }
+      },
+      "apm": {
+        "enabled": true,
+        "trace_sampling": 0.1,
+        "distributed_tracing": true
+      }
+    },
+    "security": {
+      "rate_limiting": {
+        "enabled": true,
+        "requests_per_minute": 1000,
+        "burst_limit": 2000,
+        "strategy": "distributed_redis"
+      },
+      "secrets_management": {
+        "type": "vault_integration",
+        "vault_endpoint": "http://vault:8200",
+        "rotation_days": 30,
+        "encryption_algorithm": "AES-256"
+      },
+      "auth": {
+        "jwt_expiry": "1h",
+        "refresh_token_expiry": "7d",
+        "session_timeout": "24h"
+      }
+    },
+    "database": {
+      "postgresql": {
+        "enabled": true,
+        "max_connections": 100,
+        "connection_timeout": 5000,
+        "pool_size": 20,
+        "backup_frequency": "every_6_hours",
+        "read_replicas": 1
+      },
+      "redis": {
+        "enabled": true,
+        "max_memory": "512mb",
+        "eviction_policy": "allkeys-lru",
+        "persistence": true,
+        "cluster_mode": false
+      }
+    },
+    "caching": {
+      "enabled": true,
+      "strategy": "redis",
+      "ttl_seconds": 1800,
+      "max_size_mb": 1024,
+      "cache_warming": true
+    }
+  },
+  "performance": {
+    "response_time_target_ms": 50,
+    "throughput_rps": 2000,
+    "availability_target": 99.5,
+    "error_rate_threshold": 0.5
+  },
+  "scaling": {
+    "auto_scale": true,
+    "scale_up_trigger": {
+      "cpu_percent": 70,
+      "memory_percent": 75,
+      "response_time_ms": 100
+    },
+    "scale_down_trigger": {
+      "cpu_percent": 30,
+      "memory_percent": 40,
+      "response_time_ms": 25
+    },
+    "upgrade_recommendations": {
+      "to_large": {
+        "user_threshold": 180000,
+        "performance_degradation": true,
+        "resource_utilization": 80
+      }
+    }
+  },
+  "deployment": {
+    "strategy": "blue_green",
+    "backup_required": true,
+    "rollback_strategy": "automated",
+    "health_checks": {
+      "interval_seconds": 15,
+      "timeout_seconds": 5,
+      "failure_threshold": 3
+    },
+    "canary": {
+      "enabled": false,
+      "traffic_percentage": 10
+    }
+  },
+  "logging": {
+    "level": "info",
+    "rotation": "hourly",
+    "retention_days": 90,
+    "structured": true,
+    "correlation_id": true,
+    "centralized": true
+  },
+  "compliance": {
+    "data_retention_days": 2555,
+    "audit_logging": true,
+    "gdpr_compliance": true,
+    "sox_compliance": true,
+    "backup_encryption": true,
+    "data_masking": true
+  }
+}

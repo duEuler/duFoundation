@@ -1,0 +1,213 @@
+{
+  "_metadata": {
+    "duEuler_foundation_file": true,
+    "category": "dependency-mapping",
+    "capacity": "du:capacity:[all]",
+    "dependencies": ["package.json", "tsconfig.json", "vite.config.ts"],
+    "related_files": ["versions.json", "conflicts.json"],
+    "errors_solved": ["dependency conflicts", "version mismatches"],
+    "configuration": "complete dependency tree with relationships",
+    "upgrade_path": "automated dependency validation and conflict resolution",
+    "version_compatibility": "Node 18+, all capacity levels",
+    "purpose": "Mapeamento completo de dependências da foundation",
+    "usage": "Validar compatibilidade antes de instalar novos pacotes",
+    "prerequisites": "Node.js package manager (npm/yarn)",
+    "error_handling": "Detectar conflitos antes da instalação",
+    "performance_impact": "Mínimo - apenas validação",
+    "security_considerations": "Verificar vulnerabilidades conhecidas"
+  },
+  "foundation_metadata": {
+    "version": "2.0",
+    "last_updated": "2025-06-28",
+    "total_dependencies": 94,
+    "critical_dependencies": 12,
+    "capacity_specific": 8
+  },
+  "core_dependencies": {
+    "runtime": {
+      "nodejs": {
+        "version": "18+",
+        "required": true,
+        "capacity_support": ["nano", "micro", "small", "medium", "large", "enterprise"],
+        "alternatives": []
+      }
+    },
+    "framework": {
+      "express": {
+        "version": "^4.18.0",
+        "required": true,
+        "capacity_support": ["all"],
+        "related_files": ["server/index.ts", "server/routes.ts"],
+        "critical": true
+      },
+      "react": {
+        "version": "^18.0.0",
+        "required": true,
+        "capacity_support": ["all"],
+        "related_files": ["client/**", "src/**"],
+        "critical": true
+      }
+    }
+  },
+  "monitoring_dependencies": {
+    "prometheus": {
+      "capacity_support": ["micro", "small", "medium", "large", "enterprise"],
+      "excluded_from": ["nano"],
+      "reason": "resource intensive",
+      "dependencies": [
+        "prom-client",
+        "express-prom-bundle"
+      ],
+      "related_files": [
+        "src/monitoring/PrometheusService.ts",
+        "foundation-structure/capacity-configs/*/du-capacity-*-config.json"
+      ]
+    },
+    "grafana": {
+      "capacity_support": ["small", "medium", "large", "enterprise"],
+      "excluded_from": ["nano", "micro"],
+      "reason": "dashboard complexity not needed",
+      "dependencies": [
+        "grafana-api-client"
+      ],
+      "related_files": [
+        "src/monitoring/GrafanaService.ts"
+      ]
+    }
+  },
+  "security_dependencies": {
+    "secrets_management": {
+      "nano": {
+        "packages": [],
+        "method": "environment_variables_only"
+      },
+      "micro": {
+        "packages": ["crypto"],
+        "method": "basic_encryption"
+      },
+      "small": {
+        "packages": ["crypto", "bcryptjs"],
+        "method": "encrypted_env_files"
+      },
+      "medium": {
+        "packages": ["crypto", "bcryptjs", "node-vault"],
+        "method": "vault_integration"
+      },
+      "large": {
+        "packages": ["crypto", "bcryptjs", "node-vault", "aws-sdk"],
+        "method": "cloud_secrets_manager"
+      },
+      "enterprise": {
+        "packages": ["crypto", "bcryptjs", "node-vault", "aws-sdk", "azure-keyvault"],
+        "method": "multi_cloud_secrets"
+      }
+    },
+    "rate_limiting": {
+      "nano": {
+        "packages": [],
+        "method": "simple_counter"
+      },
+      "micro": {
+        "packages": ["express-rate-limit"],
+        "method": "memory_store"
+      },
+      "small": {
+        "packages": ["express-rate-limit", "rate-limiter-flexible"],
+        "method": "redis_store"
+      },
+      "medium": {
+        "packages": ["express-rate-limit", "rate-limiter-flexible", "redis"],
+        "method": "distributed_limiting"
+      },
+      "large": {
+        "packages": ["express-rate-limit", "rate-limiter-flexible", "redis", "ioredis"],
+        "method": "cluster_limiting"
+      },
+      "enterprise": {
+        "packages": ["express-rate-limit", "rate-limiter-flexible", "redis", "ioredis", "nginx-rate-limit"],
+        "method": "multi_layer_limiting"
+      }
+    }
+  },
+  "database_dependencies": {
+    "postgresql": {
+      "capacity_support": ["micro", "small", "medium", "large", "enterprise"],
+      "packages": ["@neondatabase/serverless", "drizzle-orm", "drizzle-kit"],
+      "related_files": ["server/db.ts", "shared/schema.ts", "drizzle.config.ts"]
+    },
+    "sqlite": {
+      "capacity_support": ["nano"],
+      "packages": ["better-sqlite3", "drizzle-orm"],
+      "use_case": "minimal_resource_footprint"
+    }
+  },
+  "capacity_specific_exclusions": {
+    "nano": {
+      "excluded_packages": [
+        "prometheus",
+        "grafana",
+        "redis",
+        "elasticsearch",
+        "winston-elasticsearch",
+        "jaeger-client"
+      ],
+      "reason": "resource_constraints"
+    },
+    "micro": {
+      "excluded_packages": [
+        "grafana",
+        "elasticsearch",
+        "jaeger-client"
+      ],
+      "reason": "complexity_overhead"
+    }
+  },
+  "version_constraints": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0",
+    "typescript": ">=5.0.0",
+    "compatibility_matrix": {
+      "node_18": {
+        "supported_capacities": ["all"],
+        "performance": "optimal"
+      },
+      "node_20": {
+        "supported_capacities": ["all"],
+        "performance": "enhanced"
+      }
+    }
+  },
+  "conflict_detection": {
+    "known_conflicts": [
+      {
+        "package_a": "winston",
+        "package_b": "pino",
+        "severity": "medium",
+        "resolution": "choose_one_logging_framework"
+      },
+      {
+        "package_a": "express-session",
+        "package_b": "passport-jwt",
+        "severity": "low",
+        "resolution": "configure_session_strategy"
+      }
+    ]
+  },
+  "upgrade_paths": {
+    "nano_to_micro": {
+      "add_packages": ["express-rate-limit", "bcryptjs"],
+      "remove_packages": [],
+      "config_changes": ["enable basic monitoring", "upgrade rate limiting"]
+    },
+    "micro_to_small": {
+      "add_packages": ["prom-client", "redis"],
+      "remove_packages": [],
+      "config_changes": ["enable prometheus", "implement redis caching"]
+    },
+    "small_to_medium": {
+      "add_packages": ["grafana-api-client", "node-vault"],
+      "remove_packages": [],
+      "config_changes": ["enable grafana dashboards", "implement vault secrets"]
+    }
+  }
+}

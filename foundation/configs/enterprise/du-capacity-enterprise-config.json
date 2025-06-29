@@ -1,0 +1,180 @@
+{
+  "_metadata": {
+    "duEuler_foundation_file": true,
+    "category": "capacity-config",
+    "capacity": "du:capacity:enterprise",
+    "dependencies": ["FOUNDATION_METADATA.md", "full-stack-monitoring", "multi-region-infrastructure"],
+    "related_files": ["../large/du-capacity-large-config.json"],
+    "errors_solved": ["large scale limitations", "regulatory compliance gaps", "global distribution needs"],
+    "configuration": "1M+ users, 16GB+ RAM, 16+ cores, 1TB+ storage, multi-region",
+    "upgrade_path": "enterprise: continuous optimization, custom solutions",
+    "version_compatibility": "v2.0+",
+    "purpose": "Configuração para corporações globais e aplicações mission-critical",
+    "usage": "Para aplicações enterprise com requisitos regulatórios complexos",
+    "prerequisites": "Kubernetes, microservices, multi-cloud, enterprise security",
+    "error_handling": "Chaos engineering, disaster recovery, global failover",
+    "performance_impact": "Otimizado para latência <10ms global, 99.99% uptime",
+    "security_considerations": "Zero-trust, compliance total, threat intelligence"
+  },
+  "capacity_level": "enterprise",
+  "capacity": {
+    "level": "enterprise",
+    "users_range": {
+      "min": 1000000,
+      "max": 999999999
+    },
+    "resources": {
+      "ram_mb": 16384,
+      "cpu_cores": 16,
+      "storage_gb": 1024,
+      "bandwidth_gbps": 10,
+      "regions": ["us-east", "us-west", "eu-central", "asia-pacific"]
+    }
+  },
+  "services": {
+    "monitoring": {
+      "prometheus": {
+        "enabled": true,
+        "federation": true,
+        "high_availability": true,
+        "retention_days": 365,
+        "scrape_interval": "5s",
+        "global_view": true,
+        "cross_region_monitoring": true
+      },
+      "grafana": {
+        "enabled": true,
+        "enterprise_edition": true,
+        "multi_tenant": true,
+        "rbac": true,
+        "global_dashboards": true,
+        "custom_plugins": true
+      },
+      "elasticsearch": {
+        "enabled": true,
+        "cluster_size": 9,
+        "cross_cluster_search": true,
+        "machine_learning": true,
+        "security_features": true
+      },
+      "observability": {
+        "jaeger_tracing": true,
+        "zipkin_integration": true,
+        "opentelemetry": true,
+        "custom_metrics": true,
+        "business_intelligence": true
+      }
+    },
+    "security": {
+      "rate_limiting": {
+        "enabled": true,
+        "adaptive_ai": true,
+        "ddos_mitigation": true,
+        "geo_blocking": true,
+        "bot_protection": true
+      },
+      "secrets_management": {
+        "type": "multi_cloud_vault",
+        "hsm_integration": true,
+        "key_rotation": "daily",
+        "compliance_logging": true,
+        "zero_trust": true
+      },
+      "identity": {
+        "sso_integration": true,
+        "saml": true,
+        "oauth2": true,
+        "ldap": true,
+        "mfa_required": true,
+        "risk_based_auth": true
+      },
+      "compliance": {
+        "gdpr": true,
+        "ccpa": true,
+        "sox": true,
+        "iso27001": true,
+        "fips_140_2": true,
+        "common_criteria": true
+      }
+    },
+    "database": {
+      "postgresql": {
+        "enabled": true,
+        "global_clusters": true,
+        "automatic_failover": true,
+        "cross_region_replication": true,
+        "encryption_at_rest": true,
+        "backup_strategy": "continuous",
+        "disaster_recovery": true
+      },
+      "redis": {
+        "enabled": true,
+        "global_distribution": true,
+        "active_active_replication": true,
+        "enterprise_features": true,
+        "automatic_failover": true
+      },
+      "data_lake": {
+        "enabled": true,
+        "analytics_engine": true,
+        "machine_learning": true,
+        "real_time_processing": true
+      }
+    },
+    "infrastructure": {
+      "kubernetes": {
+        "enabled": true,
+        "multi_cluster": true,
+        "service_mesh": true,
+        "gitops": true,
+        "chaos_engineering": true
+      },
+      "cdn": {
+        "enabled": true,
+        "global_edge": true,
+        "intelligent_routing": true,
+        "security_rules": true
+      },
+      "load_balancing": {
+        "global": true,
+        "intelligent": true,
+        "health_aware": true,
+        "traffic_shaping": true
+      }
+    }
+  },
+  "performance": {
+    "response_time_target_ms": 10,
+    "throughput_rps": 100000,
+    "availability_target": 99.99,
+    "error_rate_threshold": 0.01,
+    "global_latency_target_ms": 50
+  },
+  "scaling": {
+    "auto_scale": true,
+    "predictive_scaling": true,
+    "global_scaling": true,
+    "microservices_orchestration": true,
+    "serverless_integration": true
+  },
+  "deployment": {
+    "strategy": "advanced_canary",
+    "feature_flags": true,
+    "a_b_testing": true,
+    "progressive_delivery": true,
+    "automated_rollback": true,
+    "zero_downtime": true,
+    "chaos_testing": true
+  },
+  "compliance": {
+    "regulatory_frameworks": ["GDPR", "CCPA", "SOX", "ISO27001", "FIPS", "Common Criteria"],
+    "audit_logging": "comprehensive",
+    "data_residency": "configurable",
+    "right_to_be_forgotten": true,
+    "data_lineage": true,
+    "privacy_by_design": true,
+    "incident_response": "24x7",
+    "penetration_testing": "quarterly",
+    "vulnerability_management": "continuous"
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "_metadata": {
+    "duEuler_foundation_file": true,
+    "category": "capacity-config",
+    "capacity": "du:capacity:small",
+    "dependencies": ["FOUNDATION_METADATA.md", "monitoring services"],
+    "related_files": ["../micro/du-capacity-micro-config.json", "../medium/du-capacity-medium-config.json"],
+    "errors_solved": ["capacity misconfiguration", "resource over-allocation"],
+    "configuration": "10K-50K users, 2GB RAM, 2 cores, 50GB storage",
+    "upgrade_path": "small -> medium: update config, scale resources, migrate data",
+    "version_compatibility": "v2.0+",
+    "purpose": "Configuração otimizada para aplicações de 10K-50K usuários",
+    "usage": "Importar este config no início da aplicação",
+    "prerequisites": "Node.js 18+, PostgreSQL, Redis (opcional)",
+    "error_handling": "Graceful degradation se recursos insuficientes",
+    "performance_impact": "Otimizado para latência <100ms",
+    "security_considerations": "Rate limiting habilitado, secrets básicos"
+  },
+  "capacity_level": "small",
+  "capacity": {
+    "level": "small",
+    "users_range": {
+      "min": 10000,
+      "max": 50000
+    },
+    "resources": {
+      "ram_mb": 2048,
+      "cpu_cores": 2,
+      "storage_gb": 50,
+      "bandwidth_mbps": 100
+    }
+  },
+  "services": {
+    "monitoring": {
+      "prometheus": {
+        "enabled": true,
+        "retention_days": 7,
+        "scrape_interval": "30s",
+        "metrics": [
+          "http_requests_total",
+          "http_request_duration_seconds",
+          "nodejs_memory_usage_bytes",
+          "postgresql_connections",
+          "system_cpu_usage"
+        ]
+      },
+      "grafana": {
+        "enabled": true,
+        "dashboards": ["system", "application"],
+        "alerts": {
+          "cpu_threshold": 80,
+          "memory_threshold": 85,
+          "response_time_threshold": 500
+        }
+      }
+    },
+    "security": {
+      "rate_limiting": {
+        "enabled": true,
+        "requests_per_minute": 100,
+        "burst_limit": 150,
+        "strategy": "sliding_window"
+      },
+      "secrets_management": {
+        "type": "env_encryption",
+        "rotation_days": 90,
+        "encryption_algorithm": "AES-256"
+      }
+    },
+    "database": {
+      "postgresql": {
+        "max_connections": 50,
+        "connection_timeout": 5000,
+        "pool_size": 10,
+        "backup_frequency": "daily"
+      },
+      "redis": {
+        "enabled": false,
+        "max_memory": "128mb",
+        "eviction_policy": "allkeys-lru"
+      }
+    },
+    "caching": {
+      "enabled": true,
+      "strategy": "memory",
+      "ttl_seconds": 300,
+      "max_size_mb": 256
+    }
+  },
+  "performance": {
+    "response_time_target_ms": 100,
+    "throughput_rps": 500,
+    "availability_target": 99.5,
+    "error_rate_threshold": 1.0
+  },
+  "scaling": {
+    "auto_scale": false,
+    "scale_up_trigger": {
+      "cpu_percent": 75,
+      "memory_percent": 80,
+      "response_time_ms": 200
+    },
+    "upgrade_recommendations": {
+      "to_medium": {
+        "user_threshold": 45000,
+        "performance_degradation": true,
+        "resource_utilization": 85
+      }
+    }
+  },
+  "deployment": {
+    "strategy": "single_instance",
+    "backup_required": true,
+    "rollback_strategy": "manual",
+    "health_checks": {
+      "interval_seconds": 30,
+      "timeout_seconds": 5,
+      "failure_threshold": 3
+    }
+  },
+  "logging": {
+    "level": "info",
+    "rotation": "daily",
+    "retention_days": 30,
+    "structured": true,
+    "correlation_id": true
+  },
+  "compliance": {
+    "data_retention_days": 365,
+    "audit_logging": true,
+    "gdpr_compliance": true,
+    "backup_encryption": true
+  }
+}

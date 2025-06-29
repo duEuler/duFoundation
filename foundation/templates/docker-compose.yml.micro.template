@@ -1,0 +1,141 @@
+version: '3.8'
+
+services:
+  # Aplicação Principal - Configuração MICRO (1K-10K usuários)
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET:-default-jwt-secret}
+      - REDIS_URL=redis://redis:6379
+      - RATE_LIMIT_REQUESTS=100
+      - RATE_LIMIT_WINDOW=900000
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./uploads:/app/uploads
+    networks:
+      - micro-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-replit_optimizer}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - micro-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru
+    networks:
+      - micro-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Background Jobs Queue
+  queue-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=redis://redis:6379
+      - WORKER_MODE=true
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - micro-network
+    restart: unless-stopped
+    command: ["node", "dist/queue-worker.js"]
+
+  # Basic Analytics Service
+  analytics:
+    build:
+      context: .
+      dockerfile: services/analytics/Dockerfile
+    ports:
+      - "3005:3005"
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=${DATABASE_URL}
+      - NODE_ENV=production
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - micro-network
+    restart: unless-stopped
+
+  # Backup service - Diário
+  backup:
+    image: alpine:latest
+    volumes:
+      - postgres_data:/backup/postgres:ro
+      - redis_data:/backup/redis:ro
+      - ./data:/backup/app:ro
+      - ./backups:/backup/output
+    command: |
+      sh -c "
+        while true; do
+          tar -czf /backup/output/daily-backup-$$(date +%Y%m%d-%H%M%S).tar.gz /backup/
+          find /backup/output -name '*.tar.gz' -mtime +7 -delete
+          sleep 86400
+        done
+      "
+    restart: unless-stopped
+    networks:
+      - micro-network
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  micro-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16

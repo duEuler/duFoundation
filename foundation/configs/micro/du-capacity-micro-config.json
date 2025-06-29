@@ -1,0 +1,123 @@
+{
+  "_metadata": {
+    "duEuler_foundation_file": true,
+    "category": "capacity-config",
+    "capacity": "du:capacity:micro",
+    "dependencies": ["FOUNDATION_METADATA.md", "basic monitoring"],
+    "related_files": ["../nano/du-capacity-nano-config.json", "../small/du-capacity-small-config.json"],
+    "errors_solved": ["nano scale limitations", "monitoring gaps"],
+    "configuration": "1K-10K users, 1GB RAM, 1 core, 20GB storage",
+    "upgrade_path": "micro -> small: enable prometheus, add redis cache",
+    "version_compatibility": "v2.0+",
+    "purpose": "Configuração para pequenos negócios em crescimento",
+    "usage": "Para clínicas, escritórios pequenos, startups iniciais",
+    "prerequisites": "Node.js 18+, PostgreSQL básico",
+    "error_handling": "Retry logic com backoff exponential",
+    "performance_impact": "Otimizado para resposta <200ms",
+    "security_considerations": "Rate limiting básico, encriptação simples"
+  },
+  "capacity_level": "micro",
+  "capacity": {
+    "level": "micro",
+    "users_range": {
+      "min": 1000,
+      "max": 10000
+    },
+    "resources": {
+      "ram_mb": 1024,
+      "cpu_cores": 1,
+      "storage_gb": 20,
+      "bandwidth_mbps": 50
+    }
+  },
+  "services": {
+    "monitoring": {
+      "basic_logging": {
+        "enabled": true,
+        "level": "info",
+        "file_rotation": true,
+        "retention_days": 14
+      },
+      "health_checks": {
+        "enabled": true,
+        "interval_seconds": 60,
+        "timeout_seconds": 10
+      },
+      "prometheus": {
+        "enabled": false,
+        "reason": "resource conservation for micro scale"
+      }
+    },
+    "security": {
+      "rate_limiting": {
+        "enabled": true,
+        "requests_per_minute": 60,
+        "burst_limit": 100,
+        "strategy": "memory_store"
+      },
+      "secrets_management": {
+        "type": "basic_encryption",
+        "encryption_algorithm": "AES-256",
+        "rotation_days": 180
+      }
+    },
+    "database": {
+      "postgresql": {
+        "enabled": true,
+        "max_connections": 20,
+        "connection_timeout": 3000,
+        "pool_size": 5,
+        "backup_frequency": "daily"
+      },
+      "redis": {
+        "enabled": false,
+        "reason": "not needed until small scale"
+      }
+    },
+    "caching": {
+      "enabled": true,
+      "strategy": "memory",
+      "ttl_seconds": 600,
+      "max_size_mb": 128
+    }
+  },
+  "performance": {
+    "response_time_target_ms": 200,
+    "throughput_rps": 50,
+    "availability_target": 98.0,
+    "error_rate_threshold": 2.0
+  },
+  "scaling": {
+    "auto_scale": false,
+    "upgrade_recommendations": {
+      "to_small": {
+        "user_threshold": 8000,
+        "performance_degradation": true,
+        "resource_utilization": 85
+      }
+    }
+  },
+  "deployment": {
+    "strategy": "single_instance",
+    "backup_required": true,
+    "rollback_strategy": "manual",
+    "health_checks": {
+      "interval_seconds": 60,
+      "timeout_seconds": 10,
+      "failure_threshold": 3
+    }
+  },
+  "logging": {
+    "level": "info",
+    "rotation": "daily",
+    "retention_days": 14,
+    "structured": true,
+    "correlation_id": false
+  },
+  "compliance": {
+    "data_retention_days": 180,
+    "audit_logging": false,
+    "gdpr_compliance": true,
+    "backup_encryption": true
+  }
+}

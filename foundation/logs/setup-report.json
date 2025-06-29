@@ -1,0 +1,28 @@
+{
+  "timestamp": "2025-06-29T03:53:20.498Z",
+  "config": {
+    "capacity": "micro",
+    "projectName": "Test-Micro-Project",
+    "description": "Testing corrected template system",
+    "skipDependencies": false,
+    "verbose": true
+  },
+  "results": {
+    "directoryStructure": true,
+    "packageJson": true,
+    "configFiles": true,
+    "replitMd": true,
+    "dependencies": false,
+    "validation": true
+  },
+  "success": false,
+  "foundation": {
+    "version": "3.0",
+    "features": [
+      "redis-cache",
+      "queue-system",
+      "search-service",
+      "push-notifications"
+    ]
+  }
+}
