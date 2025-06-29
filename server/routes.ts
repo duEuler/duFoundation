@@ -105,6 +105,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         expiresAt,
       });
 
+      // Update monitoring service with new user session
+      monitoringService.recordUserSession(1);
+
       // Update last login
       await storage.updateUser(user.id, { lastLogin: new Date() });
 
@@ -139,6 +142,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const sessionId = req.headers.authorization?.replace("Bearer ", "");
       if (sessionId) {
         await storage.deleteSession(sessionId);
+        // Update monitoring service to decrease user session count
+        monitoringService.recordUserSession(-1);
       }
       res.json({ message: "Logout realizado com sucesso" });
     } catch (error) {
