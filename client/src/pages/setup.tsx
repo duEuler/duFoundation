@@ -30,16 +30,16 @@ export default function SetupPage() {
 
   const setupMutation = useMutation({
     mutationFn: async (data: SetupRequest) => {
-      return apiRequest("POST", "/api/setup", data);
+      const response = await apiRequest("POST", "/api/setup", data);
+      return response.json();
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast({
         title: "Sistema configurado com sucesso!",
         description: "Redirecionando para a página de login...",
       });
-      setTimeout(() => {
-        setLocation("/login");
-      }, 2000);
+      // Immediate redirect instead of setTimeout
+      setLocation("/login");
     },
     onError: (error: any) => {
       toast({
