@@ -9,6 +9,7 @@ import { UserTable } from "@/components/dashboard/user-table";
 import { SystemStatus } from "@/components/dashboard/system-status";
 import { RecentActivity } from "@/components/dashboard/recent-activity";
 import { QuickActions } from "@/components/dashboard/quick-actions";
+import { FoundationMetrics } from "@/components/dashboard/foundation-metrics";
 
 export default function DashboardPage() {
   const { user, isAuthenticated } = useAuth();
@@ -47,6 +48,7 @@ export default function DashboardPage() {
             </div>
             
             <div className="space-y-6">
+              <FoundationMetrics />
               <SystemStatus />
               <RecentActivity />
               <QuickActions />
