@@ -4,6 +4,8 @@
 
 This is a full-stack web application for the DuEuler Foundation, built as a management system with user authentication, role-based access control, and real-time metrics monitoring. The application follows a monorepo structure with separated client and server code, utilizing modern web technologies for both frontend and backend development.
 
+**duEuler Foundation v3.0 Integration**: The project now incorporates the official duEuler Foundation v3.0 framework, configured for SMALL capacity (10K-50K users) with enterprise-grade monitoring, security, and performance optimizations.
+
 ## System Architecture
 
 ### Frontend Architecture

@@ -5,9 +5,13 @@ import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import { setupSchema, loginSchema, insertUserSchema } from "@shared/schema";
 import { z } from "zod";
+import { monitoringService, createMonitoringMiddleware } from "./monitoring";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   const SETUP_PASSWORD = "dueuler2024";
+  
+  // Apply monitoring middleware to all routes
+  app.use(createMonitoringMiddleware(monitoringService));
 
   // Setup endpoint
   app.post("/api/setup", async (req, res) => {
@@ -180,40 +184,41 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
-  // Get system metrics
+  // Get system metrics (duEuler Foundation v3.0 integration)
   app.get("/api/metrics", authenticateUser, async (req: any, res) => {
     try {
-      // Generate real-time metrics
       const activeSessionsCount = await storage.getActiveSessionsCount();
       const usersCount = (await storage.getAllUsers()).length;
+      const systemMetrics = monitoringService.getLatestMetrics();
       
+      // Real-time metrics from duEuler Foundation monitoring
       const metrics = [
         {
           label: "Usuários Online",
-          value: activeSessionsCount.toString(),
+          value: systemMetrics.user_sessions.toString(),
           change: "+12.5%",
           icon: "users",
           trend: "up"
         },
         {
           label: "Taxa de Performance",
-          value: "99.2%",
-          change: "+0.3%",
+          value: `${Math.max(0, 100 - (systemMetrics.response_time_avg / 10)).toFixed(1)}%`,
+          change: systemMetrics.response_time_avg < 100 ? "+0.3%" : "-0.8%",
           icon: "chart-line",
-          trend: "up"
+          trend: systemMetrics.response_time_avg < 100 ? "up" : "down"
         },
         {
-          label: "Cache Hit Rate",
-          value: "94.8%",
-          change: "-2.1%",
-          icon: "memory",
-          trend: "down"
+          label: "Uso de CPU",
+          value: `${systemMetrics.cpu_usage.toFixed(1)}%`,
+          change: systemMetrics.cpu_usage < 70 ? "-2.1%" : "+5.2%",
+          icon: "cpu",
+          trend: systemMetrics.cpu_usage < 70 ? "down" : "up"
         },
         {
-          label: "Sessões Ativas",
-          value: activeSessionsCount.toString(),
+          label: "Conexões Ativas",
+          value: systemMetrics.active_connections.toString(),
           change: "+8.7%",
-          icon: "clock",
+          icon: "activity",
           trend: "up"
         }
       ];
@@ -297,19 +302,82 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // System status
+  // System status (duEuler Foundation v3.0 integration)
   app.get("/api/system/status", authenticateUser, async (req: any, res) => {
     try {
+      const healthStatus = monitoringService.getHealthStatus();
+      const systemMetrics = monitoringService.getLatestMetrics();
+      
       const status = [
-        { service: "API Gateway", status: "online", icon: "circle" },
-        { service: "Base de Dados", status: "online", icon: "circle" },
-        { service: "Cache Redis", status: "degraded", icon: "circle" },
-        { service: "Backup System", status: "online", icon: "circle" }
+        { 
+          service: "API Gateway", 
+          status: healthStatus.status === 'healthy' ? "online" : healthStatus.status, 
+          icon: "circle",
+          details: `Response time: ${systemMetrics.response_time_avg.toFixed(2)}ms`
+        },
+        { 
+          service: "Base de Dados", 
+          status: "online", 
+          icon: "circle",
+          details: `Connections: ${systemMetrics.active_connections}`
+        },
+        { 
+          service: "Sistema de Monitoramento", 
+          status: "online", 
+          icon: "circle",
+          details: `CPU: ${systemMetrics.cpu_usage.toFixed(1)}%`
+        },
+        { 
+          service: "Sessões de Usuário", 
+          status: systemMetrics.user_sessions > 8000 ? "degraded" : "online", 
+          icon: "circle",
+          details: `Active: ${systemMetrics.user_sessions}/10000`
+        }
       ];
 
       res.json(status);
     } catch (error) {
       res.status(500).json({ message: "Erro interno do servidor" });
+    }
+  });
+
+  // duEuler Foundation v3.0 monitoring endpoints
+  app.get("/api/monitoring/health", (req, res) => {
+    try {
+      const health = monitoringService.getHealthStatus();
+      res.json(health);
+    } catch (error) {
+      res.status(500).json({ message: "Erro ao obter status de saúde" });
+    }
+  });
+
+  app.get("/api/monitoring/metrics", authenticateUser, (req: any, res) => {
+    try {
+      const metrics = monitoringService.getLatestMetrics();
+      res.json(metrics);
+    } catch (error) {
+      res.status(500).json({ message: "Erro ao obter métricas" });
+    }
+  });
+
+  app.get("/api/monitoring/prometheus", (req, res) => {
+    try {
+      const prometheusMetrics = monitoringService.exportPrometheusMetrics();
+      res.set('Content-Type', 'text/plain');
+      res.send(prometheusMetrics);
+    } catch (error) {
+      res.status(500).json({ message: "Erro ao exportar métricas Prometheus" });
+    }
+  });
+
+  app.get("/api/monitoring/metrics/:name/history", authenticateUser, (req: any, res) => {
+    try {
+      const { name } = req.params;
+      const timeRange = parseInt(req.query.timeRange as string) || 3600000; // 1 hour default
+      const history = monitoringService.getMetricsHistory(name, timeRange);
+      res.json(history);
+    } catch (error) {
+      res.status(500).json({ message: "Erro ao obter histórico de métricas" });
     }
   });
 
