@@ -432,7 +432,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Reconfigure Foundation capacity
+  // Preview Foundation capacity changes
+  app.post("/api/foundation/preview-changes", authenticateUser, async (req: any, res) => {
+    try {
+      const { foundationCapacity, maxConcurrentUsers } = req.body;
+      const systemConfig = await storage.getSystemConfig();
+      
+      if (!systemConfig) {
+        return res.status(404).json({ message: "Configuração do sistema não encontrada" });
+      }
+
+      const { foundationIntegrator } = await import('./foundation-integrator');
+      
+      const preview = await foundationIntegrator.previewChanges({
+        currentCapacity: systemConfig.foundationCapacity,
+        targetCapacity: foundationCapacity,
+        maxConcurrentUsers: maxConcurrentUsers || systemConfig.maxConcurrentUsers
+      });
+
+      res.json(preview);
+    } catch (error: any) {
+      res.status(500).json({ message: `Erro ao visualizar mudanças: ${error.message}` });
+    }
+  });
+
+  // Reconfigure Foundation capacity (PROPER WAY)
   app.post("/api/foundation/reconfigure", authenticateUser, async (req: any, res) => {
     try {
       const { foundationCapacity, maxConcurrentUsers } = req.body;
@@ -441,25 +465,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Capacidade da Foundation é obrigatória" });
       }
 
-      // Validate Foundation capacity - only prevent downgrade to insufficient capacity
-      if (maxConcurrentUsers) {
-        const newCapacityConfig = getFoundationConfig(foundationCapacity);
-        // Only block if trying to set a capacity that can't handle the max users
-        if (maxConcurrentUsers > newCapacityConfig.userRange.max) {
-          const suggestedCapacity = suggestCapacityForUsers(maxConcurrentUsers);
-          const capacityConfig = getFoundationConfig(suggestedCapacity);
-          return res.status(400).json({ 
-            message: `Capacidade ${foundationCapacity} não suporta ${maxConcurrentUsers} usuários. Recomendamos: ${suggestedCapacity} (${capacityConfig.userRange.min}-${capacityConfig.userRange.max} usuários)` 
-          });
-        }
-      }
-
-      // Update only Foundation configuration
       const systemConfig = await storage.getSystemConfig();
       if (!systemConfig) {
         return res.status(404).json({ message: "Configuração do sistema não encontrada" });
       }
 
+      // Import the proper Foundation integrator
+      const { foundationIntegrator } = await import('./foundation-integrator');
+      
+      // Apply changes using the official Foundation system
+      const result = await foundationIntegrator.applyCapacityChange({
+        currentCapacity: systemConfig.foundationCapacity,
+        targetCapacity: foundationCapacity,
+        maxConcurrentUsers: maxConcurrentUsers || systemConfig.maxConcurrentUsers
+      });
+
+      if (!result.success) {
+        return res.status(400).json({ 
+          message: result.message,
+          warnings: result.warnings 
+        });
+      }
+
+      // Only update database if Foundation changes were successful
       const updateData: any = { foundationCapacity };
       if (maxConcurrentUsers) {
         updateData.maxConcurrentUsers = maxConcurrentUsers;
@@ -472,16 +500,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
       await storage.createActivityLog({
         userId: req.user.id,
         action: "foundation_reconfigure",
-        description: `Capacidade da Foundation alterada para ${foundationCapacity}`,
+        description: `Capacidade da Foundation alterada para ${foundationCapacity} (Sistema Foundation aplicado)`,
       });
 
       res.json({
-        message: "Configuração da Foundation atualizada com sucesso",
+        message: "Configuração da Foundation aplicada com sucesso",
         systemConfig: updatedConfig,
-        foundationConfig
+        foundationConfig,
+        appliedChanges: result.appliedChanges,
+        warnings: result.warnings
       });
-    } catch (error) {
-      res.status(500).json({ message: "Erro ao reconfigurar Foundation" });
+    } catch (error: any) {
+      res.status(500).json({ message: `Erro ao reconfigurar Foundation: ${error.message}` });
     }
   });
 
