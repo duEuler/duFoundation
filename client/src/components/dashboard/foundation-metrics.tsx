@@ -44,6 +44,11 @@ export function FoundationMetrics() {
     refetchInterval: 60000, // Refresh every minute
   });
 
+  // Destructure foundation config data for easier access
+  const systemConfig = (foundationConfig as any)?.systemConfig;
+  const foundationSpec = (foundationConfig as any)?.foundationConfig;
+  const currentCapacity = (foundationConfig as any)?.currentCapacity;
+
   const formatUptime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
@@ -104,6 +109,52 @@ export function FoundationMetrics() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
+        {/* Foundation Capacity Info */}
+        {foundationSpec && (
+          <div className="bg-blue-50 dark:bg-blue-950 p-4 rounded-lg space-y-3">
+            <div className="flex items-center justify-between">
+              <h4 className="font-semibold text-blue-800 dark:text-blue-200">Capacidade Foundation</h4>
+              <Badge className="bg-blue-600 text-white">{currentCapacity?.toUpperCase()}</Badge>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <div className="text-gray-600 dark:text-gray-400">Usuários Simultâneos</div>
+                <div className="font-semibold">{systemConfig?.maxConcurrentUsers?.toLocaleString()}</div>
+                <div className="text-xs text-gray-500">
+                  Suporte: {foundationSpec.userRange.min.toLocaleString()}-{foundationSpec.userRange.max.toLocaleString()}
+                </div>
+              </div>
+              
+              <div>
+                <div className="text-gray-600 dark:text-gray-400">Recursos Alocados</div>
+                <div className="font-semibold">
+                  {(foundationSpec.resources.ramMB / 1024).toFixed(0)}GB RAM, {foundationSpec.resources.cpuCores} cores
+                </div>
+                <div className="text-xs text-gray-500">
+                  Storage: {foundationSpec.resources.storageGB}GB
+                </div>
+              </div>
+              
+              <div>
+                <div className="text-gray-600 dark:text-gray-400">Performance Target</div>
+                <div className="font-semibold">{foundationSpec.performance.responseTimeTargetMs}ms</div>
+                <div className="text-xs text-gray-500">
+                  {foundationSpec.performance.throughputRps.toLocaleString()} RPS
+                </div>
+              </div>
+              
+              <div>
+                <div className="text-gray-600 dark:text-gray-400">Disponibilidade</div>
+                <div className="font-semibold">{foundationSpec.performance.availabilityTarget}%</div>
+                <div className="text-xs text-gray-500">
+                  Monitoramento: {foundationSpec.monitoring.scrapeInterval}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* System Status */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
