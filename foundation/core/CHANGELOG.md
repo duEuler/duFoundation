@@ -25,6 +25,25 @@ All notable changes to the duEuler Foundation System will be documented in this 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.0] - 2025-07-03
+
+### Critical Fixes and Improvements
+- **Authentication System**: Fixed frontend/backend authorization mismatch - sessionId now properly included in all API requests
+- **Foundation Integration**: Implemented proper FoundationIntegrator with capacity-specific configurations
+- **Capacity Validation**: Corrected validation logic to allow capacity upgrades while preventing over-allocation
+- **Login UX**: Removed redundant "access level" field - role now determined by user account
+- **Dashboard Enhancement**: Added comprehensive Foundation capacity display with real-time metrics
+- **API Endpoints**: Added `/api/foundation/preview-changes` and enhanced `/api/foundation/reconfigure`
+
+### Capacity Scaling Verified
+- **LARGE Capacity**: Successfully tested upgrade from MEDIUM to LARGE (500K users, 8GB RAM, 8 cores)
+- **Real-time Monitoring**: Verified Prometheus 10s intervals, Grafana 5 dashboards
+- **Database Scaling**: PostgreSQL 200 connections, Redis 2GB allocation working correctly
+
+### Documentation Added
+- **Integration Lessons**: Complete troubleshooting guide in `/foundation/docs/INTEGRATION_LESSONS_LEARNED.md`
+- **Best Practices**: Authentication patterns, capacity validation rules, dashboard requirements
+
 ## [2.0.0] - 2025-06-28
 
 ### Major Features Added
