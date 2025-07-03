@@ -158,16 +158,29 @@ export class FoundationIntegrator {
       const monitoringPath = path.join(this.projectRoot, 'server', 'monitoring.ts');
       if (fs.existsSync(monitoringPath)) {
         // Update scrape intervals and thresholds based on Foundation config
-        console.log(`Aplicando configuração Prometheus: ${config.services.monitoring.prometheus.scrape_interval}`);
+        const scrapeInterval = config.services.monitoring.prometheus.scrape_interval || '30s';
+        console.log(`Aplicando configuração Prometheus: ${scrapeInterval}`);
       }
     }
 
     // Apply Grafana configuration
     if (config.services?.monitoring?.grafana) {
-      // Update dashboard configurations
+      // Update dashboard configurations - ENTERPRISE level
       const grafanaPath = path.join(this.foundationPath, 'monitoring', 'GrafanaService.ts');
       if (fs.existsSync(grafanaPath)) {
-        console.log(`Configurando dashboards Grafana: ${config.services.monitoring.grafana.dashboards.join(', ')}`);
+        // For ENTERPRISE, we have different structure than other levels
+        if (config.capacity_level === 'enterprise') {
+          const features = [];
+          if (config.services.monitoring.grafana.enterprise_edition) features.push('enterprise edition');
+          if (config.services.monitoring.grafana.multi_tenant) features.push('multi-tenant');
+          if (config.services.monitoring.grafana.rbac) features.push('RBAC');
+          if (config.services.monitoring.grafana.global_dashboards) features.push('global dashboards');
+          console.log(`Configurando dashboards Grafana: ${features.join(', ')}`);
+        } else {
+          // For other levels that have dashboards array
+          const dashboards = config.services.monitoring.grafana.dashboards || [];
+          console.log(`Configurando dashboards Grafana: ${dashboards.join(', ')}`);
+        }
       }
     }
   }
@@ -187,14 +200,20 @@ export class FoundationIntegrator {
   private async applyDatabaseConfig(config: any): Promise<void> {
     // Apply PostgreSQL configuration
     if (config.services?.database?.postgresql) {
-      // Update connection pool sizes, timeouts
-      console.log(`Configurando PostgreSQL: ${config.services.database.postgresql.max_connections} conexões`);
+      // Update connection pool sizes, timeouts - handle different capacity levels
+      const maxConnections = config.services.database.postgresql.max_connections || 
+                           (config.capacity_level === 'enterprise' ? 1000 : 
+                            config.capacity_level === 'large' ? 200 : 50);
+      console.log(`Configurando PostgreSQL: ${maxConnections} conexões`);
     }
 
     // Apply Redis configuration
     if (config.services?.database?.redis) {
       // Configure Redis if not present, update memory limits
-      console.log(`Configurando Redis: ${config.services.database.redis.max_memory}`);
+      const maxMemory = config.services.database.redis.max_memory || 
+                       config.services.database.redis.memory_limit || 
+                       '2gb';
+      console.log(`Configurando Redis: ${maxMemory}`);
     }
   }
 
