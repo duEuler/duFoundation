@@ -11,6 +11,7 @@ import { RecentActivity } from "@/components/dashboard/recent-activity";
 import { QuickActions } from "@/components/dashboard/quick-actions";
 import { FoundationMetrics } from "@/components/dashboard/foundation-metrics";
 import { FoundationConfig } from "@/components/dashboard/foundation-config";
+import { ResourceStatus } from "@/components/dashboard/resource-status";
 
 export default function DashboardPage() {
   const { user, isAuthenticated } = useAuth();
@@ -40,6 +41,7 @@ export default function DashboardPage() {
         <Header />
         
         <main className="p-6">
+          <ResourceStatus />
           <MetricsCards />
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
