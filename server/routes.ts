@@ -434,6 +434,55 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Reconfigure Foundation capacity
+  app.post("/api/foundation/reconfigure", authenticateUser, async (req: any, res) => {
+    try {
+      const { foundationCapacity, maxConcurrentUsers } = req.body;
+      
+      if (!foundationCapacity) {
+        return res.status(400).json({ message: "Capacidade da Foundation é obrigatória" });
+      }
+
+      // Validate Foundation capacity for configured users
+      if (maxConcurrentUsers && !validateCapacityForUsers(foundationCapacity, maxConcurrentUsers)) {
+        const suggestedCapacity = suggestCapacityForUsers(maxConcurrentUsers);
+        const capacityConfig = getFoundationConfig(suggestedCapacity);
+        return res.status(400).json({ 
+          message: `Capacidade ${foundationCapacity} não suporta ${maxConcurrentUsers} usuários. Recomendamos: ${suggestedCapacity} (${capacityConfig.userRange.min}-${capacityConfig.userRange.max} usuários)` 
+        });
+      }
+
+      // Update only Foundation configuration
+      const systemConfig = await storage.getSystemConfig();
+      if (!systemConfig) {
+        return res.status(404).json({ message: "Configuração do sistema não encontrada" });
+      }
+
+      const updateData: any = { foundationCapacity };
+      if (maxConcurrentUsers) {
+        updateData.maxConcurrentUsers = maxConcurrentUsers;
+      }
+
+      const updatedConfig = await storage.updateSystemConfig(updateData);
+      const foundationConfig = getFoundationConfig(foundationCapacity);
+
+      // Log the reconfiguration
+      await storage.createActivityLog({
+        userId: req.user.id,
+        action: "foundation_reconfigure",
+        description: `Capacidade da Foundation alterada para ${foundationCapacity}`,
+      });
+
+      res.json({
+        message: "Configuração da Foundation atualizada com sucesso",
+        systemConfig: updatedConfig,
+        foundationConfig
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Erro ao reconfigurar Foundation" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

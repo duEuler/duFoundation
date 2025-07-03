@@ -10,6 +10,7 @@ import { SystemStatus } from "@/components/dashboard/system-status";
 import { RecentActivity } from "@/components/dashboard/recent-activity";
 import { QuickActions } from "@/components/dashboard/quick-actions";
 import { FoundationMetrics } from "@/components/dashboard/foundation-metrics";
+import { FoundationConfig } from "@/components/dashboard/foundation-config";
 
 export default function DashboardPage() {
   const { user, isAuthenticated } = useAuth();
@@ -49,6 +50,7 @@ export default function DashboardPage() {
             
             <div className="space-y-6">
               <FoundationMetrics />
+              {user.role === "admin" && <FoundationConfig />}
               <SystemStatus />
               <RecentActivity />
               <QuickActions />
