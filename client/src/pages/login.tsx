@@ -14,7 +14,7 @@ import { Shield, Loader2 } from "lucide-react";
 
 export default function LoginPage() {
   const [, setLocation] = useLocation();
-  const { login, isLoading } = useAuth();
+  const { login, isLoading, isAuthenticated } = useAuth();
 
   // Check setup status
   const { data: setupStatus } = useQuery({
@@ -22,10 +22,17 @@ export default function LoginPage() {
   });
 
   useEffect(() => {
-    if (setupStatus && !setupStatus.setupCompleted) {
+    if (setupStatus && !(setupStatus as any)?.setupCompleted) {
       setLocation("/setup");
     }
   }, [setupStatus, setLocation]);
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      setLocation("/dashboard");
+    }
+  }, [isAuthenticated, setLocation]);
 
   const form = useForm<LoginRequest>({
     resolver: zodResolver(loginSchema),
@@ -37,10 +44,19 @@ export default function LoginPage() {
   });
 
   const onSubmit = async (data: LoginRequest) => {
-    await login(data);
+    try {
+      await login(data);
+      // Redirecionamento adicional caso o hook não funcione
+      setTimeout(() => {
+        setLocation("/dashboard");
+      }, 100);
+    } catch (error) {
+      // Error will be handled by the useAuth hook
+      console.error("Login error:", error);
+    }
   };
 
-  if (!setupStatus || !setupStatus.setupCompleted) {
+  if (!setupStatus || !(setupStatus as any)?.setupCompleted) {
     return (
       <div className="min-h-screen dueuler-gradient flex items-center justify-center">
         <div className="text-white text-center">

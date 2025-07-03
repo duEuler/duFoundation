@@ -45,7 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(data.user);
       setIsAuthenticated(true);
       queryClient.invalidateQueries({ queryKey: ["currentUser"] });
-      setLocation("/");
+      setLocation("/dashboard");
       toast({
         title: "Login realizado com sucesso!",
         description: `Bem-vindo, ${data.user.username}!`,
