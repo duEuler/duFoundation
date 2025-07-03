@@ -103,9 +103,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(401).json({ message: "Credenciais inválidas" });
       }
 
-      if (user.role !== data.role) {
-        return res.status(403).json({ message: "Nível de acesso não autorizado" });
-      }
+      // User role is determined by their account, no need to validate role in login
 
       // Create session
       const sessionId = uuidv4();

@@ -118,6 +118,7 @@ Changelog:
 - June 29, 2025. Added enterprise-grade monitoring system supporting 10,000+ concurrent users
 - June 29, 2025. Implemented real-time metrics collection and Prometheus endpoint integration
 - June 29, 2025. Added FoundationMetrics component for real-time system monitoring dashboard
+- July 3, 2025. Removed redundant "access level" field from login - role now tied to user account
 ```
 
 ## User Preferences

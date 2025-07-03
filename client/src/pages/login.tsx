@@ -8,7 +8,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Shield, Loader2 } from "lucide-react";
 
@@ -39,7 +39,6 @@ export default function LoginPage() {
     defaultValues: {
       username: "",
       password: "",
-      role: "user",
     },
   });
 
@@ -113,22 +112,7 @@ export default function LoginPage() {
               )}
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="role">Nível de Acesso</Label>
-              <Select
-                value={form.watch("role")}
-                onValueChange={(value) => form.setValue("role", value as any)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Selecione o nível" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="user">Usuário</SelectItem>
-                  <SelectItem value="manager">Gerente</SelectItem>
-                  <SelectItem value="admin">Administrador</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+
 
             <Button
               type="submit"
