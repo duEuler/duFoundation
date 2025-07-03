@@ -7,6 +7,7 @@ export const systemConfig = pgTable("system_config", {
   id: serial("id").primaryKey(),
   organizationName: text("organization_name").notNull(),
   environment: text("environment").notNull(),
+  foundationCapacity: text("foundation_capacity").notNull().default("small"),
   maxConcurrentUsers: integer("max_concurrent_users").default(10000),
   cacheTTL: integer("cache_ttl").default(300),
   setupCompleted: boolean("setup_completed").default(false),
@@ -108,6 +109,7 @@ export const setupSchema = z.object({
   setupPassword: z.string().min(1),
   organizationName: z.string().min(1),
   environment: z.enum(["development", "staging", "production"]),
+  foundationCapacity: z.enum(["nano", "micro", "small", "medium", "large", "enterprise"]),
   maxConcurrentUsers: z.number().min(1).max(50000).default(10000),
   cacheTTL: z.number().min(60).max(3600).default(300),
 });

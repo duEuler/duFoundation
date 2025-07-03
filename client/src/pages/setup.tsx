@@ -23,6 +23,7 @@ export default function SetupPage() {
       setupPassword: "",
       organizationName: "DuEuler Foundation",
       environment: "development",
+      foundationCapacity: "small",
       maxConcurrentUsers: 10000,
       cacheTTL: 300,
     },
@@ -115,6 +116,29 @@ export default function SetupPage() {
                   <SelectItem value="production">Produção</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="foundationCapacity">Capacidade da duEuler Foundation</Label>
+              <Select
+                value={form.watch("foundationCapacity")}
+                onValueChange={(value) => form.setValue("foundationCapacity", value as any)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecione a capacidade" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="nano">Nano (1-1K usuários) - Dentista, Advogado</SelectItem>
+                  <SelectItem value="micro">Micro (1K-10K usuários) - Clínica, Escritório</SelectItem>
+                  <SelectItem value="small">Small (10K-50K usuários) - Startup, Regional</SelectItem>
+                  <SelectItem value="medium">Medium (50K-200K usuários) - Empresa Média</SelectItem>
+                  <SelectItem value="large">Large (200K-1M usuários) - Grande Empresa</SelectItem>
+                  <SelectItem value="enterprise">Enterprise (1M+ usuários) - Corporação</SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-gray-600">
+                Esta configuração determina os recursos e otimizações do sistema
+              </p>
             </div>
 
             <div className="grid grid-cols-2 gap-4">

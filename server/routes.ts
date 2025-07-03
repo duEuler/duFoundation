@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import { setupSchema, loginSchema, insertUserSchema } from "@shared/schema";
 import { z } from "zod";
 import { monitoringService, createMonitoringMiddleware } from "./monitoring";
+import { getFoundationConfig, validateCapacityForUsers, suggestCapacityForUsers, FOUNDATION_CONFIGS } from "./foundation-config";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   const SETUP_PASSWORD = "dueuler2024";
@@ -22,6 +23,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(401).json({ message: "Senha de configuração inválida" });
       }
 
+      // Validate Foundation capacity for configured users
+      if (!validateCapacityForUsers(data.foundationCapacity, data.maxConcurrentUsers)) {
+        const suggestedCapacity = suggestCapacityForUsers(data.maxConcurrentUsers);
+        const capacityConfig = getFoundationConfig(suggestedCapacity);
+        return res.status(400).json({ 
+          message: `Capacidade ${data.foundationCapacity} não suporta ${data.maxConcurrentUsers} usuários. Recomendamos: ${suggestedCapacity} (${capacityConfig.userRange.min}-${capacityConfig.userRange.max} usuários)` 
+        });
+      }
+
       // Check if setup already completed
       const existingConfig = await storage.getSystemConfig();
       if (existingConfig?.setupCompleted) {
@@ -33,6 +43,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         ? await storage.updateSystemConfig({
             organizationName: data.organizationName,
             environment: data.environment,
+            foundationCapacity: data.foundationCapacity,
             maxConcurrentUsers: data.maxConcurrentUsers,
             cacheTTL: data.cacheTTL,
             setupCompleted: true,
@@ -40,6 +51,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         : await storage.createSystemConfig({
             organizationName: data.organizationName,
             environment: data.environment,
+            foundationCapacity: data.foundationCapacity,
             maxConcurrentUsers: data.maxConcurrentUsers,
             cacheTTL: data.cacheTTL,
             setupCompleted: true,
@@ -383,6 +395,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(history);
     } catch (error) {
       res.status(500).json({ message: "Erro ao obter histórico de métricas" });
+    }
+  });
+
+  // duEuler Foundation v3.0 configuration endpoints
+  app.get("/api/foundation/config", authenticateUser, async (req: any, res) => {
+    try {
+      const systemConfig = await storage.getSystemConfig();
+      if (!systemConfig) {
+        return res.status(404).json({ message: "Configuração do sistema não encontrada" });
+      }
+      
+      const foundationConfig = getFoundationConfig(systemConfig.foundationCapacity);
+      res.json({
+        systemConfig,
+        foundationConfig,
+        currentCapacity: systemConfig.foundationCapacity
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Erro ao obter configuração da Foundation" });
+    }
+  });
+
+  app.get("/api/foundation/capacities", (req, res) => {
+    try {
+      const capacities = Object.entries(FOUNDATION_CONFIGS).map(([key, config]: [string, any]) => ({
+        key,
+        name: config.capacity,
+        description: config.description,
+        userRange: config.userRange,
+        useCases: config.useCases,
+        resources: config.resources
+      }));
+      
+      res.json(capacities);
+    } catch (error) {
+      res.status(500).json({ message: "Erro ao obter capacidades da Foundation" });
     }
   });
 

@@ -39,6 +39,11 @@ export function FoundationMetrics() {
     refetchInterval: 30000,
   });
 
+  const { data: foundationConfig } = useQuery({
+    queryKey: ["/api/foundation/config"],
+    refetchInterval: 60000, // Refresh every minute
+  });
+
   const formatUptime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
@@ -92,7 +97,10 @@ export function FoundationMetrics() {
           duEuler Foundation v3.0
         </CardTitle>
         <CardDescription>
-          Sistema otimizado para 10.000 usuários simultâneos
+          {(foundationConfig as any)?.foundationConfig ? 
+            `${(foundationConfig as any).foundationConfig.description} (${(foundationConfig as any).foundationConfig.userRange.min.toLocaleString()}-${(foundationConfig as any).foundationConfig.userRange.max.toLocaleString()} usuários)` :
+            "Sistema otimizado para 10.000 usuários simultâneos"
+          }
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -217,10 +225,13 @@ export function FoundationMetrics() {
         {/* Foundation Info */}
         <div className="pt-4 border-t text-center">
           <div className="text-xs text-muted-foreground">
-            duEuler Foundation v3.0 | Configuração SMALL
+            duEuler Foundation v3.0 | Configuração {(foundationConfig as any)?.currentCapacity?.toUpperCase() || 'SMALL'}
           </div>
           <div className="text-xs text-muted-foreground">
-            Otimizado para 10K-50K usuários simultâneos
+            {(foundationConfig as any)?.foundationConfig ? 
+              `RAM: ${(foundationConfig as any).foundationConfig.resources.ramMB}MB | CPU: ${(foundationConfig as any).foundationConfig.resources.cpuCores} cores` :
+              "Otimizado para 10K-50K usuários simultâneos"
+            }
           </div>
         </div>
       </CardContent>
