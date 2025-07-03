@@ -435,19 +435,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Preview Foundation capacity changes
   app.post("/api/foundation/preview-changes", authenticateUser, async (req: any, res) => {
     try {
-      const { foundationCapacity, maxConcurrentUsers } = req.body;
+      const { foundationCapacity } = req.body;
       const systemConfig = await storage.getSystemConfig();
       
       if (!systemConfig) {
         return res.status(404).json({ message: "Configuração do sistema não encontrada" });
       }
 
+      // Calculate maxConcurrentUsers based on Foundation capacity
+      const previewConfig = getFoundationConfig(foundationCapacity);
+      const maxConcurrentUsers = previewConfig.userRange.max;
+
       const { foundationIntegrator } = await import('./foundation-integrator');
       
       const preview = await foundationIntegrator.previewChanges({
         currentCapacity: systemConfig.foundationCapacity,
         targetCapacity: foundationCapacity,
-        maxConcurrentUsers: maxConcurrentUsers || systemConfig.maxConcurrentUsers
+        maxConcurrentUsers: maxConcurrentUsers
       });
 
       res.json(preview);
@@ -459,7 +463,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Reconfigure Foundation capacity (PROPER WAY)
   app.post("/api/foundation/reconfigure", authenticateUser, async (req: any, res) => {
     try {
-      const { foundationCapacity, maxConcurrentUsers } = req.body;
+      const { foundationCapacity } = req.body;
       
       if (!foundationCapacity) {
         return res.status(400).json({ message: "Capacidade da Foundation é obrigatória" });
@@ -470,6 +474,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "Configuração do sistema não encontrada" });
       }
 
+      // Get Foundation config to determine maxConcurrentUsers automatically
+      const targetConfig = getFoundationConfig(foundationCapacity);
+      const maxConcurrentUsers = targetConfig.userRange.max;
+
       // Import the proper Foundation integrator
       const { foundationIntegrator } = await import('./foundation-integrator');
       
@@ -477,7 +485,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const result = await foundationIntegrator.applyCapacityChange({
         currentCapacity: systemConfig.foundationCapacity,
         targetCapacity: foundationCapacity,
-        maxConcurrentUsers: maxConcurrentUsers || systemConfig.maxConcurrentUsers
+        maxConcurrentUsers: maxConcurrentUsers
       });
 
       if (!result.success) {
@@ -488,13 +496,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Only update database if Foundation changes were successful
-      const updateData: any = { foundationCapacity };
-      if (maxConcurrentUsers) {
-        updateData.maxConcurrentUsers = maxConcurrentUsers;
-      }
+      const updateData = { 
+        foundationCapacity,
+        maxConcurrentUsers
+      };
 
       const updatedConfig = await storage.updateSystemConfig(updateData);
-      const foundationConfig = getFoundationConfig(foundationCapacity);
+      const newFoundationConfig = getFoundationConfig(foundationCapacity);
 
       // Log the reconfiguration
       await storage.createActivityLog({
@@ -506,7 +514,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({
         message: "Configuração da Foundation aplicada com sucesso",
         systemConfig: updatedConfig,
-        foundationConfig,
+        foundationConfig: newFoundationConfig,
         appliedChanges: result.appliedChanges,
         warnings: result.warnings
       });

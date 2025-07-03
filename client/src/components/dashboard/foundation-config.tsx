@@ -13,7 +13,6 @@ import { Settings, Cpu, Database, Users, Zap, Loader2 } from "lucide-react";
 
 interface ReconfigureData {
   foundationCapacity: string;
-  maxConcurrentUsers?: number;
 }
 
 export function FoundationConfig() {
@@ -33,7 +32,6 @@ export function FoundationConfig() {
   const form = useForm<ReconfigureData>({
     defaultValues: {
       foundationCapacity: (currentConfig as any)?.currentCapacity || "large",
-      maxConcurrentUsers: (currentConfig as any)?.systemConfig?.maxConcurrentUsers || 500000,
     },
   });
 
@@ -42,7 +40,6 @@ export function FoundationConfig() {
     if (currentConfig) {
       const config = currentConfig as any;
       form.setValue("foundationCapacity", config.currentCapacity);
-      form.setValue("maxConcurrentUsers", config.systemConfig?.maxConcurrentUsers);
     }
     setIsEditing(true);
   };
@@ -204,30 +201,7 @@ export function FoundationConfig() {
                 </Select>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="maxConcurrentUsers">Máximo de Usuários Simultâneos</Label>
-                <Input
-                  type="number"
-                  {...form.register("maxConcurrentUsers", { 
-                    valueAsNumber: true,
-                    min: 1,
-                    max: 10000000 
-                  })}
-                  placeholder="Ex: 50000"
-                />
-                <p className="text-xs text-gray-600">
-                  Ajuste conforme sua necessidade dentro da capacidade selecionada
-                </p>
-              </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="maxConcurrentUsers">Máximo de Usuários Simultâneos</Label>
-                <Input
-                  id="maxConcurrentUsers"
-                  type="number"
-                  {...form.register("maxConcurrentUsers", { valueAsNumber: true })}
-                />
-              </div>
 
               <div className="flex gap-2">
                 <Button
