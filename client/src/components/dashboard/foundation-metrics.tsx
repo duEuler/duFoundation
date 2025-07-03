@@ -31,12 +31,12 @@ interface HealthStatus {
 export function FoundationMetrics() {
   const { data: metrics, isLoading: metricsLoading } = useQuery<FoundationMetrics>({
     queryKey: ["/api/monitoring/metrics"],
-    refetchInterval: 30000, // Refresh every 30 seconds as per SMALL config
+    refetchInterval: 10000, // Refresh every 10 seconds as per LARGE config
   });
 
   const { data: health, isLoading: healthLoading } = useQuery<HealthStatus>({
     queryKey: ["/api/monitoring/health"],
-    refetchInterval: 30000,
+    refetchInterval: 10000, // Match LARGE capacity monitoring frequency
   });
 
   const { data: foundationConfig } = useQuery({
@@ -104,7 +104,7 @@ export function FoundationMetrics() {
         <CardDescription>
           {(foundationConfig as any)?.foundationConfig ? 
             `${(foundationConfig as any).foundationConfig.description} (${(foundationConfig as any).foundationConfig.userRange.min.toLocaleString()}-${(foundationConfig as any).foundationConfig.userRange.max.toLocaleString()} usuários)` :
-            "Sistema otimizado para 10.000 usuários simultâneos"
+            "Sistema otimizado para 500.000 usuários simultâneos (Capacidade LARGE)"
           }
         </CardDescription>
       </CardHeader>

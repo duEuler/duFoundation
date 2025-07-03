@@ -32,10 +32,20 @@ export function FoundationConfig() {
 
   const form = useForm<ReconfigureData>({
     defaultValues: {
-      foundationCapacity: (currentConfig as any)?.currentCapacity || "small",
-      maxConcurrentUsers: (currentConfig as any)?.systemConfig?.maxConcurrentUsers || 10000,
+      foundationCapacity: (currentConfig as any)?.currentCapacity || "large",
+      maxConcurrentUsers: (currentConfig as any)?.systemConfig?.maxConcurrentUsers || 500000,
     },
   });
+
+  // Reset form when opening edit mode with current values
+  const handleEditClick = () => {
+    if (currentConfig) {
+      const config = currentConfig as any;
+      form.setValue("foundationCapacity", config.currentCapacity);
+      form.setValue("maxConcurrentUsers", config.systemConfig?.maxConcurrentUsers);
+    }
+    setIsEditing(true);
+  };
 
   const reconfigureMutation = useMutation({
     mutationFn: async (data: ReconfigureData) => {
@@ -163,7 +173,7 @@ export function FoundationConfig() {
             </div>
 
             <Button
-              onClick={() => setIsEditing(true)}
+              onClick={handleEditClick}
               className="w-full"
               variant="outline"
             >
