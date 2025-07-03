@@ -21,11 +21,23 @@ export function ResourceStatus() {
 
   if (!foundationConfig || !systemInfo) {
     return (
-      <Card className="mb-6">
+      <Card className="mb-6 bg-gradient-to-r from-slate-50 to-gray-50 dark:from-slate-950 dark:to-gray-950 border-slate-200 dark:border-slate-800">
         <CardContent className="p-4">
-          <div className="flex items-center justify-center">
-            <Activity className="h-4 w-4 animate-spin mr-2" />
-            <span className="text-sm text-gray-600">Carregando informações do servidor...</span>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Badge className="bg-slate-400 text-white font-semibold">
+                Carregando...
+              </Badge>
+              <span className="text-sm text-gray-600 dark:text-gray-400">
+                Obtendo dados do servidor
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Activity className="h-4 w-4 animate-spin text-blue-600" />
+              <span className="text-sm text-gray-600">
+                Coletando informações de hardware...
+              </span>
+            </div>
           </div>
         </CardContent>
       </Card>
