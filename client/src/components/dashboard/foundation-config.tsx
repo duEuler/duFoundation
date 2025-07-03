@@ -197,6 +197,22 @@ export function FoundationConfig() {
               <div className="space-y-2">
                 <Label htmlFor="maxConcurrentUsers">Máximo de Usuários Simultâneos</Label>
                 <Input
+                  type="number"
+                  {...form.register("maxConcurrentUsers", { 
+                    valueAsNumber: true,
+                    min: 1,
+                    max: 10000000 
+                  })}
+                  placeholder="Ex: 50000"
+                />
+                <p className="text-xs text-gray-600">
+                  Ajuste conforme sua necessidade dentro da capacidade selecionada
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="maxConcurrentUsers">Máximo de Usuários Simultâneos</Label>
+                <Input
                   id="maxConcurrentUsers"
                   type="number"
                   {...form.register("maxConcurrentUsers", { valueAsNumber: true })}

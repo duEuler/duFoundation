@@ -441,13 +441,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Capacidade da Foundation é obrigatória" });
       }
 
-      // Validate Foundation capacity for configured users
-      if (maxConcurrentUsers && !validateCapacityForUsers(foundationCapacity, maxConcurrentUsers)) {
-        const suggestedCapacity = suggestCapacityForUsers(maxConcurrentUsers);
-        const capacityConfig = getFoundationConfig(suggestedCapacity);
-        return res.status(400).json({ 
-          message: `Capacidade ${foundationCapacity} não suporta ${maxConcurrentUsers} usuários. Recomendamos: ${suggestedCapacity} (${capacityConfig.userRange.min}-${capacityConfig.userRange.max} usuários)` 
-        });
+      // Validate Foundation capacity - only prevent downgrade to insufficient capacity
+      if (maxConcurrentUsers) {
+        const newCapacityConfig = getFoundationConfig(foundationCapacity);
+        // Only block if trying to set a capacity that can't handle the max users
+        if (maxConcurrentUsers > newCapacityConfig.userRange.max) {
+          const suggestedCapacity = suggestCapacityForUsers(maxConcurrentUsers);
+          const capacityConfig = getFoundationConfig(suggestedCapacity);
+          return res.status(400).json({ 
+            message: `Capacidade ${foundationCapacity} não suporta ${maxConcurrentUsers} usuários. Recomendamos: ${suggestedCapacity} (${capacityConfig.userRange.min}-${capacityConfig.userRange.max} usuários)` 
+          });
+        }
       }
 
       // Update only Foundation configuration
