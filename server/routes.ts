@@ -107,31 +107,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Foundation status endpoint for dashboard
-  app.get("/api/foundation/status", async (req, res) => {
-    try {
-      const config = await storage.getSystemConfig();
-      
-      if (!config || !config.setupCompleted) {
-        return res.json({ 
-          installed: false, 
-          message: "Foundation não configurado" 
-        });
-      }
-      
-      res.json({
-        installed: true,
-        organizationName: config.organizationName,
-        capacity: config.foundationCapacity,
-        environment: config.environment,
-        maxUsers: config.maxConcurrentUsers
-      });
-    } catch (error) {
-      console.error('Error getting Foundation status:', error);
-      res.status(500).json({ message: "Erro interno do servidor" });
-    }
-  });
-
   // System detection endpoint
   app.get("/api/system/detect", async (req, res) => {
     try {
