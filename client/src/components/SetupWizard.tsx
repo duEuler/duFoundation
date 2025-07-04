@@ -566,9 +566,10 @@ export function SetupWizard({ onComplete }: SetupWizardProps) {
         </div>
         
         <div className="flex gap-2">
-          {currentStep === 0 && (
-            <Button variant="outline" onClick={onCancel}>
-              Cancelar
+          {currentStep > 0 && (
+            <Button variant="outline" onClick={() => setCurrentStep(currentStep - 1)}>
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Voltar
             </Button>
           )}
           

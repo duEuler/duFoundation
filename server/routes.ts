@@ -374,8 +374,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // System status (duEuler Foundation v3.0 integration)
-  app.get("/api/system/status", authenticateUser, async (req: any, res) => {
+  // System health status (duEuler Foundation v3.0 integration)
+  app.get("/api/system/health", authenticateUser, async (req: any, res) => {
     try {
       const healthStatus = monitoringService.getHealthStatus();
       const systemMetrics = monitoringService.getLatestMetrics();
