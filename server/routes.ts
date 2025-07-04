@@ -12,9 +12,6 @@ import * as os from 'os';
 export async function registerRoutes(app: Express): Promise<Server> {
   const SETUP_PASSWORD = "dueuler2024";
   
-  // Apply foundation setup route
-  app.use(foundationSetup);
-  
   // Setup endpoint
   app.post("/api/setup", async (req, res) => {
     try {

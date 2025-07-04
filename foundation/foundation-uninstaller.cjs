@@ -274,34 +274,96 @@ class FoundationUninstaller {
   }
 
   async revertRouteModifications(modifications) {
-    if (!modifications || modifications.length === 0) return;
-    
     console.log('🔄 Revertendo modificações em rotas...');
     
-    for (const mod of modifications) {
-      const filePath = path.join(this.projectRoot, mod.file);
+    // Correções específicas desta sessão
+    const sessionFixes = [
+      {
+        file: 'server/routes.ts',
+        type: 'import_removal',
+        description: 'Removendo import do Foundation'
+      },
+      {
+        file: 'server/routes.ts', 
+        type: 'route_removal',
+        description: 'Removendo app.use do Foundation'
+      },
+      {
+        file: 'server/index.ts',
+        type: 'import_restoration',
+        description: 'Restaurando routes-minimal'
+      }
+    ];
+
+    // Aplicar correções da sessão
+    for (const fix of sessionFixes) {
+      const filePath = path.join(this.projectRoot, fix.file);
       if (fs.existsSync(filePath)) {
         try {
           let content = fs.readFileSync(filePath, 'utf8');
-          
-          // Remove importações do foundation
-          if (mod.type === 'import' && mod.content) {
-            content = content.replace(mod.content, '');
+          let modified = false;
+
+          if (fix.type === 'import_removal' && fix.file === 'server/routes.ts') {
+            // Remove import do Foundation
+            const originalContent = content;
+            content = content.replace(/import foundationSetup from '\.\/routes\/foundation-setup\.js';\n/, '');
+            if (content !== originalContent) modified = true;
           }
-          
-          // Remove uso de rotas do foundation
-          if (mod.type === 'route' && mod.content) {
-            content = content.replace(mod.content, '');
+
+          if (fix.type === 'route_removal' && fix.file === 'server/routes.ts') {
+            // Remove app.use do Foundation
+            const originalContent = content;
+            content = content.replace(/\s+\/\/ Apply foundation setup route\n\s+app\.use\(foundationSetup\);\n/, '\n');
+            if (content !== originalContent) modified = true;
           }
-          
-          // Limpa linhas vazias extras
-          content = content.replace(/\n\s*\n\s*\n/g, '\n\n');
-          
-          fs.writeFileSync(filePath, content);
-          console.log(`   ✓ ${mod.file}: ${mod.description}`);
-          
+
+          if (fix.type === 'import_restoration' && fix.file === 'server/index.ts') {
+            // Restaura routes-minimal
+            const originalContent = content;
+            content = content.replace('from "./routes"', 'from "./routes-minimal"');
+            if (content !== originalContent) modified = true;
+          }
+
+          if (modified) {
+            // Limpa linhas vazias extras
+            content = content.replace(/\n\s*\n\s*\n/g, '\n\n');
+            fs.writeFileSync(filePath, content);
+            console.log(`   ✓ ${fix.file}: ${fix.description}`);
+          }
+
         } catch (error) {
-          console.log(`   ⚠️  Erro revertendo ${mod.file}: ${error.message}`);
+          console.log(`   ⚠️  Erro revertendo ${fix.file}: ${error.message}`);
+        }
+      }
+    }
+
+    // Processar modificações do manifesto (se houver)
+    if (modifications && modifications.length > 0) {
+      for (const mod of modifications) {
+        const filePath = path.join(this.projectRoot, mod.file);
+        if (fs.existsSync(filePath)) {
+          try {
+            let content = fs.readFileSync(filePath, 'utf8');
+            
+            // Remove importações do foundation
+            if (mod.type === 'import' && mod.content) {
+              content = content.replace(mod.content, '');
+            }
+            
+            // Remove uso de rotas do foundation
+            if (mod.type === 'route' && mod.content) {
+              content = content.replace(mod.content, '');
+            }
+            
+            // Limpa linhas vazias extras
+            content = content.replace(/\n\s*\n\s*\n/g, '\n\n');
+            
+            fs.writeFileSync(filePath, content);
+            console.log(`   ✓ ${mod.file}: ${mod.description}`);
+            
+          } catch (error) {
+            console.log(`   ⚠️  Erro revertendo ${mod.file}: ${error.message}`);
+          }
         }
       }
     }
