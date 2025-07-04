@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import FoundationSetupSimple from "./foundation-setup-simple";
 
 // Aplicação "virgem" que funciona independentemente do Foundation
 function WelcomePage() {
@@ -115,6 +116,14 @@ function WelcomePage() {
 }
 
 function App() {
+  // Detecta se deve mostrar a página de configuração do Foundation
+  const urlParams = new URLSearchParams(window.location.search);
+  const page = urlParams.get('page');
+  
+  if (page === 'foundation-setup') {
+    return <FoundationSetupSimple />;
+  }
+  
   return <WelcomePage />;
 }
 

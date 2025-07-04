@@ -699,6 +699,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Rota para servir a interface web do Foundation
+  app.get("/foundation/setup", (req, res) => {
+    // Retorna a página principal, mas com um parâmetro que indica qual página mostrar
+    res.redirect('/?page=foundation-setup');
+  });
+
+  // API de status do Foundation 
+  app.get("/foundation/api/status", (req, res) => {
+    res.json({ 
+      status: "available", 
+      version: "3.0", 
+      message: "Foundation disponível" 
+    });
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
