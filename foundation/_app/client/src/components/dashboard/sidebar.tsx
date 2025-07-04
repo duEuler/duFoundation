@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import { 
   LayoutDashboard, 
@@ -18,12 +19,15 @@ import {
   Package,
   Monitor,
   Database,
-  Layers
+  Layers,
+  Menu,
+  X
 } from "lucide-react";
 
 export function Sidebar() {
   const { user, logout } = useAuth();
-  const [isOpen, setIsOpen] = useState(true);
+  const isMobile = useIsMobile();
+  const [isOpen, setIsOpen] = useState(!isMobile);
 
   const adminMenuItems = [
     { icon: LayoutDashboard, label: "Dashboard", href: "/foundation/" },
@@ -53,17 +57,56 @@ export function Sidebar() {
   const shouldShowAdminMenu = user?.role === "admin";
   const shouldShowManagerMenu = user?.role === "admin" || user?.role === "manager";
 
+  const toggleSidebar = () => setIsOpen(!isOpen);
+
   return (
-    <div className={`fixed left-0 top-0 h-full w-64 bg-white shadow-lg sidebar-transition z-30 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+    <>
+      {/* Mobile Menu Button */}
+      {isMobile && (
+        <Button
+          onClick={toggleSidebar}
+          variant="ghost"
+          size="icon"
+          className="fixed top-4 left-4 z-50 md:hidden bg-white shadow-md hover:bg-gray-100"
+        >
+          <Menu size={20} />
+        </Button>
+      )}
+
+      {/* Overlay for mobile */}
+      {isMobile && isOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+          onClick={toggleSidebar}
+        />
+      )}
+
+      {/* Sidebar */}
+      <div className={`fixed left-0 top-0 h-full w-64 bg-white shadow-lg transition-transform duration-300 z-30 ${
+        isOpen ? 'translate-x-0' : '-translate-x-full'
+      } ${isMobile ? 'md:translate-x-0' : ''}`}>
       <div className="p-6 border-b border-gray-200">
-        <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 dueuler-bg-primary rounded-full flex items-center justify-center">
-            <TrendingUp className="text-white" size={20} />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 dueuler-bg-primary rounded-full flex items-center justify-center">
+              <TrendingUp className="text-white" size={20} />
+            </div>
+            <div>
+              <h2 className="font-bold text-gray-900">DuEuler</h2>
+              <p className="text-xs text-gray-500 capitalize">{user?.role}</p>
+            </div>
           </div>
-          <div>
-            <h2 className="font-bold text-gray-900">DuEuler</h2>
-            <p className="text-xs text-gray-500 capitalize">{user?.role}</p>
-          </div>
+          {/* Close button for mobile */}
+          {isMobile && (
+            <Button
+              onClick={toggleSidebar}
+              variant="ghost"
+              size="icon"
+              className="text-gray-500 hover:text-gray-700"
+            >
+              <X size={20} />
+            </Button>
+          )}
         </div>
       </div>
 
@@ -153,16 +196,17 @@ export function Sidebar() {
         </div>
       </nav>
 
-      <div className="absolute bottom-0 w-full p-4 border-t border-gray-200">
-        <Button
-          onClick={logout}
-          variant="ghost"
-          className="w-full justify-start text-gray-700 hover:bg-gray-100"
-        >
-          <LogOut size={20} className="mr-3" />
-          Sair
-        </Button>
+        <div className="absolute bottom-0 w-full p-4 border-t border-gray-200">
+          <Button
+            onClick={logout}
+            variant="ghost"
+            className="w-full justify-start text-gray-700 hover:bg-gray-100"
+          >
+            <LogOut size={20} className="mr-3" />
+            Sair
+          </Button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

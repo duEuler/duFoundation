@@ -1,36 +1,19 @@
 /**
- * ====================================================================
- * SISTEMA DE ROTAS CONSOLIDADO FINAL - Foundation v3.0
- * ====================================================================
+ * SISTEMA DE ROTAS CONSOLIDADO - Foundation v3.0
+ * Arquivo: server/routes-clean.ts
  * 
- * DOCUMENTAÇÃO TÉCNICA:
- * - Arquivo: server/routes-consolidated.ts
- * - Substitui: routes.ts, routes-clean.ts, routes/foundation-setup.js
- * - Integra: foundation/_app/server/routes.ts functionality
+ * DOCUMENTAÇÃO:
+ * - Todas as APIs consolidadas em ordem correta
+ * - Middleware aplicado antes das rotas específicas
+ * - Foundation routes integradas nativamente
+ * - Sem conflitos com Vite middleware
  * 
- * ARQUITETURA:
- * 1. Middleware registrado em ordem correta (ANTES do Vite)
- * 2. APIs críticas registradas primeiro (/api/login, /api/setup)
- * 3. Foundation routes nativas (sem router externo)
- * 4. Sistema de autenticação unificado
- * 5. Sem duplicações ou conflitos
- * 
- * ORDEM DE EXECUÇÃO GARANTIDA:
- * 1. Monitoring middleware
- * 2. Critical APIs
- * 3. Foundation HTML routes  
- * 4. System APIs
- * 5. Health/Status endpoints
- * 6. [Vite middleware - aplicado em index.ts DEPOIS]
- * 
- * PATHS PRINCIPAIS:
- * - POST /api/login - Autenticação unificada
- * - POST /api/setup - Configuração inicial/wizard
- * - GET /foundation/setup - Wizard HTML
- * - GET /foundation/login - Login HTML
- * - GET /foundation/ - Redirect para login
- * - GET /api/system/status - Status do sistema
- * - GET /api/health - Health check
+ * ORDEM DE EXECUÇÃO:
+ * 1. Middleware de monitoramento
+ * 2. APIs críticas (/api/login, /api/setup)
+ * 3. Foundation routes (/foundation/*)
+ * 4. APIs do sistema (/api/*)
+ * 5. Vite middleware (aplicado em index.ts)
  */
 
 import type { Express } from "express";
@@ -44,58 +27,22 @@ import { monitoringService, createMonitoringMiddleware } from "./monitoring";
 import { getFoundationConfig, validateCapacityForUsers, suggestCapacityForUsers, FOUNDATION_CONFIGS } from "./foundation-config";
 import * as os from 'os';
 
-// Session store for authentication
-const activeSessions = new Map<string, any>();
-
-// Middleware de autenticação
-function authenticateUser(req: any, res: any, next: any) {
-  const sessionId = req.headers.authorization?.replace('Bearer ', '');
-  const session = activeSessions.get(sessionId);
-  
-  if (!session || session.expiresAt < Date.now()) {
-    return res.status(401).json({ message: "Não autenticado" });
-  }
-  
-  req.user = session.user;
-  next();
-}
-
 export async function registerRoutes(app: Express): Promise<Server> {
   const SETUP_PASSWORD = "dueuler2024";
   
   // ========================================
-  // 1. MIDDLEWARE GLOBAL - PRIMEIRA PRIORIDADE
+  // 1. MIDDLEWARE GLOBAL - Aplicado primeiro
   // ========================================
-  
-  // Monitoring middleware - aplicado a todas as rotas
   app.use(createMonitoringMiddleware(monitoringService));
   
-  // CORS básico se necessário
-  app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    if (req.method === 'OPTIONS') {
-      return res.sendStatus(200);
-    }
-    next();
-  });
-
   // ========================================
-  // 2. APIS CRÍTICAS - REGISTRADAS ANTES DO VITE
+  // 2. APIs CRÍTICAS - Registradas ANTES de qualquer middleware que possa interceptar
   // ========================================
   
-  /**
-   * LOGIN API - Autenticação única consolidada
-   * Endpoint: POST /api/login
-   * Body: { username: string, password: string }
-   * Response: { success: boolean, message: string, user?: object, sessionId?: string }
-   * 
-   * USADO POR:
-   * - Foundation login page (/foundation/login)
-   * - Aplicação principal
-   * - APIs que precisam de autenticação
-   */
+  // LOGIN API - Única API de login consolidada
+  // Endpoint: POST /api/login
+  // Body: { username: string, password: string }
+  // Response: { success: boolean, message: string, user?: object }
   app.post("/api/login", async (req, res) => {
     try {
       const { username, password } = req.body;
@@ -104,7 +51,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.json({ success: false, message: "Usuário e senha são obrigatórios" });
       }
       
-      // Buscar usuário no banco
       const user = await storage.getUserByUsername(username);
       if (!user) {
         return res.json({ success: false, message: "Usuário não encontrado" });
@@ -114,42 +60,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.json({ success: false, message: "Usuário inativo" });
       }
       
-      // Verificar senha com bcrypt
       const isValidPassword = await bcrypt.compare(password, user.password);
       if (!isValidPassword) {
         return res.json({ success: false, message: "Senha incorreta" });
       }
       
-      // Criar sessão
-      const sessionId = uuidv4();
-      const session = {
-        user: {
-          id: user.id,
-          username: user.username,
-          role: user.role,
-          email: user.email
-        },
-        createdAt: Date.now(),
-        expiresAt: Date.now() + (24 * 60 * 60 * 1000) // 24 horas
-      };
-      
-      activeSessions.set(sessionId, session);
-      
-      // Atualizar último login no banco
+      // Atualizar último login
       await storage.updateUser(user.id, { lastLogin: new Date() });
-      
-      // Log da atividade
-      await storage.createActivityLog({
-        userId: user.id,
-        action: "login",
-        description: `Login realizado - ${username}`,
-      });
       
       res.json({ 
         success: true, 
         message: "Login realizado com sucesso",
-        user: session.user,
-        sessionId: sessionId
+        user: {
+          id: user.id,
+          username: user.username,
+          role: user.role
+        }
       });
       
     } catch (error) {
@@ -158,126 +84,79 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  /**
-   * LOGOUT API
-   * Endpoint: POST /api/logout
-   * Headers: Authorization: Bearer <sessionId>
-   */
-  app.post("/api/logout", (req, res) => {
-    const sessionId = req.headers.authorization?.replace('Bearer ', '');
-    if (sessionId) {
-      activeSessions.delete(sessionId);
-    }
-    res.json({ success: true, message: "Logout realizado com sucesso" });
-  });
-
-  /**
-   * SETUP API - Configuração inicial do sistema e wizard
-   * Endpoint: POST /api/setup
-   * Body: setupSchema (ver shared/schema.ts)
-   * 
-   * FUNCIONALIDADES:
-   * - Setup inicial com senha
-   * - Wizard de 6 etapas
-   * - Criação de usuário admin
-   * - Configuração da Foundation
-   */
-  app.post("/api/setup", async (req, res) => {
-    try {
-      const data = setupSchema.parse(req.body);
-      
-      // Se não é wizard, valida senha de configuração
-      if (!data.wizard && data.setupPassword !== SETUP_PASSWORD) {
-        return res.status(401).json({ message: "Senha de configuração inválida" });
-      }
-
-      // Verificar se sistema já está configurado
-      const existingConfig = await storage.getSystemConfig();
-      if (existingConfig && !data.wizard) {
-        return res.status(409).json({ 
-          message: "Sistema já configurado. Use o wizard para reconfiguração.",
-          isConfigured: true 
-        });
-      }
-
-      let config;
-      if (existingConfig && data.wizard) {
-        // Atualizar configuração existente (wizard)
-        config = await storage.updateSystemConfig({
-          organizationName: data.organizationName,
-          environment: data.environment || "production",
-          foundationCapacity: data.foundationCapacity || "small",
-          maxUsers: data.maxUsers || 1000,
-          features: JSON.stringify(data.features || []),
-          setupCompleted: true,
-          updatedAt: new Date(),
-        });
-      } else {
-        // Criar nova configuração
-        config = await storage.createSystemConfig({
-          organizationName: data.organizationName,
-          environment: data.environment || "production", 
-          foundationCapacity: data.foundationCapacity || "small",
-          maxUsers: data.maxUsers || 1000,
-          features: JSON.stringify(data.features || []),
-          setupCompleted: true,
-        });
-      }
-
-      // Criar usuário admin se é wizard
-      if (data.wizard && data.adminUsername && data.adminPassword) {
-        const hashedPassword = await bcrypt.hash(data.adminPassword, 10);
-        
-        try {
-          await storage.createUser({
-            username: data.adminUsername,
-            password: hashedPassword,
-            email: data.adminEmail || "",
-            role: "admin",
-            isActive: true,
-          });
-        } catch (error) {
-          // Usuário pode já existir, ok para wizard
-          console.log('Admin user already exists or error creating:', error.message);
-        }
-      }
-
-      // Log da atividade de setup
-      await storage.createActivityLog({
-        userId: 1, // Sistema
-        action: data.wizard ? "wizard_setup" : "initial_setup",
-        description: `Sistema configurado: ${data.organizationName} - Capacidade: ${data.foundationCapacity}`,
-      });
-
-      res.json({ 
-        message: "Sistema configurado com sucesso",
-        config,
-        wizard: data.wizard || false,
-        redirectTo: data.wizard ? "/foundation/" : "/"
-      });
-
-    } catch (error) {
-      console.error("Setup error:", error);
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({ 
-          message: "Dados inválidos", 
-          errors: error.errors 
-        });
-      }
-      res.status(500).json({ message: "Erro interno do servidor" });
-    }
-  });
-
   // ========================================
-  // 3. FOUNDATION HTML ROUTES - PÁGINAS NATIVAS
+  // 3. FOUNDATION ROUTES - Registradas como middleware nativo
   // ========================================
   
-  /**
-   * Foundation Root - Dashboard do Foundation
-   * Endpoint: GET /foundation/
-   */
-  app.get('/foundation/', async (req, res) => {
-    // Dashboard HTML completo
+  // Foundation Setup - Página HTML do wizard
+  // Endpoint: GET /foundation/setup
+  app.get('/foundation/setup', (req, res) => {
+    const setupHtml = `
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foundation v3.0 - Setup</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+        }
+        .success {
+            text-align: center;
+            color: #059669;
+        }
+        .btn {
+            background: #2563eb;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            margin: 10px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="success">
+            <h1>🏛️ Foundation v3.0</h1>
+            <p>Sistema instalado com sucesso!</p>
+            <div style="margin-top: 30px;">
+                <a href="/foundation/login" class="btn">Fazer Login</a>
+                <a href="/" class="btn">Ir para Dashboard</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>`;
+    res.send(setupHtml);
+  });
+
+  // Foundation Root - Redireciona para o dashboard React oficial do _app
+  // Endpoint: GET /foundation/
+  app.get('/foundation/', (req, res) => {
+    res.redirect('/api/foundation/admin');
+  });
+
+  // Dashboard React oficial do foundation/_app
+  // Endpoint: GET /api/foundation/admin
+  app.get('/api/foundation/admin', (req, res) => {
     const dashboardHtml = `
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -285,500 +164,220 @@ export async function registerRoutes(app: Express): Promise<Server> {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Foundation v3.0 - Dashboard</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-            background: #f8fafc;
-            min-height: 100vh;
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif; margin: 0; }
+        .sidebar { width: 280px; position: fixed; height: 100vh; background: white; border-right: 1px solid #e5e7eb; overflow-y: auto; }
+        .main-content { margin-left: 280px; min-height: 100vh; }
+        @media (max-width: 768px) {
+            .sidebar { width: 100%; position: static; height: auto; }
+            .main-content { margin-left: 0; }
         }
-        .header {
-            background: white;
-            border-bottom: 1px solid #e5e7eb;
-            padding: 16px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo { 
-            font-size: 20px; 
-            font-weight: 700; 
-            color: #2563eb; 
-        }
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        .btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-            text-decoration: none;
-            display: inline-block;
-        }
-        .btn-primary { background: #2563eb; color: white; }
-        .btn-secondary { background: #6b7280; color: white; }
-        .btn:hover { opacity: 0.9; }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 24px;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
-            margin-bottom: 32px;
-        }
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 24px;
-            border: 1px solid #e5e7eb;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        .card h3 {
-            margin-bottom: 16px;
-            color: #374151;
-            font-size: 18px;
-        }
-        .metric {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            padding: 8px 0;
-            border-bottom: 1px solid #f3f4f6;
-        }
-        .metric:last-child { border-bottom: none; }
-        .metric-value {
-            font-weight: 600;
-            color: #059669;
-        }
-        .status-indicator {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            margin-right: 8px;
-        }
-        .status-online { background: #10b981; }
-        .actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 16px;
-        }
-        .auth-check {
-            background: #fef2f2;
-            border: 1px solid #fecaca;
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 24px;
-            display: none;
-        }
-        .auth-check.show { display: block; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="logo">🏛️ Foundation v3.0</div>
-        <div class="user-info">
-            <span>Bem-vindo, <strong id="username">Admin</strong></span>
-            <button class="btn btn-secondary" onclick="logout()">Sair</button>
-        </div>
-    </div>
+    <div id="root"></div>
+    <script type="text/babel">
+        const DashboardPage = () => {
+            const [metrics, setMetrics] = React.useState({});
+            const [users, setUsers] = React.useState([]);
+            const [config, setConfig] = React.useState({});
 
-    <div class="container">
-        <div id="authWarning" class="auth-check">
-            <p style="color: #dc2626; margin-bottom: 12px;"><strong>⚠️ Não autenticado</strong></p>
-            <p style="margin-bottom: 16px;">Você precisa fazer login para acessar o dashboard.</p>
-            <a href="/foundation/login" class="btn btn-primary">Fazer Login</a>
-        </div>
+            React.useEffect(() => {
+                loadData();
+            }, []);
 
-        <div id="dashboardContent">
-            <h1 style="margin-bottom: 24px; color: #374151;">Dashboard do Sistema</h1>
-            
-            <div class="grid">
-                <!-- Status do Sistema -->
-                <div class="card">
-                    <h3>Status do Sistema</h3>
-                    <div class="metric">
-                        <span><span class="status-indicator status-online"></span>Servidor</span>
-                        <span class="metric-value">Online</span>
-                    </div>
-                    <div class="metric">
-                        <span><span class="status-indicator status-online"></span>Banco de Dados</span>
-                        <span class="metric-value">Conectado</span>
-                    </div>
-                    <div class="metric">
-                        <span><span class="status-indicator status-online"></span>Foundation</span>
-                        <span class="metric-value">Ativo</span>
-                    </div>
-                    <div class="actions">
-                        <a href="/api/health" target="_blank" class="btn btn-primary">Verificar Saúde</a>
-                        <button class="btn btn-secondary" onclick="testAllApis()">Testar APIs</button>
-                    </div>
-                </div>
-
-                <!-- Usuários -->
-                <div class="card">
-                    <h3>Usuários do Sistema</h3>
-                    <div class="metric">
-                        <span>Total de Usuários</span>
-                        <span class="metric-value" id="totalUsers">-</span>
-                    </div>
-                    <div class="metric">
-                        <span>Usuários Ativos</span>
-                        <span class="metric-value" id="activeUsers">-</span>
-                    </div>
-                    <div class="metric">
-                        <span>Sessões Ativas</span>
-                        <span class="metric-value" id="activeSessions">-</span>
-                    </div>
-                    <div class="actions">
-                        <button class="btn btn-primary" onclick="loadUserStats()">Atualizar</button>
-                        <button class="btn btn-secondary" onclick="showUsersList()">Ver Usuários</button>
-                    </div>
-                </div>
-
-                <!-- Configurações -->
-                <div class="card">
-                    <h3>Configuração Atual</h3>
-                    <div class="metric">
-                        <span>Organização</span>
-                        <span class="metric-value" id="orgName">-</span>
-                    </div>
-                    <div class="metric">
-                        <span>Ambiente</span>
-                        <span class="metric-value" id="environment">-</span>
-                    </div>
-                    <div class="metric">
-                        <span>Capacidade</span>
-                        <span class="metric-value" id="capacity">-</span>
-                    </div>
-                    <div class="actions">
-                        <a href="/foundation/setup" class="btn btn-primary">Reconfigurar</a>
-                        <button class="btn btn-secondary" onclick="changeCapacity()">Alterar Capacidade</button>
-                    </div>
-                </div>
-
-                <!-- Métricas do Sistema -->
-                <div class="card">
-                    <h3>Métricas em Tempo Real</h3>
-                    <div class="metric">
-                        <span>CPU</span>
-                        <span class="metric-value" id="cpuUsage">-</span>
-                    </div>
-                    <div class="metric">
-                        <span>Memória</span>
-                        <span class="metric-value" id="memoryUsage">-</span>
-                    </div>
-                    <div class="metric">
-                        <span>Uptime</span>
-                        <span class="metric-value" id="uptime">-</span>
-                    </div>
-                    <div class="metric">
-                        <span>Requisições</span>
-                        <span class="metric-value" id="requestCount">-</span>
-                    </div>
-                    <div class="actions">
-                        <button class="btn btn-primary" onclick="loadMetrics()">Atualizar Métricas</button>
-                        <button class="btn btn-secondary" onclick="toggleAutoRefresh()">Auto-Refresh</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Logs de Atividade Recente -->
-            <div class="card">
-                <h3>Atividade Recente</h3>
-                <div id="activityLogs" style="max-height: 300px; overflow-y: auto;">
-                    <p style="color: #6b7280; text-align: center; padding: 20px;">Carregando atividades...</p>
-                </div>
-                <div class="actions">
-                    <button class="btn btn-primary" onclick="loadActivity()">Atualizar Logs</button>
-                    <button class="btn btn-secondary" onclick="clearLogs()">Limpar Logs</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Verificar autenticação e carregar dados
-        window.addEventListener('load', function() {
-            checkAuth();
-        });
-
-        function getAuthHeaders() {
-            const sessionId = localStorage.getItem('foundation_session');
-            return sessionId ? { 'Authorization': 'Bearer ' + sessionId } : {};
-        }
-
-        async function checkAuth() {
-            const sessionId = localStorage.getItem('foundation_session');
-            
-            if (!sessionId) {
-                showAuthWarning();
-                return;
-            }
-
-            try {
-                const response = await fetch('/api/auth/me', {
-                    headers: getAuthHeaders()
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    document.getElementById('username').textContent = data.user.username;
-                    showDashboard();
-                    loadAllData();
-                } else {
-                    showAuthWarning();
-                }
-            } catch (error) {
-                showAuthWarning();
-            }
-        }
-
-        function showAuthWarning() {
-            document.getElementById('authWarning').classList.add('show');
-            document.getElementById('dashboardContent').style.display = 'none';
-        }
-
-        function showDashboard() {
-            document.getElementById('authWarning').classList.remove('show');
-            document.getElementById('dashboardContent').style.display = 'block';
-        }
-
-        let autoRefreshInterval = null;
-        let autoRefreshEnabled = false;
-
-        async function loadAllData() {
-            await Promise.all([
-                loadSystemStatus(),
-                loadMetrics(),
-                loadActivity()
-            ]);
-        }
-
-        async function loadSystemStatus() {
-            try {
-                const response = await fetch('/api/system/status', {
-                    headers: getAuthHeaders()
-                });
-                const data = await response.json();
-                
-                if (data.organization) {
-                    document.getElementById('orgName').textContent = data.organization;
-                }
-                if (data.environment) {
-                    document.getElementById('environment').textContent = data.environment;
-                }
-                if (data.foundationStatus?.capacity) {
-                    document.getElementById('capacity').textContent = data.foundationStatus.capacity;
-                }
-                if (data.stats) {
-                    document.getElementById('totalUsers').textContent = data.stats.totalUsers || 0;
-                    document.getElementById('activeUsers').textContent = data.stats.activeUsers || 0;
-                    document.getElementById('activeSessions').textContent = data.stats.activeSessions || 0;
-                }
-            } catch (error) {
-                console.error('Erro ao carregar status:', error);
-            }
-        }
-
-        async function loadMetrics() {
-            try {
-                const response = await fetch('/api/metrics', {
-                    headers: getAuthHeaders()
-                });
-                const data = await response.json();
-                
-                if (data.cpu_usage !== undefined) {
-                    document.getElementById('cpuUsage').textContent = data.cpu_usage.toFixed(1) + '%';
-                }
-                if (data.memory_usage !== undefined && data.memory_total !== undefined) {
-                    const memPercent = (data.memory_usage / data.memory_total * 100).toFixed(1);
-                    document.getElementById('memoryUsage').textContent = memPercent + '%';
-                }
-                if (data.request_count !== undefined) {
-                    document.getElementById('requestCount').textContent = data.request_count;
-                }
-                
-                // Uptime do processo
-                const response2 = await fetch('/api/health');
-                const health = await response2.json();
-                if (health.uptime) {
-                    const hours = Math.floor(health.uptime / 3600);
-                    const minutes = Math.floor((health.uptime % 3600) / 60);
-                    document.getElementById('uptime').textContent = hours + 'h ' + minutes + 'm';
-                }
-            } catch (error) {
-                console.error('Erro ao carregar métricas:', error);
-            }
-        }
-
-        async function loadUserStats() {
-            await loadSystemStatus();
-        }
-
-        async function loadActivity() {
-            try {
-                const response = await fetch('/api/activity/recent', {
-                    headers: getAuthHeaders()
-                });
-                
-                if (response.ok) {
-                    const activities = await response.json();
-                    const container = document.getElementById('activityLogs');
-                    
-                    if (activities.length === 0) {
-                        container.innerHTML = '<p style="color: #6b7280; text-align: center; padding: 20px;">Nenhuma atividade recente</p>';
+            const loadData = async () => {
+                try {
+                    const sessionId = localStorage.getItem('foundation_session');
+                    if (!sessionId) {
+                        window.location.href = '/foundation/login';
                         return;
                     }
-                    
-                    container.innerHTML = activities.map(activity => \`
-                        <div style="padding: 12px; border-bottom: 1px solid #f3f4f6; display: flex; justify-content: space-between;">
-                            <div>
-                                <strong>\${activity.action}</strong>
-                                <p style="color: #6b7280; font-size: 14px; margin-top: 4px;">\${activity.description}</p>
-                            </div>
-                            <span style="color: #6b7280; font-size: 12px;">
-                                \${new Date(activity.createdAt).toLocaleString('pt-BR')}
-                            </span>
-                        </div>
-                    \`).join('');
-                } else {
-                    document.getElementById('activityLogs').innerHTML = 
-                        '<p style="color: #dc2626; text-align: center; padding: 20px;">Erro ao carregar atividades</p>';
-                }
-            } catch (error) {
-                console.error('Erro ao carregar atividade:', error);
-                document.getElementById('activityLogs').innerHTML = 
-                    '<p style="color: #dc2626; text-align: center; padding: 20px;">Erro de conexão</p>';
-            }
-        }
 
-        async function testAllApis() {
-            const results = [];
-            const apis = [
-                { name: 'Health', url: '/api/health' },
-                { name: 'System Status', url: '/api/system/status' },
-                { name: 'Metrics', url: '/api/metrics' },
-                { name: 'Auth Me', url: '/api/auth/me' },
-                { name: 'Activity', url: '/api/activity/recent' }
-            ];
+                    const headers = {
+                        'Authorization': \`Bearer \${sessionId}\`,
+                        'Content-Type': 'application/json'
+                    };
 
-            for (const api of apis) {
-                try {
-                    const response = await fetch(api.url, { headers: getAuthHeaders() });
-                    results.push(\`✓ \${api.name}: \${response.status}\`);
+                    // Carregar métricas
+                    const metricsRes = await fetch('/api/metrics', { headers });
+                    if (metricsRes.ok) {
+                        const metricsData = await metricsRes.json();
+                        setMetrics(metricsData);
+                    }
+
+                    // Carregar usuários
+                    const usersRes = await fetch('/api/users', { headers });
+                    if (usersRes.ok) {
+                        const usersData = await usersRes.json();
+                        setUsers(usersData);
+                    }
+
+                    // Carregar configuração
+                    const configRes = await fetch('/api/config', { headers });
+                    if (configRes.ok) {
+                        const configData = await configRes.json();
+                        setConfig(configData);
+                    }
                 } catch (error) {
-                    results.push(\`✗ \${api.name}: Erro\`);
+                    console.error('Erro ao carregar dados:', error);
                 }
-            }
+            };
 
-            alert('Teste de APIs:\\n\\n' + results.join('\\n'));
-        }
+            return (
+                <div className="min-h-screen bg-gray-50">
+                    <div className="sidebar">
+                        <div className="p-6 border-b border-gray-200">
+                            <div className="flex items-center space-x-3">
+                                <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                                    <span className="text-white">🏛️</span>
+                                </div>
+                                <div>
+                                    <h2 className="font-bold text-gray-900">DuEuler</h2>
+                                    <p className="text-xs text-gray-500">Foundation v3.0</p>
+                                </div>
+                            </div>
+                        </div>
 
-        async function showUsersList() {
-            try {
-                const response = await fetch('/api/users', {
-                    headers: getAuthHeaders()
-                });
-                
-                if (response.ok) {
-                    const users = await response.json();
-                    const userList = users.map(user => 
-                        \`\${user.username} (\${user.role}) - \${user.isActive ? 'Ativo' : 'Inativo'}\`
-                    ).join('\\n');
+                        <nav className="mt-6">
+                            <div className="px-6 mb-4">
+                                <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
+                                    Administração
+                                </h3>
+                            </div>
+                            <ul className="space-y-1 px-3">
+                                <li>
+                                    <a href="#" className="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                                        📊 Dashboard
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" className="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                                        👥 Usuários
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" className="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                                        ⚙️ Configurações
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" className="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                                        📈 Métricas
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" className="flex items-center px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                                        📋 Logs
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+
+                        <div className="absolute bottom-0 w-full p-4 border-t border-gray-200">
+                            <button 
+                                onClick={() => {
+                                    localStorage.removeItem('foundation_session');
+                                    window.location.href = '/foundation/login';
+                                }}
+                                className="w-full flex items-center justify-start text-gray-700 hover:bg-gray-100 px-3 py-2 rounded-lg"
+                            >
+                                🚪 Sair
+                            </button>
+                        </div>
+                    </div>
                     
-                    alert('Usuários do Sistema:\\n\\n' + userList);
-                } else {
-                    alert('Erro ao carregar lista de usuários');
-                }
-            } catch (error) {
-                alert('Erro de conexão ao carregar usuários');
-            }
-        }
+                    <div className="main-content">
+                        <header className="bg-white shadow-sm border-b border-gray-200 p-4">
+                            <div className="flex items-center justify-between">
+                                <h1 className="text-2xl font-bold text-gray-900">Foundation v3.0</h1>
+                                <div className="flex items-center space-x-4">
+                                    <span className="text-sm text-gray-600">Bem-vindo, Admin</span>
+                                    <button
+                                        onClick={() => {
+                                            localStorage.removeItem('foundation_session');
+                                            window.location.href = '/foundation/login';
+                                        }}
+                                        className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700"
+                                    >
+                                        Sair
+                                    </button>
+                                </div>
+                            </div>
+                        </header>
 
-        async function changeCapacity() {
-            const newCapacity = prompt('Nova capacidade (nano, micro, small, medium, large, enterprise):');
-            
-            if (!newCapacity) return;
-            
-            const maxUsers = prompt('Número máximo de usuários (opcional):');
-            
-            try {
-                const response = await fetch('/api/foundation/change-capacity', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        ...getAuthHeaders()
-                    },
-                    body: JSON.stringify({
-                        newCapacity: newCapacity.toLowerCase(),
-                        maxUsers: maxUsers ? parseInt(maxUsers) : null
-                    })
-                });
+                        <main className="p-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                                    <h3 className="text-lg font-semibold text-gray-900 mb-2">🏛️ Status do Sistema</h3>
+                                    <div className="text-2xl font-bold text-green-600">Online</div>
+                                    <p className="text-sm text-gray-600">Foundation v3.0 funcionando</p>
+                                </div>
 
-                const result = await response.json();
-                
-                if (response.ok) {
-                    alert('Capacidade alterada com sucesso!');
-                    loadSystemStatus(); // Recarregar dados
-                } else {
-                    alert('Erro: ' + result.message);
-                }
-            } catch (error) {
-                alert('Erro de conexão ao alterar capacidade');
-            }
-        }
+                                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                                    <h3 className="text-lg font-semibold text-gray-900 mb-2">👥 Usuários</h3>
+                                    <div className="text-2xl font-bold text-blue-600">{users.length}</div>
+                                    <p className="text-sm text-gray-600">Total de usuários</p>
+                                </div>
 
-        function toggleAutoRefresh() {
-            if (autoRefreshEnabled) {
-                clearInterval(autoRefreshInterval);
-                autoRefreshEnabled = false;
-                document.querySelector('button[onclick="toggleAutoRefresh()"]').textContent = 'Auto-Refresh';
-                document.querySelector('button[onclick="toggleAutoRefresh()"]').style.background = '#6b7280';
-            } else {
-                autoRefreshInterval = setInterval(() => {
-                    loadMetrics();
-                    loadActivity();
-                }, 5000); // A cada 5 segundos
-                autoRefreshEnabled = true;
-                document.querySelector('button[onclick="toggleAutoRefresh()"]').textContent = 'Parar Auto-Refresh';
-                document.querySelector('button[onclick="toggleAutoRefresh()"]').style.background = '#dc2626';
-            }
-        }
+                                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                                    <h3 className="text-lg font-semibold text-gray-900 mb-2">⚙️ Capacidade</h3>
+                                    <div className="text-2xl font-bold text-purple-600">{config.foundationCapacity || 'N/A'}</div>
+                                    <p className="text-sm text-gray-600">Configuração atual</p>
+                                </div>
 
-        async function clearLogs() {
-            if (confirm('Limpar todos os logs de atividade? Esta ação não pode ser desfeita.')) {
-                // Por enquanto, apenas limpar da tela
-                document.getElementById('activityLogs').innerHTML = 
-                    '<p style="color: #6b7280; text-align: center; padding: 20px;">Logs limpos</p>';
-                
-                setTimeout(() => {
-                    loadActivity();
-                }, 2000);
-            }
-        }
+                                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                                    <h3 className="text-lg font-semibold text-gray-900 mb-2">📊 CPU</h3>
+                                    <div className="text-2xl font-bold text-orange-600">{metrics.cpu_usage?.toFixed(1) || '--'}%</div>
+                                    <p className="text-sm text-gray-600">Uso do processador</p>
+                                </div>
+                            </div>
 
-        function logout() {
-            if (confirm('Tem certeza que deseja sair?')) {
-                if (autoRefreshEnabled) {
-                    clearInterval(autoRefreshInterval);
-                }
-                
-                fetch('/api/logout', {
-                    method: 'POST',
-                    headers: getAuthHeaders()
-                }).then(() => {
-                    localStorage.removeItem('foundation_session');
-                    window.location.href = '/foundation/login';
-                });
-            }
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                                    <h3 className="text-lg font-semibold text-gray-900 mb-4">🔧 Ações Rápidas</h3>
+                                    <div className="space-y-3">
+                                        <button
+                                            onClick={loadData}
+                                            className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                                        >
+                                            🔄 Atualizar Dados
+                                        </button>
+                                        <button
+                                            onClick={() => alert('Funcionalidade em desenvolvimento')}
+                                            className="w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+                                        >
+                                            📤 Exportar Relatório
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                                    <h3 className="text-lg font-semibold text-gray-900 mb-4">📋 Informações do Sistema</h3>
+                                    <div className="space-y-2 text-sm">
+                                        <div><strong>Organização:</strong> {config.organizationName || 'N/A'}</div>
+                                        <div><strong>Ambiente:</strong> {config.environment || 'N/A'}</div>
+                                        <div><strong>Usuários Máx.:</strong> {config.maxConcurrentUsers || 'N/A'}</div>
+                                        <div><strong>Cache TTL:</strong> {config.cacheTTL || 'N/A'}s</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </main>
+                    </div>
+                </div>
+            );
+        };
+
+        // Verificar autenticação
+        const sessionId = localStorage.getItem('foundation_session');
+        if (!sessionId) {
+            window.location.href = '/foundation/login';
+        } else {
+            ReactDOM.render(<DashboardPage />, document.getElementById('root'));
         }
     </script>
 </body>
@@ -786,10 +385,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.send(dashboardHtml);
   });
 
-  /**
-   * Foundation Login Page - Página HTML standalone
-   * Endpoint: GET /foundation/login
-   */
+  // Foundation Login - Página de login
+  // Endpoint: GET /foundation/login
   app.get('/foundation/login', (req, res) => {
     const loginHtml = `
 <!DOCTYPE html>
@@ -797,7 +394,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Foundation v3.0 - Login</title>
+    <title>Foundation - Login</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -856,14 +453,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
             font-size: 16px;
             font-weight: 500;
             cursor: pointer;
-            margin-bottom: 15px;
         }
         .btn:hover {
             background: #1d4ed8;
-        }
-        .btn:disabled {
-            background: #9ca3af;
-            cursor: not-allowed;
         }
         .message {
             margin-top: 15px;
@@ -872,98 +464,67 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
         .error { color: #dc2626; }
         .success { color: #059669; }
-        .info { color: #2563eb; }
-        .loading { color: #6b7280; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="logo">
             <h1>🏛️ Foundation</h1>
-            <p>Sistema de Gestão v3.0</p>
+            <p>Sistema de Gestão</p>
         </div>
         
         <form id="loginForm">
             <div class="form-group">
                 <label for="username">Usuário</label>
-                <input type="text" id="username" name="username" required placeholder="Digite seu usuário">
+                <input type="text" id="username" name="username" required>
             </div>
             
             <div class="form-group">
                 <label for="password">Senha</label>
-                <input type="password" id="password" name="password" required placeholder="Digite sua senha">
+                <input type="password" id="password" name="password" required>
             </div>
             
-            <button type="submit" class="btn" id="loginBtn">
+            <button type="submit" class="btn">
                 Entrar
             </button>
             
             <div id="message" class="message"></div>
-            
-            <div class="info" style="text-align: center; margin-top: 20px; font-size: 12px;">
-                <p>Credenciais padrão: admin / admin123</p>
-            </div>
         </form>
     </div>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
             e.preventDefault();
             
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             const messageDiv = document.getElementById('message');
-            const loginBtn = document.getElementById('loginBtn');
             
-            // Estado de loading
-            loginBtn.disabled = true;
-            loginBtn.textContent = 'Entrando...';
-            messageDiv.innerHTML = '<div class="loading">Verificando credenciais...</div>';
-            
-            try {
-                const response = await fetch('/api/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        username: username,
-                        password: password
-                    })
-                });
-                
-                const data = await response.json();
-                
+            fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
                 if (data.success) {
                     messageDiv.innerHTML = '<div class="success">Login realizado! Redirecionando...</div>';
-                    
-                    // Armazenar sessão
-                    if (data.sessionId) {
-                        localStorage.setItem('foundation_session', data.sessionId);
-                    }
-                    
                     setTimeout(() => {
-                        window.location.href = '/';
+                        window.location.href = '/api/foundation/admin';
                     }, 1500);
                 } else {
                     messageDiv.innerHTML = '<div class="error">' + (data.message || 'Usuário ou senha inválidos') + '</div>';
-                    loginBtn.disabled = false;
-                    loginBtn.textContent = 'Entrar';
                 }
-            } catch (error) {
+            })
+            .catch(error => {
                 console.error('Erro no login:', error);
                 messageDiv.innerHTML = '<div class="error">Erro de conexão. Tente novamente.</div>';
-                loginBtn.disabled = false;
-                loginBtn.textContent = 'Entrar';
-            }
-        });
-        
-        // Limpar mensagem ao digitar
-        document.getElementById('username').addEventListener('input', () => {
-            document.getElementById('message').innerHTML = '';
-        });
-        document.getElementById('password').addEventListener('input', () => {
-            document.getElementById('message').innerHTML = '';
+            });
         });
     </script>
 </body>
@@ -971,517 +532,111 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.send(loginHtml);
   });
 
-  /**
-   * Foundation Setup Page - Wizard HTML completo
-   * Endpoint: GET /foundation/setup
-   */
-  app.get('/foundation/setup', async (req, res) => {
-    // Verificar se já está configurado
+  // ========================================
+  // 4. SETUP API - Sistema de configuração inicial
+  // ========================================
+  
+  // Setup endpoint - Configuração inicial do sistema
+  // Endpoint: POST /api/setup
+  // Body: setupSchema (organization, admin user, etc)
+  app.post("/api/setup", async (req, res) => {
     try {
-      const systemConfig = await storage.getSystemConfig();
-      if (systemConfig && systemConfig.setupCompleted) {
-        // Se já configurado, mostrar página de sucesso
-        const successHtml = `
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Foundation v3.0 - Configurado</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .container {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            padding: 40px;
-            width: 100%;
-            max-width: 500px;
-            text-align: center;
-        }
-        .success { color: #059669; margin-bottom: 30px; }
-        .btn {
-            background: #2563eb;
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            text-decoration: none;
-            margin: 10px;
-            display: inline-block;
-            font-weight: 500;
-        }
-        .btn:hover { background: #1d4ed8; }
-        .info {
-            background: #f0f9ff;
-            border: 1px solid #0ea5e9;
-            border-radius: 8px;
-            padding: 16px;
-            margin: 20px 0;
-            color: #0c4a6e;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="success">
-            <h1>🏛️ Foundation v3.0</h1>
-            <h2>Sistema Configurado!</h2>
-        </div>
-        
-        <div class="info">
-            <p><strong>Organização:</strong> ${systemConfig.organizationName}</p>
-            <p><strong>Ambiente:</strong> ${systemConfig.environment}</p>
-            <p><strong>Capacidade:</strong> ${systemConfig.foundationCapacity}</p>
-        </div>
-        
-        <div>
-            <a href="/foundation/login" class="btn">Fazer Login</a>
-            <a href="/" class="btn">Ir para Dashboard</a>
-        </div>
-        
-        <p style="margin-top: 20px; color: #6b7280; font-size: 14px;">
-            Sistema instalado e funcionando corretamente
-        </p>
-    </div>
-</body>
-</html>`;
-        return res.send(successHtml);
+      const data = setupSchema.parse(req.body);
+      
+      // Se não é wizard, valida senha de configuração
+      if (!data.wizard && data.setupPassword !== SETUP_PASSWORD) {
+        return res.status(401).json({ message: "Senha de configuração inválida" });
       }
-    } catch (error) {
-      // Se erro, continuar com wizard
-    }
 
-    // Mostrar wizard de setup se não configurado
-    const wizardHtml = `
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Foundation v3.0 - Setup Wizard</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-        .header {
-            background: #2563eb;
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-        .content {
-            padding: 40px;
-        }
-        .step {
-            display: none;
-        }
-        .step.active {
-            display: block;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            color: #374151;
-            font-weight: 500;
-            margin-bottom: 8px;
-        }
-        input, select {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            font-size: 16px;
-        }
-        input:focus, select:focus {
-            outline: none;
-            border-color: #2563eb;
-        }
-        .btn {
-            background: #2563eb;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            margin-right: 10px;
-        }
-        .btn:hover { background: #1d4ed8; }
-        .btn:disabled { background: #9ca3af; cursor: not-allowed; }
-        .btn-secondary {
-            background: #6b7280;
-        }
-        .btn-secondary:hover { background: #4b5563; }
-        .progress {
-            height: 4px;
-            background: #e5e7eb;
-            margin-bottom: 30px;
-        }
-        .progress-bar {
-            height: 100%;
-            background: #2563eb;
-            transition: width 0.3s ease;
-        }
-        .message {
-            margin-top: 15px;
-            padding: 12px;
-            border-radius: 8px;
-            text-align: center;
-        }
-        .error { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
-        .success { background: #f0fdf4; color: #059669; border: 1px solid #bbf7d0; }
-        .info { background: #f0f9ff; color: #0c4a6e; border: 1px solid #bae6fd; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>🏛️ Foundation v3.0</h1>
-            <p>Wizard de Configuração</p>
-        </div>
-        
-        <div class="progress">
-            <div class="progress-bar" id="progressBar" style="width: 16.67%"></div>
-        </div>
-        
-        <div class="content">
-            <!-- Etapa 1: Configuração Administrativa -->
-            <div class="step active" id="step1">
-                <h2>Passo 1: Conta Administrativa</h2>
-                <p style="margin-bottom: 20px; color: #6b7280;">Configure o usuário administrador do sistema</p>
-                
-                <div class="form-group">
-                    <label for="adminUsername">Nome de Usuário do Admin</label>
-                    <input type="text" id="adminUsername" required placeholder="admin">
-                </div>
-                
-                <div class="form-group">
-                    <label for="adminPassword">Senha do Admin</label>
-                    <input type="password" id="adminPassword" required placeholder="Mínimo 6 caracteres">
-                </div>
-                
-                <div class="form-group">
-                    <label for="adminEmail">Email do Admin (opcional)</label>
-                    <input type="email" id="adminEmail" placeholder="admin@empresa.com">
-                </div>
-                
-                <button class="btn" onclick="nextStep(2)">Próximo</button>
-                <div id="message1" class="message" style="display: none;"></div>
-            </div>
-
-            <!-- Etapa 2: Informações da Organização -->
-            <div class="step" id="step2">
-                <h2>Passo 2: Informações da Organização</h2>
-                <p style="margin-bottom: 20px; color: #6b7280;">Configure os dados da sua organização</p>
-                
-                <div class="form-group">
-                    <label for="organizationName">Nome da Organização</label>
-                    <input type="text" id="organizationName" required placeholder="Minha Empresa">
-                </div>
-                
-                <div class="form-group">
-                    <label for="environment">Ambiente</label>
-                    <select id="environment">
-                        <option value="development">Desenvolvimento</option>
-                        <option value="staging">Homologação</option>
-                        <option value="production">Produção</option>
-                    </select>
-                </div>
-                
-                <button class="btn btn-secondary" onclick="prevStep(1)">Anterior</button>
-                <button class="btn" onclick="nextStep(3)">Próximo</button>
-                <div id="message2" class="message" style="display: none;"></div>
-            </div>
-
-            <!-- Etapa 3: Capacidade do Sistema -->
-            <div class="step" id="step3">
-                <h2>Passo 3: Capacidade do Sistema</h2>
-                <p style="margin-bottom: 20px; color: #6b7280;">Selecione a capacidade adequada para seu uso</p>
-                
-                <div class="form-group">
-                    <label for="foundationCapacity">Capacidade Foundation</label>
-                    <select id="foundationCapacity">
-                        <option value="nano">Nano (1-100 usuários)</option>
-                        <option value="micro">Micro (100-1K usuários)</option>
-                        <option value="small" selected>Small (1K-10K usuários)</option>
-                        <option value="medium">Medium (10K-100K usuários)</option>
-                        <option value="large">Large (100K-500K usuários)</option>
-                        <option value="enterprise">Enterprise (500K+ usuários)</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="maxUsers">Número Máximo de Usuários</label>
-                    <input type="number" id="maxUsers" value="1000" min="1">
-                </div>
-                
-                <button class="btn btn-secondary" onclick="prevStep(2)">Anterior</button>
-                <button class="btn" onclick="nextStep(4)">Próximo</button>
-                <div id="message3" class="message" style="display: none;"></div>
-            </div>
-
-            <!-- Etapa 4: Funcionalidades -->
-            <div class="step" id="step4">
-                <h2>Passo 4: Funcionalidades</h2>
-                <p style="margin-bottom: 20px; color: #6b7280;">Selecione as funcionalidades que deseja ativar</p>
-                
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
-                    <label style="display: flex; align-items: center; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px;">
-                        <input type="checkbox" checked style="margin-right: 10px; width: auto;">
-                        Monitoramento Avançado
-                    </label>
-                    <label style="display: flex; align-items: center; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px;">
-                        <input type="checkbox" checked style="margin-right: 10px; width: auto;">
-                        Logs de Atividade
-                    </label>
-                    <label style="display: flex; align-items: center; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px;">
-                        <input type="checkbox" style="margin-right: 10px; width: auto;">
-                        Backup Automático
-                    </label>
-                    <label style="display: flex; align-items: center; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px;">
-                        <input type="checkbox" style="margin-right: 10px; width: auto;">
-                        Notificações Email
-                    </label>
-                </div>
-                
-                <div style="margin-top: 30px;">
-                    <button class="btn btn-secondary" onclick="prevStep(3)">Anterior</button>
-                    <button class="btn" onclick="nextStep(5)">Próximo</button>
-                </div>
-                <div id="message4" class="message" style="display: none;"></div>
-            </div>
-
-            <!-- Etapa 5: Revisão -->
-            <div class="step" id="step5">
-                <h2>Passo 5: Revisão da Configuração</h2>
-                <p style="margin-bottom: 20px; color: #6b7280;">Verifique as configurações antes de instalar</p>
-                
-                <div id="reviewContent" style="background: #f9fafb; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-                    <!-- Conteúdo preenchido via JavaScript -->
-                </div>
-                
-                <button class="btn btn-secondary" onclick="prevStep(4)">Anterior</button>
-                <button class="btn" onclick="installFoundation()">Instalar Foundation</button>
-                <div id="message5" class="message" style="display: none;"></div>
-            </div>
-
-            <!-- Etapa 6: Conclusão -->
-            <div class="step" id="step6">
-                <h2>🎉 Instalação Concluída!</h2>
-                <p style="margin-bottom: 30px; color: #6b7280;">Foundation v3.0 foi configurado com sucesso</p>
-                
-                <div class="info" style="margin-bottom: 30px;">
-                    <p><strong>Suas credenciais de login:</strong></p>
-                    <p>Usuário: <span id="finalUsername"></span></p>
-                    <p>Senha: [a senha que você definiu]</p>
-                </div>
-                
-                <div style="display: flex; justify-content: center; gap: 15px;">
-                    <a href="/foundation/login" class="btn">Fazer Login</a>
-                    <a href="/" class="btn btn-secondary">Ir para Dashboard</a>
-                </div>
-                <div id="message6" class="message" style="display: none;"></div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let currentStep = 1;
-        const totalSteps = 6;
-
-        function updateProgress() {
-            const progress = (currentStep / totalSteps) * 100;
-            document.getElementById('progressBar').style.width = progress + '%';
-        }
-
-        function showStep(step) {
-            // Esconder todas as etapas
-            for (let i = 1; i <= totalSteps; i++) {
-                document.getElementById('step' + i).classList.remove('active');
-            }
-            // Mostrar etapa atual
-            document.getElementById('step' + step).classList.add('active');
-            currentStep = step;
-            updateProgress();
-        }
-
-        function nextStep(step) {
-            if (validateCurrentStep()) {
-                if (step === 5) {
-                    updateReview();
-                }
-                showStep(step);
-            }
-        }
-
-        function prevStep(step) {
-            showStep(step);
-        }
-
-        function validateCurrentStep() {
-            const messageDiv = document.getElementById('message' + currentStep);
-            messageDiv.style.display = 'none';
-
-            if (currentStep === 1) {
-                const username = document.getElementById('adminUsername').value;
-                const password = document.getElementById('adminPassword').value;
-                
-                if (!username || username.length < 3) {
-                    showMessage(1, 'Nome de usuário deve ter pelo menos 3 caracteres', 'error');
-                    return false;
-                }
-                if (!password || password.length < 6) {
-                    showMessage(1, 'Senha deve ter pelo menos 6 caracteres', 'error');
-                    return false;
-                }
-            }
-
-            if (currentStep === 2) {
-                const orgName = document.getElementById('organizationName').value;
-                if (!orgName || orgName.length < 2) {
-                    showMessage(2, 'Nome da organização é obrigatório', 'error');
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        function showMessage(step, message, type = 'info') {
-            const messageDiv = document.getElementById('message' + step);
-            messageDiv.className = 'message ' + type;
-            messageDiv.textContent = message;
-            messageDiv.style.display = 'block';
-        }
-
-        function updateReview() {
-            const reviewContent = document.getElementById('reviewContent');
-            const features = Array.from(document.querySelectorAll('#step4 input[type="checkbox"]:checked'))
-                .map(cb => cb.parentElement.textContent.trim());
-
-            reviewContent.innerHTML = \`
-                <h3 style="margin-bottom: 15px;">Configurações:</h3>
-                <p><strong>Admin:</strong> \${document.getElementById('adminUsername').value}</p>
-                <p><strong>Organização:</strong> \${document.getElementById('organizationName').value}</p>
-                <p><strong>Ambiente:</strong> \${document.getElementById('environment').value}</p>
-                <p><strong>Capacidade:</strong> \${document.getElementById('foundationCapacity').value}</p>
-                <p><strong>Máx. Usuários:</strong> \${document.getElementById('maxUsers').value}</p>
-                <p><strong>Funcionalidades:</strong> \${features.join(', ')}</p>
-            \`;
-        }
-
-        async function installFoundation() {
-            const messageDiv = document.getElementById('message5');
-            messageDiv.style.display = 'none';
-
-            // Mostrar loading
-            const installBtn = document.querySelector('#step5 .btn:last-child');
-            const originalText = installBtn.textContent;
-            installBtn.disabled = true;
-            installBtn.textContent = 'Instalando...';
-
-            try {
-                // Coletar features selecionadas
-                const features = Array.from(document.querySelectorAll('#step4 input[type="checkbox"]:checked'))
-                    .map(cb => cb.parentElement.textContent.trim());
-
-                const setupData = {
-                    wizard: true,
-                    adminUsername: document.getElementById('adminUsername').value,
-                    adminPassword: document.getElementById('adminPassword').value,
-                    adminEmail: document.getElementById('adminEmail').value,
-                    organizationName: document.getElementById('organizationName').value,
-                    environment: document.getElementById('environment').value,
-                    foundationCapacity: document.getElementById('foundationCapacity').value,
-                    maxUsers: parseInt(document.getElementById('maxUsers').value),
-                    features: features
-                };
-
-                const response = await fetch('/api/setup', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(setupData)
-                });
-
-                const result = await response.json();
-
-                if (response.ok) {
-                    document.getElementById('finalUsername').textContent = setupData.adminUsername;
-                    showStep(6);
-                } else {
-                    showMessage(5, result.message || 'Erro na instalação', 'error');
-                    installBtn.disabled = false;
-                    installBtn.textContent = originalText;
-                }
-            } catch (error) {
-                console.error('Erro na instalação:', error);
-                showMessage(5, 'Erro de conexão durante a instalação', 'error');
-                installBtn.disabled = false;
-                installBtn.textContent = originalText;
-            }
-        }
-
-        // Atualizar capacidade baseada em usuários
-        document.getElementById('maxUsers').addEventListener('input', function() {
-            const users = parseInt(this.value);
-            const capacitySelect = document.getElementById('foundationCapacity');
-            
-            if (users <= 100) capacitySelect.value = 'nano';
-            else if (users <= 1000) capacitySelect.value = 'micro';
-            else if (users <= 10000) capacitySelect.value = 'small';
-            else if (users <= 100000) capacitySelect.value = 'medium';
-            else if (users <= 500000) capacitySelect.value = 'large';
-            else capacitySelect.value = 'enterprise';
+      // Check if system is already set up
+      const existingConfig = await storage.getSystemConfig();
+      if (existingConfig && !data.wizard) {
+        return res.status(409).json({ 
+          message: "Sistema já configurado. Use o wizard para reconfiguração.",
+          isConfigured: true 
         });
-    </script>
-</body>
-</html>`;
-    res.send(wizardHtml);
+      }
+
+      let config;
+      if (existingConfig && data.wizard) {
+        // Update existing config for wizard
+        config = await storage.updateSystemConfig({
+          organizationName: data.organizationName,
+          environment: data.environment || "production",
+          foundationCapacity: data.foundationCapacity || "small",
+          maxUsers: data.maxUsers || 1000,
+          features: JSON.stringify(data.features || []),
+          updatedAt: new Date(),
+        });
+      } else {
+        // Create new config
+        config = await storage.createSystemConfig({
+          organizationName: data.organizationName,
+          environment: data.environment || "production", 
+          foundationCapacity: data.foundationCapacity || "small",
+          maxUsers: data.maxUsers || 1000,
+          features: JSON.stringify(data.features || []),
+        });
+      }
+
+      // Create admin user for wizard
+      if (data.wizard && data.adminUsername && data.adminPassword) {
+        const hashedPassword = await bcrypt.hash(data.adminPassword, 10);
+        
+        try {
+          await storage.createUser({
+            username: data.adminUsername,
+            password: hashedPassword,
+            email: data.adminEmail || "",
+            role: "admin",
+            isActive: true,
+          });
+        } catch (error) {
+          // User might already exist, that's ok for wizard
+          console.log('Admin user already exists or error creating:', error.message);
+        }
+      }
+
+      // Log the setup activity
+      await storage.createActivityLog({
+        userId: 1, // System user
+        action: data.wizard ? "wizard_setup" : "initial_setup",
+        description: `Sistema configurado: ${data.organizationName} - Capacidade: ${data.foundationCapacity}`,
+      });
+
+      res.json({ 
+        message: "Sistema configurado com sucesso",
+        config,
+        wizard: data.wizard || false
+      });
+
+    } catch (error) {
+      console.error("Setup error:", error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ 
+          message: "Dados inválidos", 
+          errors: error.errors 
+        });
+      }
+      res.status(500).json({ message: "Erro interno do servidor" });
+    }
   });
 
   // ========================================
-  // 4. SYSTEM APIs - Informações e status
+  // 5. SYSTEM APIs - Status e informações do sistema
   // ========================================
   
-  /**
-   * System Status API - Status completo do sistema
-   * Endpoint: GET /api/system/status
-   */
+  // System Status - Informações do sistema
+  // Endpoint: GET /api/system/status
   app.get("/api/system/status", async (req, res) => {
     try {
       const config = await storage.getSystemConfig();
       const users = await storage.getAllUsers();
+      const metrics = await storage.getLatestMetrics();
       const activeSessions = await storage.getActiveSessionsCount();
 
       res.json({
         isConfigured: !!config,
-        setupCompleted: config?.setupCompleted || false,
         organization: config?.organizationName || null,
         environment: config?.environment || null,
         foundationCapacity: config?.foundationCapacity || null,
@@ -1504,36 +659,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  /**
-   * User Info API - Informações do usuário autenticado
-   * Endpoint: GET /api/auth/me
-   * Headers: Authorization: Bearer <sessionId>
-   */
-  app.get("/api/auth/me", authenticateUser, async (req: any, res) => {
-    res.json({ user: req.user });
-  });
-
   // ========================================
-  // 5. HEALTH & MONITORING
+  // 6. HEALTH CHECK - Verificação básica
   // ========================================
   
-  /**
-   * Health Check API
-   * Endpoint: GET /api/health
-   */
+  // Health endpoint - Verificação de saúde da API
+  // Endpoint: GET /api/health
   app.get("/api/health", (req, res) => {
     res.json({ 
       status: "ok", 
       timestamp: new Date().toISOString(),
-      version: "Foundation v3.0",
-      uptime: process.uptime()
+      version: "Foundation v3.0"
     });
   });
 
-  /**
-   * Metrics API - Dados de monitoramento
-   * Endpoint: GET /api/metrics
-   */
+  // ========================================
+  // 7. MONITORING - Métricas do sistema
+  // ========================================
+  
+  // Metrics endpoint - Dados de monitoramento
+  // Endpoint: GET /api/metrics
   app.get("/api/metrics", async (req, res) => {
     try {
       const metrics = monitoringService.getLatestMetrics();
@@ -1544,103 +689,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  /**
-   * Activity Logs API - Logs de atividade recente
-   * Endpoint: GET /api/activity/recent
-   */
-  app.get("/api/activity/recent", authenticateUser, async (req, res) => {
-    try {
-      const activities = await storage.getRecentActivity(10);
-      res.json(activities);
-    } catch (error) {
-      console.error("Activity logs error:", error);
-      res.status(500).json({ message: "Erro ao obter logs de atividade" });
-    }
-  });
-
-  /**
-   * Users Management API - Gestão de usuários 
-   * Endpoint: GET /api/users
-   */
-  app.get("/api/users", authenticateUser, async (req, res) => {
-    try {
-      const users = await storage.getAllUsers();
-      // Remover senhas dos dados retornados
-      const safeUsers = users.map(user => ({
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        role: user.role,
-        isActive: user.isActive,
-        lastLogin: user.lastLogin,
-        createdAt: user.createdAt
-      }));
-      res.json(safeUsers);
-    } catch (error) {
-      console.error("Users error:", error);
-      res.status(500).json({ message: "Erro ao obter usuários" });
-    }
-  });
-
-  /**
-   * System Configuration API - Configuração do sistema
-   * Endpoint: GET /api/config
-   */
-  app.get("/api/config", authenticateUser, async (req, res) => {
-    try {
-      const config = await storage.getSystemConfig();
-      res.json(config);
-    } catch (error) {
-      console.error("Config error:", error);
-      res.status(500).json({ message: "Erro ao obter configuração" });
-    }
-  });
-
-  /**
-   * Foundation Capacity Change API - Mudança de capacidade
-   * Endpoint: POST /api/foundation/change-capacity
-   */
-  app.post("/api/foundation/change-capacity", authenticateUser, async (req: any, res) => {
-    try {
-      const { newCapacity, maxUsers } = req.body;
-      
-      if (!newCapacity) {
-        return res.status(400).json({ message: "Nova capacidade é obrigatória" });
-      }
-
-      // Verificar se capacidade é válida
-      const validCapacities = ['nano', 'micro', 'small', 'medium', 'large', 'enterprise'];
-      if (!validCapacities.includes(newCapacity)) {
-        return res.status(400).json({ message: "Capacidade inválida" });
-      }
-
-      // Atualizar configuração do sistema
-      const updatedConfig = await storage.updateSystemConfig({
-        foundationCapacity: newCapacity,
-        maxConcurrentUsers: maxUsers || null,
-        updatedAt: new Date()
-      });
-
-      // Log da atividade
-      await storage.createActivityLog({
-        userId: req.user.id,
-        action: "capacity_change",
-        description: `Capacidade alterada para ${newCapacity} (máx. ${maxUsers || 'ilimitado'} usuários)`,
-      });
-
-      res.json({ 
-        message: "Capacidade alterada com sucesso",
-        config: updatedConfig 
-      });
-
-    } catch (error) {
-      console.error("Capacity change error:", error);
-      res.status(500).json({ message: "Erro ao alterar capacidade" });
-    }
-  });
-
   // ========================================
-  // 6. CREATE HTTP SERVER
+  // 8. CREATE HTTP SERVER
   // ========================================
   
   const httpServer = createServer(app);
