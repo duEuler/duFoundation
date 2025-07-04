@@ -1,12 +1,11 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { storage } from "./storage";
+import { storage } from "./storage-minimal";
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
-import { setupSchema, loginSchema, insertUserSchema } from "@shared/schema";
+import { setupSchema, insertUserSchema } from "@shared/schema";
 import { z } from "zod";
-import { monitoringService, createMonitoringMiddleware } from "../foundation/server/monitoring";
-import { getFoundationConfig, validateCapacityForUsers, suggestCapacityForUsers, FOUNDATION_CONFIGS } from "../foundation/server/foundation-config";
+// Foundation components will be loaded after setup
 import * as os from 'os';
 
 export async function registerRoutes(app: Express): Promise<Server> {

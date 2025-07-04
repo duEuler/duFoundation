@@ -17,24 +17,10 @@ export interface IStorage {
   updateUser(id: number, updates: Partial<User>): Promise<User | undefined>;
   getAllUsers(): Promise<User[]>;
   
-  // Session management
-  createSession(session: InsertSession): Promise<Session>;
-  getSession(id: string): Promise<Session | undefined>;
-  deleteSession(id: string): Promise<void>;
-  getActiveSessionsCount(): Promise<number>;
-  
-  // System configuration
+  // System configuration  
   getSystemConfig(): Promise<SystemConfig | undefined>;
   createSystemConfig(config: InsertSystemConfig): Promise<SystemConfig>;
   updateSystemConfig(updates: Partial<SystemConfig>): Promise<SystemConfig | undefined>;
-  
-  // Metrics
-  createMetric(metric: InsertSystemMetric): Promise<SystemMetric>;
-  getLatestMetrics(): Promise<SystemMetric[]>;
-  
-  // Activity logs
-  createActivityLog(log: InsertActivityLog): Promise<ActivityLog>;
-  getRecentActivity(limit?: number): Promise<ActivityLog[]>;
 }
 
 export class DatabaseStorage implements IStorage {
