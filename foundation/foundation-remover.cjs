@@ -279,6 +279,13 @@ class FoundationRemover {
       console.log('   ❌ .foundation-installed');
     }
 
+    // Remove marker de scanner automático
+    const scannerFlagPath = path.join(this.projectRoot, '.foundation-scanned');
+    if (fs.existsSync(scannerFlagPath)) {
+      fs.unlinkSync(scannerFlagPath);
+      console.log('   ❌ .foundation-scanned');
+    }
+
     // Remove marker de ignore (opcional)
     if (fs.existsSync(this.ignorePath)) {
       console.log('');

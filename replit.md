@@ -177,6 +177,12 @@ Changelog:
 - July 4, 2025. Sistema de documentação baseado em problemas reais encontrados durante desenvolvimento
 - July 4, 2025. Arquitetura de Padronização Progressiva Híbrida completa e documentada
 - July 4, 2025. Foundation v3.0 totalmente preparado para uso empresarial com múltiplos projetos
+- July 4, 2025. Implementado sistema de Scanner Automático (foundation-auto-scanner.cjs) com execução única controlada
+- July 4, 2025. Criado flag .foundation-scanned para controle de execução automática apenas na primeira vez
+- July 4, 2025. Integrado sistema de remoção do flag no foundation-remover.cjs para limpeza completa
+- July 4, 2025. Documentação AUTO-SCANNER-GUIDE.md criada explicando comportamento automático e antecipação inteligente
+- July 4, 2025. README.md atualizado com nova funcionalidade de scanner automático v3.0
+- July 4, 2025. Sistema de "antecipação inteligente" funcionando: análise automática segura na primeira execução
 ```
 
 ## User Preferences

@@ -10,7 +10,8 @@ O Foundation v3.0 implementa a **arquitetura de Padronização Progressiva Híbr
 - [`FOUNDATION-ARCHITECTURE.md`](./FOUNDATION-ARCHITECTURE.md) - Estratégia arquitetural completa e problemas resolvidos
 
 ### **🔧 Scripts Principais**
-- [`foundation-scanner.cjs`](./foundation-scanner.cjs) - **Fase 1:** Análise e classificação de projetos
+- [`foundation-auto-scanner.cjs`](./foundation-auto-scanner.cjs) - **🆕 NOVO:** Scanner automático primeira execução
+- [`foundation-scanner.cjs`](./foundation-scanner.cjs) - **Fase 1:** Análise e classificação de projetos (manual)
 - [`foundation-migrator.cjs`](./foundation-migrator.cjs) - **Fase 2:** Migração automática para compatibilidade
 - [`foundation-installer.cjs`](./foundation-installer.cjs) - **Fase 3:** Instalação padronizada com validação
 
@@ -25,13 +26,26 @@ O Foundation v3.0 implementa a **arquitetura de Padronização Progressiva Híbr
 
 ## 🚀 Como Usar o Foundation
 
+### **🆕 Scanner Automático (Nova Funcionalidade v3.0)**
+```bash
+# Executa automaticamente na primeira vez
+node foundation/foundation-auto-scanner.cjs
+🎯 Primeira execução detectada - executando scanner automático...
+✅ Análise automática concluída!
+
+# Próximas execuções (controle manual)
+node foundation/foundation-auto-scanner.cjs
+ℹ️  Scanner automático já foi executado anteriormente.
+   Para nova análise, execute: node foundation/foundation-scanner.cjs
+```
+
 ### **Para Projetos Novos:**
 1. Seguir [`NEW-PROJECT-GUIDE.md`](./NEW-PROJECT-GUIDE.md) para configuração ideal
-2. Executar: `node foundation/foundation-scanner.cjs`
+2. Executar: `node foundation/foundation-auto-scanner.cjs` (primeira vez, automático)
 3. Se COMPATÍVEL: `node foundation/foundation-installer.cjs`
 
 ### **Para Projetos Existentes:**
-1. Executar: `node foundation/foundation-scanner.cjs`
+1. Executar: `node foundation/foundation-auto-scanner.cjs` (primeira vez, automático)
 2. Se PRECISA_AJUSTES: `node foundation/foundation-migrator.cjs`
 3. Se INCOMPATÍVEL: Consultar [`MIGRATION-GUIDE.md`](./MIGRATION-GUIDE.md)
 4. Após ajustes: `node foundation/foundation-installer.cjs`
