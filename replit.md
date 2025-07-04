@@ -1,12 +1,61 @@
-# DuEuler Foundation Management System
+# duFundation v3.1 - Enterprise Foundation Framework
 
 ## Overview
 
-This is a full-stack web application for the DuEuler Foundation, built as a management system with user authentication, role-based access control, and real-time metrics monitoring. The application follows a monorepo structure with separated client and server code, utilizing modern web technologies for both frontend and backend development.
+This project now features the complete **duFundation v3.1** system - a next-generation enterprise foundation framework designed for modern web applications. The system provides three distinct implementation strategies (Native, Microservice, Hybrid) with complete architectural isolation and scalability from 1K to 1M+ users.
 
-**duEuler Foundation v3.0 Integration**: The project now incorporates the official duEuler Foundation v3.0 framework, configured for SMALL capacity (10K-50K users) with enterprise-grade monitoring, security, and performance optimizations.
+**duFundation v3.1 Features**: Completely reorganized structure with isolated dashboard application, CLI tooling, comprehensive documentation with tags and cross-references, and production-ready templates for multiple deployment strategies.
 
-## System Architecture
+## duFundation v3.1 Architecture
+
+### **Estrutura Principal:**
+```
+duFundation/
+├── core/                    # Sistema base e automação
+│   ├── installer/          # Scripts de instalação
+│   ├── migrator/           # Ferramentas de migração
+│   ├── scanner/            # Análise de compatibilidade
+│   └── templates/          # Templates por estratégia
+├── dashboard/              # Aplicação de gerenciamento isolada
+│   ├── client/            # Frontend React/TypeScript (ISOLADO)
+│   ├── server/            # Backend Express/Node.js (ISOLADO)
+│   ├── shared/            # Schemas e tipos compartilhados
+│   └── package.json       # Dependências independentes
+├── strategies/             # Implementações por estratégia
+│   ├── foundation-native/ # Para projetos novos
+│   ├── microservice/      # Para projetos existentes
+│   └── hybrid/            # Para projetos em transição
+├── docs/                   # Documentação estruturada
+│   ├── guides/            # Guias por categoria
+│   ├── references/        # APIs e configurações
+│   └── examples/          # Casos de uso reais
+└── configs/               # Configurações por capacidade
+    ├── nano/              # 1K-10K usuários
+    ├── micro/             # 10K-50K usuários
+    ├── small/             # 50K-100K usuários
+    ├── medium/            # 100K-500K usuários
+    ├── large/             # 500K-1M usuários
+    └── enterprise/        # 1M+ usuários
+```
+
+### **Estratégias de Implementação:**
+
+1. **Foundation Nativo** (Projetos Novos)
+   - Dashboard integrado nativamente
+   - Setup automático completo
+   - Estrutura otimizada desde o início
+
+2. **Foundation Microserviço** (Projetos Existentes)
+   - Dashboard isolado em porta separada
+   - Zero impacto no código existente
+   - Integração gradual opcional
+
+3. **Foundation Híbrido** (Projetos em Transição)
+   - Preservação do código legacy
+   - Migração progressiva
+   - Camada de integração bridge
+
+## Legacy System Architecture
 
 ### Frontend Architecture
 - **Framework**: React 18 with TypeScript

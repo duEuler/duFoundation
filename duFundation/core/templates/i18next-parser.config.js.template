@@ -1,0 +1,11 @@
+module.exports = {
+  locales: ["en", "pt"],
+  defaultNamespace: "common",
+  output: "client/public/locales/$LOCALE/$NAMESPACE.json",
+  keySeparator: ".",
+  namespaceSeparator: ":",
+  useKeysAsDefaultValue: true,
+  createOldCatalogs: false,
+  keepRemoved: false,
+  verbose: true,
+};

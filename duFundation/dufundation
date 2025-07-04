@@ -1,0 +1,409 @@
+#!/usr/bin/env node
+
+/**
+ * duFundation v3.1 - Enterprise Foundation Framework
+ * Command Line Interface
+ * 
+ * Usage:
+ *   dufundation create <name> --strategy=native --capacity=small
+ *   dufundation integrate --strategy=microservice --port=3001
+ *   dufundation analyze [project-path]
+ */
+
+import { execSync, spawn } from 'child_process';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Cores para output colorido
+const colors = {
+  reset: '\x1b[0m',
+  red: '\x1b[31m',
+  green: '\x1b[32m',
+  yellow: '\x1b[33m',
+  blue: '\x1b[34m',
+  magenta: '\x1b[35m',
+  cyan: '\x1b[36m',
+  bold: '\x1b[1m'
+};
+
+function log(message, color = 'reset') {
+  console.log(`${colors[color]}${message}${colors.reset}`);
+}
+
+function error(message) {
+  log(`❌ ${message}`, 'red');
+  process.exit(1);
+}
+
+function success(message) {
+  log(`✅ ${message}`, 'green');
+}
+
+function info(message) {
+  log(`ℹ️  ${message}`, 'blue');
+}
+
+function warning(message) {
+  log(`⚠️  ${message}`, 'yellow');
+}
+
+// Validação de pré-requisitos
+function checkPrerequisites() {
+  const requirements = [
+    { cmd: 'node --version', name: 'Node.js 18+', pattern: /v1[8-9]|v[2-9]\d/ },
+    { cmd: 'npm --version', name: 'npm', pattern: /\d+\.\d+\.\d+/ }
+  ];
+
+  info('Verificando pré-requisitos...');
+  
+  for (const req of requirements) {
+    try {
+      const output = execSync(req.cmd, { encoding: 'utf8', stdio: 'pipe' });
+      if (!req.pattern.test(output)) {
+        error(`${req.name} não atende aos requisitos mínimos`);
+      }
+      success(`${req.name}: ${output.trim()}`);
+    } catch (e) {
+      error(`${req.name} não encontrado. Instale antes de continuar.`);
+    }
+  }
+}
+
+// Parser de argumentos simples
+function parseArgs() {
+  const args = process.argv.slice(2);
+  const parsed = {
+    command: args[0],
+    projectName: args[1],
+    flags: {}
+  };
+
+  for (let i = 2; i < args.length; i++) {
+    const arg = args[i];
+    if (arg.startsWith('--')) {
+      const [key, value] = arg.substring(2).split('=');
+      parsed.flags[key] = value || true;
+    }
+  }
+
+  return parsed;
+}
+
+// Comando: analyze
+async function analyzeProject(projectPath = '.') {
+  info(`Analisando projeto em: ${projectPath}`);
+  
+  try {
+    const scannerPath = join(__dirname, 'core/scanner/foundation-scanner.cjs');
+    const result = execSync(`node "${scannerPath}" "${projectPath}"`, { 
+      encoding: 'utf8',
+      stdio: 'pipe'
+    });
+    
+    console.log(result);
+    
+    // Parsear score do resultado
+    const scoreMatch = result.match(/Score final: (\d+)/);
+    if (scoreMatch) {
+      const score = parseInt(scoreMatch[1]);
+      
+      if (score >= 80) {
+        success('Projeto compatível! Recomendação: Estratégia Nativo');
+        info('Execute: dufundation integrate --strategy=native');
+      } else if (score >= 40) {
+        warning('Projeto precisa de ajustes. Recomendação: Estratégia Microserviço');
+        info('Execute: dufundation integrate --strategy=microservice');
+      } else {
+        warning('Projeto incompatível. Consulte documentação para migração manual.');
+        info('Documentação: docs/guides/migration-guide.md');
+      }
+    }
+    
+  } catch (e) {
+    error(`Erro na análise: ${e.message}`);
+  }
+}
+
+// Comando: create
+async function createProject(name, options = {}) {
+  if (!name) {
+    error('Nome do projeto é obrigatório. Uso: dufundation create <nome>');
+  }
+
+  const strategy = options.strategy || 'native';
+  const capacity = options.capacity || 'small';
+  
+  info(`Criando projeto: ${name}`);
+  info(`Estratégia: ${strategy}`);
+  info(`Capacidade: ${capacity}`);
+
+  checkPrerequisites();
+
+  try {
+    // Criar diretório do projeto
+    if (existsSync(name)) {
+      error(`Diretório ${name} já existe`);
+    }
+
+    execSync(`mkdir -p ${name}`, { stdio: 'inherit' });
+    
+    // Copiar template base
+    const templatePath = join(__dirname, `strategies/${strategy}`);
+    if (!existsSync(templatePath)) {
+      error(`Estratégia ${strategy} não encontrada`);
+    }
+
+    info('Copiando templates...');
+    execSync(`cp -r "${templatePath}"/* "${name}"/`, { stdio: 'inherit' });
+
+    // Copiar dashboard isolado
+    info('Configurando dashboard...');
+    execSync(`cp -r "${join(__dirname, 'dashboard')}" "${name}/duFundation/"`, { stdio: 'inherit' });
+
+    // Aplicar configuração de capacidade
+    const capacityConfigPath = join(__dirname, `configs/${capacity}`);
+    if (existsSync(capacityConfigPath)) {
+      info(`Aplicando configuração ${capacity}...`);
+      execSync(`cp -r "${capacityConfigPath}"/* "${name}"/`, { stdio: 'inherit' });
+    }
+
+    // Gerar package.json
+    const packageJson = {
+      name: name,
+      version: "1.0.0",
+      type: "module",
+      scripts: {
+        dev: "tsx server/index.ts",
+        build: "vite build",
+        start: "node dist/index.js",
+        "db:push": "drizzle-kit push:pg"
+      },
+      dependencies: {
+        express: "^4.18.0",
+        react: "^18.0.0",
+        "react-dom": "^18.0.0",
+        typescript: "^5.0.0",
+        "drizzle-orm": "^0.28.0",
+        "@neondatabase/serverless": "^0.4.0"
+      },
+      devDependencies: {
+        vite: "^5.0.0",
+        tsx: "^4.0.0",
+        "drizzle-kit": "^0.19.0"
+      }
+    };
+
+    writeFileSync(
+      join(name, 'package.json'), 
+      JSON.stringify(packageJson, null, 2)
+    );
+
+    success(`Projeto ${name} criado com sucesso!`);
+    
+    info('Próximos passos:');
+    console.log(`  cd ${name}`);
+    console.log('  cp .env.example .env');
+    console.log('  # Configure DATABASE_URL no .env');
+    console.log('  npm install');
+    console.log('  npm run db:push');
+    console.log('  npm run dev');
+    
+    info(`Dashboard estará disponível em: http://localhost:5000/dashboard`);
+    info('Credenciais padrão: admin/admin123');
+
+  } catch (e) {
+    error(`Erro na criação do projeto: ${e.message}`);
+  }
+}
+
+// Comando: integrate
+async function integrateProject(options = {}) {
+  const strategy = options.strategy || 'microservice';
+  const port = options.port || '3001';
+  
+  info('Integrando duFundation ao projeto existente...');
+  info(`Estratégia: ${strategy}`);
+  
+  checkPrerequisites();
+
+  try {
+    // Verificar se já existe integração
+    if (existsSync('duFundation')) {
+      warning('duFundation já integrado. Use --force para sobrescrever.');
+      if (!options.force) {
+        return;
+      }
+    }
+
+    // Analisar projeto atual
+    await analyzeProject('.');
+
+    // Copiar duFundation para projeto
+    info('Instalando duFundation...');
+    const duFundationPath = __dirname;
+    execSync(`cp -r "${duFundationPath}" ./duFundation`, { stdio: 'inherit' });
+
+    if (strategy === 'microservice') {
+      // Configurar para microserviço
+      info(`Configurando dashboard para porta ${port}...`);
+      
+      const dashboardEnv = `PORT=${port}\nSTRATEGY=microservice\nDATABASE_URL=postgresql://localhost:5432/dufundation`;
+      writeFileSync('./duFundation/dashboard/.env', dashboardEnv);
+
+      success('Integração como microserviço concluída!');
+      
+      info('Para executar:');
+      console.log('  # Terminal 1: Seu projeto');
+      console.log('  npm run dev');
+      console.log('  # Terminal 2: Dashboard duFundation');
+      console.log('  cd duFundation/dashboard && npm install && npm run dev');
+      
+      info(`Dashboard estará disponível em: http://localhost:${port}`);
+    }
+
+  } catch (e) {
+    error(`Erro na integração: ${e.message}`);
+  }
+}
+
+// Comando: upgrade
+async function upgradeProject(options = {}) {
+  const from = options.from;
+  const to = options.to;
+  
+  if (!from || !to) {
+    error('Upgrade requer --from e --to. Ex: dufundation upgrade --from=small --to=medium');
+  }
+
+  info(`Fazendo upgrade de ${from} para ${to}...`);
+  
+  if (options.backup !== false) {
+    info('Criando backup...');
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    execSync(`tar -czf backup-${timestamp}.tar.gz duFundation/`, { stdio: 'inherit' });
+    success(`Backup criado: backup-${timestamp}.tar.gz`);
+  }
+
+  try {
+    // Aplicar nova configuração de capacidade
+    const newConfigPath = join(__dirname, `configs/${to}`);
+    if (!existsSync(newConfigPath)) {
+      error(`Configuração ${to} não encontrada`);
+    }
+
+    info('Aplicando nova configuração...');
+    execSync(`cp -r "${newConfigPath}"/* ./`, { stdio: 'inherit' });
+
+    success(`Upgrade de ${from} para ${to} concluído!`);
+    warning('Reinicie a aplicação para aplicar as mudanças.');
+
+  } catch (e) {
+    error(`Erro no upgrade: ${e.message}`);
+  }
+}
+
+// Comando: health-check
+async function healthCheck() {
+  info('Verificando saúde do sistema duFundation...');
+  
+  const checks = [
+    {
+      name: 'Estrutura duFundation',
+      check: () => existsSync('duFundation'),
+      fix: 'Execute: dufundation integrate'
+    },
+    {
+      name: 'Dashboard',
+      check: () => existsSync('duFundation/dashboard'),
+      fix: 'Execute: dufundation integrate --force'
+    },
+    {
+      name: 'Configuração',
+      check: () => existsSync('duFundation/dashboard/.env'),
+      fix: 'Crie arquivo .env no dashboard'
+    }
+  ];
+
+  let allHealthy = true;
+  
+  for (const check of checks) {
+    if (check.check()) {
+      success(check.name);
+    } else {
+      error(`${check.name} - ${check.fix}`);
+      allHealthy = false;
+    }
+  }
+
+  if (allHealthy) {
+    success('Sistema duFundation saudável!');
+  } else {
+    warning('Problemas detectados. Corrija os itens acima.');
+  }
+}
+
+// Função principal
+async function main() {
+  const args = parseArgs();
+  
+  // Header
+  log('🏗️  duFundation v3.1 - Enterprise Foundation Framework', 'bold');
+  log('');
+
+  switch (args.command) {
+    case 'create':
+      await createProject(args.projectName, args.flags);
+      break;
+      
+    case 'integrate':
+      await integrateProject(args.flags);
+      break;
+      
+    case 'analyze':
+      await analyzeProject(args.projectName || '.');
+      break;
+      
+    case 'upgrade':
+      await upgradeProject(args.flags);
+      break;
+      
+    case 'health-check':
+      await healthCheck();
+      break;
+      
+    case 'version':
+      log('duFundation v3.1.0', 'green');
+      break;
+      
+    default:
+      log('Usage:', 'bold');
+      console.log('  dufundation create <name> [options]     # Criar novo projeto');
+      console.log('  dufundation integrate [options]         # Integrar em projeto existente');
+      console.log('  dufundation analyze [path]              # Analisar compatibilidade');
+      console.log('  dufundation upgrade --from=X --to=Y     # Fazer upgrade de capacidade');
+      console.log('  dufundation health-check                # Verificar saúde do sistema');
+      console.log('  dufundation version                     # Mostrar versão');
+      console.log('');
+      console.log('Options:');
+      console.log('  --strategy=native|microservice|hybrid  # Estratégia de implementação');
+      console.log('  --capacity=nano|micro|small|medium|large|enterprise');
+      console.log('  --port=3001                             # Porta para microserviço');
+      console.log('  --force                                 # Forçar sobrescrita');
+      console.log('');
+      console.log('Examples:');
+      console.log('  dufundation create my-app --capacity=small');
+      console.log('  dufundation integrate --strategy=microservice --port=3001');
+      console.log('  dufundation analyze ./existing-project');
+      console.log('  dufundation upgrade --from=small --to=medium --backup');
+      break;
+  }
+}
+
+// Executar CLI
+main().catch(e => {
+  error(`Erro inesperado: ${e.message}`);
+});

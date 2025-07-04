@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  # Aplicação Principal - Configuração NANO (1-1K usuários)
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=${DATABASE_URL:-sqlite:./data/app.db}
+      - JWT_SECRET=${JWT_SECRET:-default-jwt-secret}
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Backup simples semanal
+  backup:
+    image: alpine:latest
+    volumes:
+      - ./data:/backup/data:ro
+      - ./backups:/backup/output
+    command: |
+      sh -c "
+        while true; do
+          tar -czf /backup/output/backup-$$(date +%Y%m%d-%H%M%S).tar.gz /backup/data
+          find /backup/output -name '*.tar.gz' -mtime +30 -delete
+          sleep 604800
+        done
+      "
+    restart: unless-stopped
+
+volumes:
+  app_data:
+    driver: local
+
+networks:
+  default:
+    driver: bridge

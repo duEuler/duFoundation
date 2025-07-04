@@ -1,0 +1,313 @@
+version: '3.8'
+
+services:
+  # Load Balancer - Nginx with SSL
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl:/etc/nginx/ssl
+      - ./nginx/sites-enabled:/etc/nginx/sites-enabled
+    depends_on:
+      - app-1
+      - app-2
+    networks:
+      - small-network
+    restart: unless-stopped
+
+  # Aplicação Principal - Instância 1 (10K-50K usuários)
+  app-1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET:-default-jwt-secret}
+      - REDIS_URL=redis://redis-cluster:6379
+      - RATE_LIMIT_REQUESTS=1000
+      - RATE_LIMIT_WINDOW=900000
+      - INSTANCE_ID=app-1
+    depends_on:
+      - postgres-master
+      - redis-cluster
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./uploads:/app/uploads
+    networks:
+      - small-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+
+  # Aplicação Principal - Instância 2 (High Availability)
+  app-2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET:-default-jwt-secret}
+      - REDIS_URL=redis://redis-cluster:6379
+      - RATE_LIMIT_REQUESTS=1000
+      - RATE_LIMIT_WINDOW=900000
+      - INSTANCE_ID=app-2
+    depends_on:
+      - postgres-master
+      - redis-cluster
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./uploads:/app/uploads
+    networks:
+      - small-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+
+  # PostgreSQL Master
+  postgres-master:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-replit_optimizer}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_REPLICATION_MODE=master
+      - POSTGRES_REPLICATION_USER=replica
+      - POSTGRES_REPLICATION_PASSWORD=replica_password
+    volumes:
+      - postgres_master_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - small-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+
+  # PostgreSQL Read Replica
+  postgres-replica:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_MASTER_SERVICE=postgres-master
+      - POSTGRES_REPLICATION_MODE=slave
+      - POSTGRES_REPLICATION_USER=replica
+      - POSTGRES_REPLICATION_PASSWORD=replica_password
+    volumes:
+      - postgres_replica_data:/var/lib/postgresql/data
+    depends_on:
+      - postgres-master
+    networks:
+      - small-network
+    restart: unless-stopped
+
+  # Redis Cluster (3 nodes)
+  redis-cluster:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_cluster_data:/data
+    command: >
+      redis-server 
+      --appendonly yes 
+      --maxmemory 1gb 
+      --maxmemory-policy allkeys-lru
+      --cluster-enabled yes
+      --cluster-config-file nodes.conf
+      --cluster-node-timeout 5000
+    networks:
+      - small-network
+    restart: unless-stopped
+    deploy:
+      replicas: 3
+
+  # Elasticsearch for Search
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.8.0
+    ports:
+      - "9200:9200"
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - small-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+
+  # WebSocket Service
+  websocket-service:
+    build:
+      context: .
+      dockerfile: services/websocket/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - REDIS_URL=redis://redis-cluster:6379
+      - NODE_ENV=production
+    depends_on:
+      - redis-cluster
+    networks:
+      - small-network
+    restart: unless-stopped
+
+  # Advanced Analytics Service
+  analytics-service:
+    build:
+      context: .
+      dockerfile: services/analytics/Dockerfile
+    ports:
+      - "3005:3005"
+    environment:
+      - REDIS_URL=redis://redis-cluster:6379
+      - DATABASE_URL=${DATABASE_URL}
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - NODE_ENV=production
+    depends_on:
+      - redis-cluster
+      - postgres-master
+      - elasticsearch
+    networks:
+      - small-network
+    restart: unless-stopped
+
+  # Queue System with Bull
+  queue-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=redis://redis-cluster:6379
+      - WORKER_MODE=true
+      - WORKER_CONCURRENCY=10
+    depends_on:
+      - postgres-master
+      - redis-cluster
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - small-network
+    restart: unless-stopped
+    deploy:
+      replicas: 2
+    command: ["node", "dist/queue-worker.js"]
+
+  # Prometheus Monitoring
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=30d'
+    networks:
+      - small-network
+    restart: unless-stopped
+
+  # Grafana Dashboard
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3007:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources
+    depends_on:
+      - prometheus
+    networks:
+      - small-network
+    restart: unless-stopped
+
+  # Security Service (WAF)
+  security-service:
+    build:
+      context: .
+      dockerfile: services/security/Dockerfile
+    ports:
+      - "3008:3008"
+    environment:
+      - REDIS_URL=redis://redis-cluster:6379
+      - NODE_ENV=production
+      - WAF_ENABLED=true
+      - DDOS_PROTECTION=true
+    depends_on:
+      - redis-cluster
+    networks:
+      - small-network
+    restart: unless-stopped
+
+  # Backup Service - Horário
+  backup-service:
+    image: alpine:latest
+    volumes:
+      - postgres_master_data:/backup/postgres:ro
+      - redis_cluster_data:/backup/redis:ro
+      - ./data:/backup/app:ro
+      - ./backups:/backup/output
+    command: |
+      sh -c "
+        while true; do
+          tar -czf /backup/output/hourly-backup-$$(date +%Y%m%d-%H%M%S).tar.gz /backup/
+          find /backup/output -name '*.tar.gz' -mtime +3 -delete
+          sleep 3600
+        done
+      "
+    restart: unless-stopped
+    networks:
+      - small-network
+
+volumes:
+  postgres_master_data:
+    driver: local
+  postgres_replica_data:
+    driver: local
+  redis_cluster_data:
+    driver: local
+  elasticsearch_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+
+networks:
+  small-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.19.0.0/16
