@@ -131,9 +131,9 @@ export default function CapacitiesPage() {
     const cpuRequired = capacity.resources.cpuCores;
     const cpuAvailable = hw.cpuCores;
     
-    // Calcular porcentagens de uso
-    const ramUsage = Math.min((ramRequired / ramAvailable) * 100, 100);
-    const cpuUsage = Math.min((cpuRequired / cpuAvailable) * 100, 100);
+    // Calcular porcentagens de uso (pode passar de 100% se hardware for insuficiente)
+    const ramUsage = (ramRequired / ramAvailable) * 100;
+    const cpuUsage = (cpuRequired / cpuAvailable) * 100;
     
     // Calcular recursos disponíveis
     const ramFree = Math.max(ramAvailable - ramRequired, 0);
@@ -164,14 +164,11 @@ export default function CapacitiesPage() {
   };
 
   const getUsageBadgeColor = (percentage: number) => {
-    if (percentage <= 50) return "bg-blue-500 text-white"; // Azul para uso baixo
-    if (percentage <= 80) return "bg-green-500 text-white"; // Verde para uso moderado
-    if (percentage <= 100) return "bg-orange-500 text-white"; // Laranja para uso alto
-    return "bg-red-500 text-white"; // Vermelho para sobrecarga
+    if (percentage <= 100) return "bg-green-500 text-white"; // Verde para compatível (100% ou menos)
+    return "bg-red-500 text-white"; // Vermelho para incompatível (mais de 100%)
   };
 
   const getUsageBadgeText = (percentage: number) => {
-    if (percentage > 100) return `+${(percentage - 100).toFixed(0)}%`;
     return `${percentage.toFixed(0)}%`;
   };
 
