@@ -16,7 +16,9 @@ import {
   LogOut,
   TrendingUp,
   Package,
-  Monitor
+  Monitor,
+  Database,
+  Layers
 } from "lucide-react";
 
 export function Sidebar() {
@@ -104,6 +106,30 @@ export function Sidebar() {
                   </a>
                 </li>
               ))}
+            </ul>
+          </div>
+        )}
+
+        {shouldShowAdminMenu && (
+          <div className="mt-6">
+            <div className="px-6 mb-4">
+              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
+                Foundation Analytics
+              </h3>
+            </div>
+            <ul className="space-y-1 px-3">
+              <li>
+                <a href="/foundation/dependencies" className="nav-item">
+                  <Database size={20} className="mr-3" />
+                  Dependências & Bibliotecas
+                </a>
+              </li>
+              <li>
+                <a href="/foundation/capacities" className="nav-item">
+                  <Layers size={20} className="mr-3" />
+                  Capacidades Foundation
+                </a>
+              </li>
             </ul>
           </div>
         )}

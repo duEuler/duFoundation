@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useLocation } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
 import { Sidebar } from "@/components/dashboard/sidebar";
@@ -12,14 +12,10 @@ import { QuickActions } from "@/components/dashboard/quick-actions";
 import { FoundationMetrics } from "@/components/dashboard/foundation-metrics";
 import { FoundationConfig } from "@/components/dashboard/foundation-config";
 import { ResourceStatus } from "@/components/dashboard/resource-status";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import CapacitiesPage from "@/pages/foundation/capacities";
-import DependenciesPage from "@/pages/foundation/dependencies";
 
 export default function DashboardPage() {
   const { user, isAuthenticated } = useAuth();
   const [, setLocation] = useLocation();
-  const [activeTab, setActiveTab] = useState("overview");
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -45,41 +41,23 @@ export default function DashboardPage() {
         <Header />
         
         <main className="p-6">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-6">
-              <TabsTrigger value="overview">Dashboard Principal</TabsTrigger>
-              <TabsTrigger value="capacities">Capacidades Foundation</TabsTrigger>
-              <TabsTrigger value="dependencies">Dependências & Bibliotecas</TabsTrigger>
-            </TabsList>
+          <ResourceStatus />
+          <MetricsCards />
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
+            <div className="lg:col-span-2 space-y-6">
+              <ActivityChart />
+              {user.role === "admin" && <UserTable />}
+            </div>
             
-            <TabsContent value="overview" className="space-y-6">
-              <ResourceStatus />
-              <MetricsCards />
-              
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
-                <div className="lg:col-span-2 space-y-6">
-                  <ActivityChart />
-                  {user.role === "admin" && <UserTable />}
-                </div>
-                
-                <div className="space-y-6">
-                  <FoundationMetrics />
-                  {user.role === "admin" && <FoundationConfig />}
-                  <SystemStatus />
-                  <RecentActivity />
-                  <QuickActions />
-                </div>
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="capacities">
-              <CapacitiesPage />
-            </TabsContent>
-            
-            <TabsContent value="dependencies">
-              <DependenciesPage />
-            </TabsContent>
-          </Tabs>
+            <div className="space-y-6">
+              <FoundationMetrics />
+              {user.role === "admin" && <FoundationConfig />}
+              <SystemStatus />
+              <RecentActivity />
+              <QuickActions />
+            </div>
+          </div>
         </main>
       </div>
     </div>
