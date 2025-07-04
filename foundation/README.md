@@ -197,7 +197,7 @@ node foundation/foundation-remover.cjs
 ## 📚 Documentação Adicional
 
 - `foundation/.replit`: Configuração do Replit
-- `foundation/.config/foundation.json`: Configurações do sistema
+- `foundation/foundation.config.json`: Configurações do sistema
 - `foundation/REPLIT_ORDER_EXECUTION.md`: Ordem de execução dos arquivos
 - `foundation/backups/`: Backups automáticos de remoção
 

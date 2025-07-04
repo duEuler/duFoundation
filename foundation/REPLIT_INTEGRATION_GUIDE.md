@@ -14,7 +14,7 @@ foundation/
 └── REPLIT_ORDER_EXECUTION.md    ← Documentação dos padrões
 ```
 
-### 2. Arquivo foundation.config.json (Raiz do projeto)
+### 2. Arquivo foundation/foundation.config.json (Raiz do projeto)
 
 Configuração principal do foundation:
 ```json

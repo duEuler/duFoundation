@@ -139,6 +139,7 @@ Changelog:
 - July 4, 2025. Added foundation-remove global command for easy access
 - July 4, 2025. Implemented /foundation/setup route for web interface configuration
 - July 4, 2025. Created portable system that works in any project when extracted
+- July 4, 2025. Fixed file organization: moved foundation.config.json from root to foundation/ directory
 ```
 
 ## User Preferences

@@ -172,7 +172,7 @@ cd foundation && bash foundation.sh verify
 - Limitações e soluções
 - Métodos de implementação
 
-### 3. `foundation/.config/foundation.json`
+### 3. `foundation/foundation.config.json`
 - Configuração estruturada
 - Parâmetros do sistema
 - Capacidades definidas
