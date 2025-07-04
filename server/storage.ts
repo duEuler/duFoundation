@@ -1,19 +1,10 @@
 import { 
   users, 
-  sessions, 
   systemConfig, 
-  systemMetrics, 
-  activityLogs,
   type User, 
   type InsertUser,
-  type Session,
-  type InsertSession,
   type SystemConfig,
-  type InsertSystemConfig,
-  type SystemMetric,
-  type InsertSystemMetric,
-  type ActivityLog,
-  type InsertActivityLog
+  type InsertSystemConfig
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, gte } from "drizzle-orm";

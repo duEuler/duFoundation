@@ -5,8 +5,8 @@ import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import { setupSchema, loginSchema, insertUserSchema } from "@shared/schema";
 import { z } from "zod";
-import { monitoringService, createMonitoringMiddleware } from "./monitoring";
-import { getFoundationConfig, validateCapacityForUsers, suggestCapacityForUsers, FOUNDATION_CONFIGS } from "./foundation-config";
+import { monitoringService, createMonitoringMiddleware } from "../foundation/server/monitoring";
+import { getFoundationConfig, validateCapacityForUsers, suggestCapacityForUsers, FOUNDATION_CONFIGS } from "../foundation/server/foundation-config";
 import * as os from 'os';
 
 export async function registerRoutes(app: Express): Promise<Server> {
