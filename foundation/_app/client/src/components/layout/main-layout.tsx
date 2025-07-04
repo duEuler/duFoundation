@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { SidebarNavigation } from "./sidebar-navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import { Badge } from "../components/ui/badge";
 import { AlertTriangle, CheckCircle, Clock, Users } from "lucide-react";
 
 interface MainLayoutProps {

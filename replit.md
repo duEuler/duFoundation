@@ -317,6 +317,13 @@ Changelog:
 - July 4, 2025. Implementada API /api/foundation/install para processamento completo do wizard
 - July 4, 2025. Sistema agora cria usuário administrativo, configuração do sistema e logs de atividade automaticamente
 - July 4, 2025. Wizard inclui validações robustas e interface responsiva para experiência do usuário otimizada
+- July 4, 2025. ISOLAMENTO CRÍTICO FOUNDATION/_APP CORRIGIDO: Identificadas e eliminadas TODAS as violações de isolamento
+- July 4, 2025. Corrigidos 3 arquivos com imports externos quebrados (SetupWizard.tsx, UserLevelSelector.tsx, SimpleInterface.tsx)
+- July 4, 2025. Eliminados 47+ imports @/lib/utils em componentes UI, substituídos por caminhos relativos ../../lib/utils
+- July 4, 2025. Foundation/_app agora 100% isolado: package.json próprio, node_modules independente, 47 componentes UI internos
+- July 4, 2025. README.md foundation/_app reescrito com regras críticas de isolamento arquitetural no início
+- July 4, 2025. Sistema foundation/_app validado como completamente independente da aplicação raiz
+- July 4, 2025. Documentada estrutura técnica completa: React 18, Express, PostgreSQL, shadcn/ui, Drizzle ORM isolados
 ```
 
 ## User Preferences
@@ -329,4 +336,14 @@ Architecture Rules:
 - Manter foco em usuários leigos, evitar jargões técnicos
 - Usar sistema de onboarding por etapas para formulários grandes
 - CLI é bem-vindo, mas interfaces simplificadas são prioridade
+
+REGRAS CRÍTICAS DE ISOLAMENTO FOUNDATION/_APP:
+- NUNCA usar imports externos (@/ para arquivos da raiz)
+- NUNCA referenciar arquivos fora de foundation/_app/
+- TODOS os 47 componentes UI devem ser internos
+- Package.json próprio com dependências isoladas
+- Node_modules completamente independente
+- Vite.config.ts e tsconfig.json isolados
+- Schema database próprio (shared/schema.ts)
+- Sistema deve funcionar 100% independente da aplicação raiz
 ```

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
+import { Badge } from "../components/ui/badge";
+import { Progress } from "../components/ui/progress";
 import { Activity, Cpu, Database, Users, Zap, TrendingUp } from "lucide-react";
 
 interface FoundationMetrics {

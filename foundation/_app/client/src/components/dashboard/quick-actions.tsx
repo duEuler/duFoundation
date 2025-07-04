@@ -1,6 +1,6 @@
-import { useAuth } from "@/hooks/use-auth";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { useAuth } from "../hooks/use-auth";
+import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import { Button } from "../components/ui/button";
 import { Plus, Download, Settings } from "lucide-react";
 
 export function QuickActions() {

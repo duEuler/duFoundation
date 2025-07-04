@@ -1,8 +1,8 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { useLocation } from "wouter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { authService, type AuthUser } from "@/lib/auth";
-import { useToast } from "@/hooks/use-toast";
+import { authService, type AuthUser } from "../lib/auth";
+import { useToast } from "../hooks/use-toast";
 import type { LoginRequest } from "@shared/schema";
 
 interface AuthContextType {

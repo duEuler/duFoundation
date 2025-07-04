@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useAuth } from "@/hooks/use-auth";
-import { Button } from "@/components/ui/button";
+import { useAuth } from "../hooks/use-auth";
+import { Button } from "../components/ui/button";
 import { Menu, Bell } from "lucide-react";
 
 export function Header() {

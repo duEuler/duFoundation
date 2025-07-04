@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useAuth } from "@/hooks/use-auth";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { Button } from "@/components/ui/button";
+import { useAuth } from "../hooks/use-auth";
+import { useIsMobile } from "../hooks/use-mobile";
+import { Button } from "../components/ui/button";
 import { 
   LayoutDashboard, 
   Users, 

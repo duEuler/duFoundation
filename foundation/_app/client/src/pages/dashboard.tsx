@@ -1,17 +1,17 @@
 import { useEffect } from "react";
 import { useLocation } from "wouter";
-import { useAuth } from "@/hooks/use-auth";
-import { Sidebar } from "@/components/dashboard/sidebar";
-import { Header } from "@/components/dashboard/header";
-import { MetricsCards } from "@/components/dashboard/metrics-cards";
-import { ActivityChart } from "@/components/dashboard/activity-chart";
-import { UserTable } from "@/components/dashboard/user-table";
-import { SystemStatus } from "@/components/dashboard/system-status";
-import { RecentActivity } from "@/components/dashboard/recent-activity";
-import { QuickActions } from "@/components/dashboard/quick-actions";
-import { FoundationMetrics } from "@/components/dashboard/foundation-metrics";
-import { FoundationConfig } from "@/components/dashboard/foundation-config";
-import { ResourceStatus } from "@/components/dashboard/resource-status";
+import { useAuth } from "../hooks/use-auth";
+import { Sidebar } from "../components/dashboard/sidebar";
+import { Header } from "../components/dashboard/header";
+import { MetricsCards } from "../components/dashboard/metrics-cards";
+import { ActivityChart } from "../components/dashboard/activity-chart";
+import { UserTable } from "../components/dashboard/user-table";
+import { SystemStatus } from "../components/dashboard/system-status";
+import { RecentActivity } from "../components/dashboard/recent-activity";
+import { QuickActions } from "../components/dashboard/quick-actions";
+import { FoundationMetrics } from "../components/dashboard/foundation-metrics";
+import { FoundationConfig } from "../components/dashboard/foundation-config";
+import { ResourceStatus } from "../components/dashboard/resource-status";
 
 export default function DashboardPage() {
   const { user, isAuthenticated } = useAuth();
