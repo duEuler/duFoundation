@@ -5,6 +5,52 @@
 <!-- Related: IMPLEMENTATION-REPORT.md, AUDIT-REPORT.md, docs/INDEX.md -->
 <!-- Updated: 2025-07-04 -->
 
+## 🚀 **Início Rápido - Como Usar**
+
+### **Pré-requisitos**
+- Node.js 18+
+- PostgreSQL  
+- Git
+- 500MB+ espaço em disco
+
+### **Para Projetos Novos:**
+```bash
+# Clonar duFundation
+git clone [repo-url] 
+cd duFundation
+
+# Criar projeto com dashboard integrado
+./dufundation create meu-projeto --capacity=small --strategy=native
+```
+
+### **Para Projetos Existentes:**
+```bash
+# Dentro do projeto existente
+git clone [repo-url] duFundation
+
+# Integrar como microserviço (zero impacto no código)
+duFundation/dufundation integrate --strategy=microservice --port=3001
+```
+
+### **Análise de Compatibilidade:**
+```bash
+# Verificar se projeto é compatível
+duFundation/dufundation analyze ./meu-projeto
+# Score: 0-130 pontos (>100 = otimizado)
+```
+
+### **Comandos Principais:**
+```bash
+./dufundation create <nome> [opções]      # Criar projeto novo
+./dufundation integrate [opções]          # Integrar em existente
+./dufundation analyze [caminho]           # Analisar compatibilidade
+./dufundation upgrade --from=X --to=Y     # Migrar capacidade
+./dufundation health-check                # Verificar saúde
+./dufundation --help                      # Ver todas opções
+```
+
+---
+
 ## 🏗️ **Estrutura Arquitetural Completa**
 
 ```
@@ -52,6 +98,49 @@ duFundation/
 - Preservação do código legacy
 - Migração progressiva
 - Camada de integração bridge
+
+## ⚡ **Recursos Avançados Inclusos**
+
+### **🔧 Sistema de Templates Inteligente**
+- **20+ templates especializados** que se adaptam à capacidade escolhida
+- Configurações Docker otimizadas (nano → enterprise)
+- Package.json com dependências específicas por tier
+- Templates para i18n, testes, monitoring
+
+### **🏥 Health Check & Monitoramento**
+```bash
+./dufundation health-check                    # Verificar saúde completa
+./dufundation health-check --component=database # Componente específico
+```
+- Métricas em tempo real no dashboard
+- Alertas automáticos configuráveis
+- Prometheus/Grafana integrado (large+)
+
+### **🔄 Upgrade Automático**
+```bash
+./dufundation upgrade --from=small --to=medium --backup
+```
+- Migração automática entre capacidades
+- Backup automático antes do upgrade
+- Zero downtime para enterprise
+
+### **🔒 Validador de Isolamento**
+```bash
+cd duFundation/dashboard && node validate-isolation.cjs
+```
+- Garante 100% isolamento arquitetural
+- Detecta violações de dependências
+- Score: 0 violações = perfeito
+
+### **🌍 Internacionalização (i18n)**
+- Suporte automático para múltiplos idiomas
+- Configuração i18next pré-configurada
+- Templates para EN, PT, ES, FR
+
+### **🧪 Sistema de Testes**
+- Framework Vitest pré-configurado
+- Coverage automático
+- Testes isolados por componente
 
 ## 📊 **Fluxo de Decisão**
 

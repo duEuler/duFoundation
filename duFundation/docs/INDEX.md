@@ -26,7 +26,17 @@
 
 ### **🔧 Para Desenvolvedores**
 
-4. **[API Reference](references/api-reference.md)**
+4. **[Recursos Avançados](references/advanced-features.md)** ⭐ **NOVO**
+   - Tags: `advanced`, `i18n`, `testing`, `docker`, `health-check`
+   - Internacionalização, Testes, Docker Enterprise
+   - Validador de Isolamento, Health Check, Upgrade Automático
+
+5. **[Sistema de Templates](references/template-system.md)** ⭐ **NOVO**
+   - Tags: `templates`, `automation`, `docker`, `capacity-based`
+   - 20+ templates especializados por capacidade
+   - Configuração automática e customização
+
+6. **[API Reference](references/api-reference.md)**
    - Tags: `api`, `endpoints`, `integration`, `technical`
    - Documentação completa de APIs
    - Exemplos de integração
