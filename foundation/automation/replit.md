@@ -61,6 +61,16 @@ Este projeto foi criado usando a duEuler Foundation, uma base completa para dese
 - **Media Library**: File upload and management system
 - **Configuration-based**: JSON configuration files for easy content updates
 
+### Foundation Management System
+- **Scanner Automático**: Detecção automática de compatibilidade na primeira execução
+- **Instalação Inteligente**: Verificação completa antes da instalação com templates dinâmicos
+- **Desinstalação Inteligente**: Sistema que detecta e remove rastros mesmo sem instalação ativa
+  - Cenário 1: Foundation instalado - remoção completa com confirmação
+  - Cenário 2: Apenas rastros - limpeza específica de flags e relatórios
+  - Cenário 3: Projeto limpo - verificação sem alterações
+- **Limpeza de Rastros**: Remove `.foundation-scanned`, `.foundation-ignore`, relatórios JSON
+- **Controle de Execução**: Flag system para evitar re-execução desnecessária do scanner
+
 ### Enterprise API System (69 Total APIs)
 
 #### Core Platform APIs (11 APIs)
@@ -214,6 +224,9 @@ Preferred communication style: Simple, everyday language.
 - **Foundation Setup**: Sistema criado usando duEuler Foundation v3.0 (29/06/2025)
 - **Capacidade Inicial**: Configurado para enterprise capacity
 - **APIs Implementadas**: 69 endpoints funcionais
+- **Scanner Automático**: Sistema de detecção automática implementado (04/07/2025)
+- **Desinstalação Inteligente**: Sistema que detecta e limpa rastros mesmo sem instalação (04/07/2025)
+- **Limpeza de Rastros**: Remove flags (.foundation-scanned, .foundation-ignore) e relatórios automaticamente (04/07/2025)
 
 ## Operações Enterprise Implementadas
 
