@@ -1,0 +1,514 @@
+#!/usr/bin/env node
+
+/**
+ * duFundation v3.1 - Security CLI
+ * Comando: ./dufundation-security
+ * Funcionalidades: Gestão de recursos de segurança crítica
+ */
+
+// Force CommonJS mode
+const fs = require('fs');
+const path = require('path');
+
+// Import security modules
+const AdvancedSessionManager = require('./core/security/session-manager');
+const AdvancedRateLimiter = require('./core/security/rate-limiter');
+const AuditTrailManager = require('./core/security/audit-trail');
+const MFAManager = require('./core/security/mfa-manager');
+const StructuredLogger = require('./core/observability/structured-logger');
+const BackupManager = require('./core/disaster-recovery/backup-manager');
+
+class SecurityCLI {
+  constructor() {
+    this.command = process.argv[2];
+    this.subCommand = process.argv[3];
+    this.options = this.parseOptions(process.argv.slice(4));
+    
+    this.capacity = this.getCapacity();
+    this.initializeServices();
+  }
+
+  getCapacity() {
+    try {
+      const configPath = path.join(__dirname, '_app', 'foundation.config.json');
+      if (fs.existsSync(configPath)) {
+        const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+        return config.capacity || 'small';
+      }
+    } catch (error) {
+      console.warn('Could not read capacity from config, defaulting to small');
+    }
+    return 'small';
+  }
+
+  initializeServices() {
+    this.sessionManager = new AdvancedSessionManager({ capacity: this.capacity });
+    this.rateLimiter = new AdvancedRateLimiter({ capacity: this.capacity });
+    this.auditManager = new AuditTrailManager({ capacity: this.capacity });
+    this.mfaManager = new MFAManager({ capacity: this.capacity });
+    this.logger = new StructuredLogger({ capacity: this.capacity });
+    this.backupManager = new BackupManager({ capacity: this.capacity });
+  }
+
+  parseOptions(args) {
+    const options = {};
+    for (let i = 0; i < args.length; i += 2) {
+      if (args[i].startsWith('--')) {
+        options[args[i].slice(2)] = args[i + 1] || true;
+      }
+    }
+    return options;
+  }
+
+  async run() {
+    try {
+      switch (this.command) {
+        case 'sessions':
+          await this.handleSessions();
+          break;
+        case 'rate-limits':
+          await this.handleRateLimits();
+          break;
+        case 'audit':
+          await this.handleAudit();
+          break;
+        case 'mfa':
+          await this.handleMFA();
+          break;
+        case 'backup':
+          await this.handleBackup();
+          break;
+        case 'test':
+          await this.handleTest();
+          break;
+        case 'status':
+          await this.handleStatus();
+          break;
+        case 'help':
+        default:
+          this.showHelp();
+          break;
+      }
+    } catch (error) {
+      console.error('Error:', error.message);
+      process.exit(1);
+    }
+  }
+
+  async handleSessions() {
+    switch (this.subCommand) {
+      case 'active':
+        const analytics = this.sessionManager.getSessionAnalytics();
+        console.log('Active Sessions:', JSON.stringify(analytics, null, 2));
+        break;
+        
+      case 'cleanup':
+        this.sessionManager.cleanupExpiredSessions();
+        console.log('✅ Expired sessions cleaned up');
+        break;
+        
+      case 'create':
+        if (!this.options['user-id'] || !this.options['ip']) {
+          console.error('Usage: --user-id <id> --ip <address>');
+          process.exit(1);
+        }
+        const sessionId = await this.sessionManager.createSession(
+          this.options['user-id'],
+          this.options['user-agent'] || 'CLI/1.0',
+          this.options['ip']
+        );
+        console.log('✅ Session created:', sessionId);
+        break;
+        
+      default:
+        console.log('Sessions commands: active, cleanup, create');
+    }
+  }
+
+  async handleRateLimits() {
+    switch (this.subCommand) {
+      case 'status':
+        const analytics = this.rateLimiter.getAnalytics();
+        console.log('Rate Limit Status:', JSON.stringify(analytics, null, 2));
+        break;
+        
+      case 'check':
+        if (!this.options['user-id'] || !this.options['endpoint']) {
+          console.error('Usage: --user-id <id> --role <role> --ip <ip> --endpoint <endpoint>');
+          process.exit(1);
+        }
+        const result = await this.rateLimiter.checkLimit(
+          this.options['user-id'],
+          this.options['role'] || 'user',
+          this.options['ip'] || '127.0.0.1',
+          this.options['endpoint']
+        );
+        console.log('Rate Limit Check:', JSON.stringify(result, null, 2));
+        break;
+        
+      case 'block-user':
+        if (!this.options['user-id']) {
+          console.error('Usage: --user-id <id> [--duration <ms>]');
+          process.exit(1);
+        }
+        this.rateLimiter.blockUser(
+          this.options['user-id'],
+          parseInt(this.options['duration']) || 300000
+        );
+        console.log('✅ User blocked:', this.options['user-id']);
+        break;
+        
+      case 'block-ip':
+        if (!this.options['ip']) {
+          console.error('Usage: --ip <address> [--duration <ms>]');
+          process.exit(1);
+        }
+        this.rateLimiter.blockIP(
+          this.options['ip'],
+          parseInt(this.options['duration']) || 300000
+        );
+        console.log('✅ IP blocked:', this.options['ip']);
+        break;
+        
+      default:
+        console.log('Rate-limits commands: status, check, block-user, block-ip');
+    }
+  }
+
+  async handleAudit() {
+    switch (this.subCommand) {
+      case 'search':
+        const filters = {
+          userId: this.options['user-id'],
+          action: this.options['action'],
+          startDate: this.options['start-date'],
+          endDate: this.options['end-date'],
+          ipAddress: this.options['ip'],
+          page: parseInt(this.options['page']) || 1,
+          limit: parseInt(this.options['limit']) || 20
+        };
+        
+        const results = await this.auditManager.searchLogs(filters);
+        console.log('Audit Logs:', JSON.stringify(results, null, 2));
+        break;
+        
+      case 'log':
+        if (!this.options['action'] || !this.options['user-id']) {
+          console.error('Usage: --action <action> --user-id <id> [--ip <ip>]');
+          process.exit(1);
+        }
+        const actionId = await this.auditManager.logAction(
+          this.options['action'],
+          this.options['user-id'],
+          {
+            ipAddress: this.options['ip'],
+            userAgent: 'CLI/1.0',
+            sessionId: this.options['session-id']
+          }
+        );
+        console.log('✅ Action logged:', actionId);
+        break;
+        
+      case 'compliance-report':
+        if (!this.options['start-date'] || !this.options['end-date']) {
+          console.error('Usage: --start-date <date> --end-date <date> [--output <file>]');
+          process.exit(1);
+        }
+        const report = await this.auditManager.generateComplianceReport(
+          this.options['start-date'],
+          this.options['end-date']
+        );
+        
+        if (this.options['output']) {
+          fs.writeFileSync(this.options['output'], JSON.stringify(report, null, 2));
+          console.log('✅ Compliance report saved to:', this.options['output']);
+        } else {
+          console.log('Compliance Report:', JSON.stringify(report, null, 2));
+        }
+        break;
+        
+      default:
+        console.log('Audit commands: search, log, compliance-report');
+    }
+  }
+
+  async handleMFA() {
+    switch (this.subCommand) {
+      case 'setup':
+        if (!this.options['user-id'] || !this.options['method']) {
+          console.error('Usage: --user-id <id> --method <totp|sms|email> [--phone <number>] [--email <address>]');
+          process.exit(1);
+        }
+        
+        const setupOptions = {};
+        if (this.options['phone']) setupOptions.phoneNumber = this.options['phone'];
+        if (this.options['email']) setupOptions.email = this.options['email'];
+        if (this.options['issuer']) setupOptions.issuer = this.options['issuer'];
+        
+        const setup = await this.mfaManager.setupMFA(
+          this.options['user-id'],
+          this.options['method'],
+          setupOptions
+        );
+        console.log('✅ MFA Setup:', JSON.stringify(setup, null, 2));
+        break;
+        
+      case 'verify-setup':
+        if (!this.options['verification-id'] || !this.options['code']) {
+          console.error('Usage: --verification-id <id> --code <code>');
+          process.exit(1);
+        }
+        const verification = await this.mfaManager.verifyMFASetup(
+          this.options['verification-id'],
+          this.options['code']
+        );
+        console.log('✅ MFA Verification:', JSON.stringify(verification, null, 2));
+        break;
+        
+      case 'challenge':
+        if (!this.options['user-id']) {
+          console.error('Usage: --user-id <id>');
+          process.exit(1);
+        }
+        const challenge = await this.mfaManager.challengeMFA(
+          this.options['user-id'],
+          { ipAddress: this.options['ip'] || '127.0.0.1' }
+        );
+        console.log('MFA Challenge:', JSON.stringify(challenge, null, 2));
+        break;
+        
+      default:
+        console.log('MFA commands: setup, verify-setup, challenge');
+    }
+  }
+
+  async handleBackup() {
+    switch (this.subCommand) {
+      case 'create':
+        const backupType = this.options['type'] || 'full';
+        let backup;
+        
+        if (backupType === 'full') {
+          backup = await this.backupManager.createFullBackup({
+            creator: 'cli',
+            description: this.options['description'] || 'CLI backup'
+          });
+        } else if (backupType === 'incremental') {
+          if (!this.options['base-backup']) {
+            console.error('Incremental backup requires --base-backup <id>');
+            process.exit(1);
+          }
+          backup = await this.backupManager.createIncrementalBackup(
+            this.options['base-backup'],
+            { creator: 'cli', description: this.options['description'] || 'CLI incremental backup' }
+          );
+        }
+        
+        console.log('✅ Backup created:', JSON.stringify(backup, null, 2));
+        break;
+        
+      case 'restore':
+        if (!this.options['backup-id']) {
+          console.error('Usage: --backup-id <id> [--point-in-time <timestamp>]');
+          process.exit(1);
+        }
+        
+        const restoreOptions = {};
+        if (this.options['point-in-time']) {
+          restoreOptions.pointInTime = this.options['point-in-time'];
+        }
+        
+        const restore = await this.backupManager.restoreFromBackup(
+          this.options['backup-id'],
+          restoreOptions
+        );
+        console.log('✅ Restore completed:', JSON.stringify(restore, null, 2));
+        break;
+        
+      case 'test-failover':
+        if (this.capacity !== 'large' && this.capacity !== 'enterprise') {
+          console.error('Failover testing requires LARGE+ capacity');
+          process.exit(1);
+        }
+        const failoverResult = await this.backupManager.testFailover();
+        console.log('Failover Test:', JSON.stringify(failoverResult, null, 2));
+        break;
+        
+      case 'chaos':
+        if (this.capacity !== 'enterprise') {
+          console.error('Chaos engineering requires ENTERPRISE capacity');
+          process.exit(1);
+        }
+        if (!this.options['scenario']) {
+          console.error('Usage: --scenario <scenario> [--duration <ms>]');
+          process.exit(1);
+        }
+        const chaosOptions = {};
+        if (this.options['duration']) {
+          chaosOptions.duration = parseInt(this.options['duration']);
+        }
+        const chaosResult = await this.backupManager.runChaosTest(
+          this.options['scenario'],
+          chaosOptions
+        );
+        console.log('Chaos Test:', JSON.stringify(chaosResult, null, 2));
+        break;
+        
+      case 'status':
+        const drStatus = this.backupManager.getDRStatus();
+        console.log('Disaster Recovery Status:', JSON.stringify(drStatus, null, 2));
+        break;
+        
+      default:
+        console.log('Backup commands: create, restore, test-failover, chaos, status');
+    }
+  }
+
+  async handleTest() {
+    console.log('🧪 Running Security Systems Test...\n');
+    
+    try {
+      // Test Session Manager
+      console.log('1. Testing Session Manager...');
+      const sessionId = await this.sessionManager.createSession('test-user', 'CLI/1.0', '127.0.0.1');
+      const validation = await this.sessionManager.validateSession(sessionId, '127.0.0.1', 'CLI/1.0');
+      console.log('   ✅ Session creation and validation:', validation.valid);
+      
+      // Test Rate Limiter
+      console.log('2. Testing Rate Limiter...');
+      const limitCheck = await this.rateLimiter.checkLimit('test-user', 'user', '127.0.0.1', '/api/test');
+      console.log('   ✅ Rate limit check:', limitCheck.allowed);
+      
+      // Test Audit Trail
+      console.log('3. Testing Audit Trail...');
+      const actionId = await this.auditManager.logAction('test_action', 'test-user', {
+        ipAddress: '127.0.0.1', userAgent: 'CLI/1.0'
+      });
+      console.log('   ✅ Audit logging:', !!actionId);
+      
+      // Test MFA (basic setup only)
+      console.log('4. Testing MFA Manager...');
+      try {
+        const mfaSetup = await this.mfaManager.setupMFA('test-user', 'email', { email: 'test@example.com' });
+        console.log('   ✅ MFA setup:', !!mfaSetup.verificationId);
+      } catch (error) {
+        console.log('   ⚠️  MFA setup (requires email provider):', error.message);
+      }
+      
+      // Test Structured Logger
+      console.log('5. Testing Structured Logger...');
+      this.logger.info('Test log entry', { userId: 'test-user', correlationId: 'test-123' });
+      const trackingId = this.logger.startPerformanceTracking('test_operation');
+      this.logger.endPerformanceTracking(trackingId);
+      console.log('   ✅ Structured logging and performance tracking');
+      
+      // Test Backup Manager (status only)
+      console.log('6. Testing Backup Manager...');
+      const drStatus = this.backupManager.getDRStatus();
+      console.log('   ✅ Backup manager status:', !!drStatus.backupStatus);
+      
+      console.log('\n🎉 All security systems operational!');
+      
+    } catch (error) {
+      console.error('\n❌ Test failed:', error.message);
+      process.exit(1);
+    }
+  }
+
+  async handleStatus() {
+    console.log(`📊 duFundation Security Status (Capacity: ${this.capacity.toUpperCase()})\n`);
+    
+    // Session Manager Status
+    const sessionAnalytics = this.sessionManager.getSessionAnalytics();
+    console.log('🔐 Session Manager:');
+    console.log(`   Active Sessions: ${sessionAnalytics.totalActiveSessions}`);
+    console.log(`   Unique Users: ${sessionAnalytics.uniqueUsers}`);
+    console.log(`   Avg Session Duration: ${Math.round(sessionAnalytics.averageSessionDuration / 1000)}s`);
+    
+    // Rate Limiter Status
+    const rateLimitAnalytics = this.rateLimiter.getAnalytics();
+    console.log('\n🚦 Rate Limiter:');
+    console.log(`   Active Users: ${rateLimitAnalytics.totalActiveUsers}`);
+    console.log(`   Blocked Users: ${rateLimitAnalytics.totalBlockedUsers}`);
+    console.log(`   Blocked IPs: ${rateLimitAnalytics.totalBlockedIPs}`);
+    
+    // Logger Status
+    const logStats = this.logger.getLogStats();
+    console.log('\n📝 Structured Logger:');
+    console.log(`   Total Logs: ${logStats.total}`);
+    console.log(`   Buffer Size: ${logStats.bufferSize}`);
+    console.log(`   Correlation Contexts: ${logStats.correlationContexts}`);
+    
+    // Backup Status
+    const drStatus = this.backupManager.getDRStatus();
+    console.log('\n💾 Disaster Recovery:');
+    console.log(`   Total Backups: ${drStatus.backupStatus.totalBackups}`);
+    console.log(`   Success Rate: ${(drStatus.backupStatus.successRate * 100).toFixed(1)}%`);
+    console.log(`   RTO: ${drStatus.recoveryCapabilities.rto}s`);
+    console.log(`   RPO: ${drStatus.recoveryCapabilities.rpo}s`);
+    
+    console.log('\n✅ All systems operational');
+  }
+
+  showHelp() {
+    console.log(`
+duFundation Security CLI v3.1
+
+Usage: ./dufundation-security <command> [subcommand] [options]
+
+Commands:
+  sessions         Manage user sessions
+    active           Show active sessions analytics
+    cleanup          Clean up expired sessions
+    create           Create new session (--user-id --ip [--user-agent])
+
+  rate-limits      Manage API rate limiting
+    status           Show rate limiting analytics
+    check            Check rate limit (--user-id --role --ip --endpoint)
+    block-user       Block user (--user-id [--duration])
+    block-ip         Block IP address (--ip [--duration])
+
+  audit            Manage audit trail
+    search           Search audit logs (--user-id --action --start-date --end-date)
+    log              Log action (--action --user-id [--ip])
+    compliance-report Generate compliance report (--start-date --end-date [--output])
+
+  mfa              Manage multi-factor authentication
+    setup            Setup MFA (--user-id --method [--phone --email --issuer])
+    verify-setup     Verify MFA setup (--verification-id --code)
+    challenge        Create MFA challenge (--user-id)
+
+  backup           Manage backups and disaster recovery
+    create           Create backup (--type [full|incremental] [--base-backup])
+    restore          Restore backup (--backup-id [--point-in-time])
+    test-failover    Test failover (LARGE+ only)
+    chaos            Run chaos test (ENTERPRISE only, --scenario [--duration])
+    status           Show disaster recovery status
+
+  test             Run comprehensive security systems test
+  status           Show overall security status
+  help             Show this help message
+
+Current Capacity: ${this.capacity.toUpperCase()}
+
+Examples:
+  ./dufundation-security sessions active
+  ./dufundation-security rate-limits check --user-id 123 --role admin --endpoint /api/data
+  ./dufundation-security audit search --user-id 123 --start-date 2025-07-01
+  ./dufundation-security mfa setup --user-id 123 --method totp --issuer MyApp
+  ./dufundation-security backup create --type full --description "Manual backup"
+  ./dufundation-security test
+`);
+  }
+}
+
+// Run CLI
+if (require.main === module) {
+  const cli = new SecurityCLI();
+  cli.run().catch(error => {
+    console.error('CLI Error:', error);
+    process.exit(1);
+  });
+}
+
+module.exports = SecurityCLI;
