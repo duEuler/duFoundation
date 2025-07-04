@@ -1,0 +1,66 @@
+{
+  "_metadata": {
+    "duEuler_foundation_file": true,
+    "project": "DuEuler Foundation Management System",
+    "capacity": "small",
+    "target_users": 10000,
+    "version": "3.0",
+    "integrated": true
+  },
+  "system": {
+    "capacity_level": "small",
+    "max_concurrent_users": 10000,
+    "performance_targets": {
+      "response_time_ms": 100,
+      "throughput_rps": 500,
+      "availability_percent": 99.5,
+      "error_rate_threshold": 1.0
+    },
+    "resources": {
+      "ram_mb": 2048,
+      "cpu_cores": 2,
+      "storage_gb": 50,
+      "bandwidth_mbps": 100
+    }
+  },
+  "security": {
+    "session_timeout_hours": 24,
+    "rate_limiting": {
+      "enabled": true,
+      "requests_per_minute": 100,
+      "burst_limit": 150
+    },
+    "password_requirements": {
+      "min_length": 8,
+      "require_special_chars": true,
+      "require_numbers": true
+    }
+  },
+  "database": {
+    "postgresql": {
+      "max_connections": 50,
+      "connection_timeout": 5000,
+      "pool_size": 10,
+      "backup_frequency": "daily"
+    }
+  },
+  "monitoring": {
+    "metrics_refresh_interval": 30000,
+    "system_health_checks": 60000,
+    "activity_log_retention_days": 90
+  },
+  "roles": {
+    "admin": {
+      "permissions": ["all"],
+      "dashboard_components": ["metrics", "users", "system", "activity"]
+    },
+    "manager": {
+      "permissions": ["reports", "team", "projects"],
+      "dashboard_components": ["metrics", "reports", "team", "activity"]
+    },
+    "user": {
+      "permissions": ["profile", "notifications"],
+      "dashboard_components": ["basic_metrics", "profile", "notifications"]
+    }
+  }
+}

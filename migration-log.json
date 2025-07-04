@@ -1,7 +1,624 @@
 {
   "migration": "Foundation v3.0 Reorganization",
-  "startTime": "2025-07-04T03:35:44.168Z",
-  "operations": [],
+  "startTime": "2025-07-04T03:36:28.749Z",
+  "endTime": "2025-07-04T03:36:31.986Z",
+  "duration": "3s",
+  "operations": [
+    {
+      "timestamp": "2025-07-04T03:36:31.760Z",
+      "operation": "CREATE_STRUCTURE",
+      "details": {
+        "description": "Estrutura de diretórios Foundation criada",
+        "directories": [
+          "foundation_new",
+          "foundation_new/client",
+          "foundation_new/client/src",
+          "foundation_new/client/src/pages",
+          "foundation_new/client/src/components",
+          "foundation_new/client/src/components/dashboard",
+          "foundation_new/client/src/components/layout",
+          "foundation_new/client/src/components/ui",
+          "foundation_new/client/src/hooks",
+          "foundation_new/client/src/lib",
+          "foundation_new/server",
+          "foundation_new/shared",
+          "foundation_new/config"
+        ]
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.819Z",
+      "operation": "COPY_UI_COMPONENTS",
+      "details": {
+        "description": "Componentes UI copiados para Foundation",
+        "components": [
+          "ui",
+          "layout"
+        ]
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.825Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: client/index.html → foundation_new/client/index.html",
+        "source": "client/index.html",
+        "destination": "foundation_new/client/index.html",
+        "size": 527
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.826Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: client/src/App.tsx → foundation_new/client/src/App.tsx",
+        "source": "client/src/App.tsx",
+        "destination": "foundation_new/client/src/App.tsx",
+        "size": 1338
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.827Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: client/src/main.tsx → foundation_new/client/src/main.tsx",
+        "source": "client/src/main.tsx",
+        "destination": "foundation_new/client/src/main.tsx",
+        "size": 157
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.832Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: client/src/index.css → foundation_new/client/src/index.css",
+        "source": "client/src/index.css",
+        "destination": "foundation_new/client/src/index.css",
+        "size": 3099
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.837Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: client/src/pages/dashboard.tsx → foundation_new/client/src/pages/dashboard.tsx",
+        "source": "client/src/pages/dashboard.tsx",
+        "destination": "foundation_new/client/src/pages/dashboard.tsx",
+        "size": 2198
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.838Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: client/src/pages/login.tsx → foundation_new/client/src/pages/login.tsx",
+        "source": "client/src/pages/login.tsx",
+        "destination": "foundation_new/client/src/pages/login.tsx",
+        "size": 4509
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.842Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: client/src/pages/setup.tsx → foundation_new/client/src/pages/setup.tsx",
+        "source": "client/src/pages/setup.tsx",
+        "destination": "foundation_new/client/src/pages/setup.tsx",
+        "size": 7849
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.843Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: client/src/pages/not-found.tsx → foundation_new/client/src/pages/not-found.tsx",
+        "source": "client/src/pages/not-found.tsx",
+        "destination": "foundation_new/client/src/pages/not-found.tsx",
+        "size": 711
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.848Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: client/src/pages/foundation/capacities.tsx → foundation_new/client/src/pages/capacities.tsx",
+        "source": "client/src/pages/foundation/capacities.tsx",
+        "destination": "foundation_new/client/src/pages/capacities.tsx",
+        "size": 31190
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.852Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: client/src/pages/foundation/dependencies.tsx → foundation_new/client/src/pages/dependencies.tsx",
+        "source": "client/src/pages/foundation/dependencies.tsx",
+        "destination": "foundation_new/client/src/pages/dependencies.tsx",
+        "size": 16043
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.855Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: client/src/components/dashboard/activity-chart.tsx → foundation_new/client/src/components/dashboard/activity-chart.tsx",
+        "source": "client/src/components/dashboard/activity-chart.tsx",
+        "destination": "foundation_new/client/src/components/dashboard/activity-chart.tsx",
+        "size": 1494
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.857Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: client/src/components/dashboard/foundation-config.tsx → foundation_new/client/src/components/dashboard/foundation-config.tsx",
+        "source": "client/src/components/dashboard/foundation-config.tsx",
+        "destination": "foundation_new/client/src/components/dashboard/foundation-config.tsx",
+        "size": 8616
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.859Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: client/src/components/dashboard/foundation-metrics.tsx → foundation_new/client/src/components/dashboard/foundation-metrics.tsx",
+        "source": "client/src/components/dashboard/foundation-metrics.tsx",
+        "destination": "foundation_new/client/src/components/dashboard/foundation-metrics.tsx",
+        "size": 11190
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.861Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: client/src/components/dashboard/header.tsx → foundation_new/client/src/components/dashboard/header.tsx",
+        "source": "client/src/components/dashboard/header.tsx",
+        "destination": "foundation_new/client/src/components/dashboard/header.tsx",
+        "size": 1694
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.864Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: client/src/components/dashboard/metrics-cards.tsx → foundation_new/client/src/components/dashboard/metrics-cards.tsx",
+        "source": "client/src/components/dashboard/metrics-cards.tsx",
+        "destination": "foundation_new/client/src/components/dashboard/metrics-cards.tsx",
+        "size": 3473
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.867Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: client/src/components/dashboard/quick-actions.tsx → foundation_new/client/src/components/dashboard/quick-actions.tsx",
+        "source": "client/src/components/dashboard/quick-actions.tsx",
+        "destination": "foundation_new/client/src/components/dashboard/quick-actions.tsx",
+        "size": 1346
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.870Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: client/src/components/dashboard/recent-activity.tsx → foundation_new/client/src/components/dashboard/recent-activity.tsx",
+        "source": "client/src/components/dashboard/recent-activity.tsx",
+        "destination": "foundation_new/client/src/components/dashboard/recent-activity.tsx",
+        "size": 2807
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.873Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: client/src/components/dashboard/resource-status.tsx → foundation_new/client/src/components/dashboard/resource-status.tsx",
+        "source": "client/src/components/dashboard/resource-status.tsx",
+        "destination": "foundation_new/client/src/components/dashboard/resource-status.tsx",
+        "size": 5155
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.883Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: client/src/components/dashboard/sidebar.tsx → foundation_new/client/src/components/dashboard/sidebar.tsx",
+        "source": "client/src/components/dashboard/sidebar.tsx",
+        "destination": "foundation_new/client/src/components/dashboard/sidebar.tsx",
+        "size": 5368
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.884Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: client/src/components/dashboard/system-status.tsx → foundation_new/client/src/components/dashboard/system-status.tsx",
+        "source": "client/src/components/dashboard/system-status.tsx",
+        "destination": "foundation_new/client/src/components/dashboard/system-status.tsx",
+        "size": 2449
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.886Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: client/src/components/dashboard/user-table.tsx → foundation_new/client/src/components/dashboard/user-table.tsx",
+        "source": "client/src/components/dashboard/user-table.tsx",
+        "destination": "foundation_new/client/src/components/dashboard/user-table.tsx",
+        "size": 5271
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.887Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: client/src/hooks/use-auth.tsx → foundation_new/client/src/hooks/use-auth.tsx",
+        "source": "client/src/hooks/use-auth.tsx",
+        "destination": "foundation_new/client/src/hooks/use-auth.tsx",
+        "size": 2766
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.890Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: client/src/hooks/use-metrics.tsx → foundation_new/client/src/hooks/use-metrics.tsx",
+        "source": "client/src/hooks/use-metrics.tsx",
+        "destination": "foundation_new/client/src/hooks/use-metrics.tsx",
+        "size": 1166
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.892Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: client/src/hooks/use-mobile.tsx → foundation_new/client/src/hooks/use-mobile.tsx",
+        "source": "client/src/hooks/use-mobile.tsx",
+        "destination": "foundation_new/client/src/hooks/use-mobile.tsx",
+        "size": 565
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.894Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: client/src/hooks/use-toast.ts → foundation_new/client/src/hooks/use-toast.ts",
+        "source": "client/src/hooks/use-toast.ts",
+        "destination": "foundation_new/client/src/hooks/use-toast.ts",
+        "size": 3895
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.895Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: client/src/lib/auth.ts → foundation_new/client/src/lib/auth.ts",
+        "source": "client/src/lib/auth.ts",
+        "destination": "foundation_new/client/src/lib/auth.ts",
+        "size": 1682
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.897Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: client/src/lib/queryClient.ts → foundation_new/client/src/lib/queryClient.ts",
+        "source": "client/src/lib/queryClient.ts",
+        "destination": "foundation_new/client/src/lib/queryClient.ts",
+        "size": 1783
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.898Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: client/src/lib/utils.ts → foundation_new/client/src/lib/utils.ts",
+        "source": "client/src/lib/utils.ts",
+        "destination": "foundation_new/client/src/lib/utils.ts",
+        "size": 166
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.899Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: server/index.ts → foundation_new/server/index.ts",
+        "source": "server/index.ts",
+        "destination": "foundation_new/server/index.ts",
+        "size": 1921
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.906Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: server/routes.ts → foundation_new/server/routes.ts",
+        "source": "server/routes.ts",
+        "destination": "foundation_new/server/routes.ts",
+        "size": 18733
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.907Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: server/storage.ts → foundation_new/server/storage.ts",
+        "source": "server/storage.ts",
+        "destination": "foundation_new/server/storage.ts",
+        "size": 4869
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.908Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: server/db.ts → foundation_new/server/db.ts",
+        "source": "server/db.ts",
+        "destination": "foundation_new/server/db.ts",
+        "size": 482
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.914Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: server/vite.ts → foundation_new/server/vite.ts",
+        "source": "server/vite.ts",
+        "destination": "foundation_new/server/vite.ts",
+        "size": 2254
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.915Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: server/monitoring.ts → foundation_new/server/monitoring.ts",
+        "source": "server/monitoring.ts",
+        "destination": "foundation_new/server/monitoring.ts",
+        "size": 8276
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.916Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: server/foundation-config.ts → foundation_new/server/foundation-config.ts",
+        "source": "server/foundation-config.ts",
+        "destination": "foundation_new/server/foundation-config.ts",
+        "size": 6217
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.917Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: server/foundation-integrator.ts → foundation_new/server/foundation-integrator.ts",
+        "source": "server/foundation-integrator.ts",
+        "destination": "foundation_new/server/foundation-integrator.ts",
+        "size": 9491
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.918Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: shared/schema.ts → foundation_new/shared/schema.ts",
+        "source": "shared/schema.ts",
+        "destination": "foundation_new/shared/schema.ts",
+        "size": 4391
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.921Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: package.json → foundation_new/package.json",
+        "source": "package.json",
+        "destination": "foundation_new/package.json",
+        "size": 3613
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.924Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: package-lock.json → foundation_new/package-lock.json",
+        "source": "package-lock.json",
+        "destination": "foundation_new/package-lock.json",
+        "size": 322073
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.926Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: tsconfig.json → foundation_new/tsconfig.json",
+        "source": "tsconfig.json",
+        "destination": "foundation_new/tsconfig.json",
+        "size": 657
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.927Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: vite.config.ts → foundation_new/vite.config.ts",
+        "source": "vite.config.ts",
+        "destination": "foundation_new/vite.config.ts",
+        "size": 971
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.928Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: tailwind.config.ts → foundation_new/tailwind.config.ts",
+        "source": "tailwind.config.ts",
+        "destination": "foundation_new/tailwind.config.ts",
+        "size": 2627
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.929Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: postcss.config.js → foundation_new/postcss.config.js",
+        "source": "postcss.config.js",
+        "destination": "foundation_new/postcss.config.js",
+        "size": 80
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.933Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: drizzle.config.ts → foundation_new/drizzle.config.ts",
+        "source": "drizzle.config.ts",
+        "destination": "foundation_new/drizzle.config.ts",
+        "size": 325
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.934Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: components.json → foundation_new/components.json",
+        "source": "components.json",
+        "destination": "foundation_new/components.json",
+        "size": 459
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.935Z",
+      "operation": "MOVE_FILE",
+      "details": {
+        "description": "Arquivo movido: foundation-config.json → foundation_new/foundation-config.json",
+        "source": "foundation-config.json",
+        "destination": "foundation_new/foundation-config.json",
+        "size": 1621
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.936Z",
+      "operation": "UPDATE_IMPORTS",
+      "details": {
+        "description": "Imports atualizados em foundation_new/client/src/App.tsx",
+        "file": "foundation_new/client/src/App.tsx",
+        "changes": 2,
+        "mappingsApplied": 9
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.978Z",
+      "operation": "UPDATE_ROUTES",
+      "details": {
+        "description": "Rotas atualizadas em foundation_new/client/src/App.tsx",
+        "file": "foundation_new/client/src/App.tsx",
+        "changes": 8
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.980Z",
+      "operation": "UPDATE_ROUTES",
+      "details": {
+        "description": "Rotas atualizadas em foundation_new/client/src/components/dashboard/sidebar.tsx",
+        "file": "foundation_new/client/src/components/dashboard/sidebar.tsx",
+        "changes": 5
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:36:31.985Z",
+      "operation": "VALIDATE_MIGRATION",
+      "details": {
+        "description": "Validação de integridade concluída",
+        "validations": [
+          {
+            "file": "foundation_new/client/src/App.tsx",
+            "status": "OK",
+            "size": 1351
+          },
+          {
+            "file": "foundation_new/client/src/main.tsx",
+            "status": "OK",
+            "size": 157
+          },
+          {
+            "file": "foundation_new/server/index.ts",
+            "status": "OK",
+            "size": 1921
+          },
+          {
+            "file": "foundation_new/shared/schema.ts",
+            "status": "OK",
+            "size": 4391
+          },
+          {
+            "file": "foundation_new/package.json",
+            "status": "OK",
+            "size": 3613
+          }
+        ],
+        "criticalFilesMissing": 0,
+        "totalFilesChecked": 5
+      },
+      "success": true
+    }
+  ],
   "errors": [],
-  "status": "started"
+  "status": "completed",
+  "summary": {
+    "totalOperations": 52,
+    "totalErrors": 0,
+    "successRate": "100%"
+  }
 }
