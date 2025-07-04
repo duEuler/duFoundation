@@ -112,26 +112,67 @@ export default function CapacitiesPage() {
   };
 
   const checkCompatibility = (capacity: FoundationCapacity) => {
-    if (!hardwareInfo) return { compatible: true, issues: [] };
+    if (!hardwareInfo) return { 
+      compatible: true, 
+      issues: [], 
+      ramUsage: 0, 
+      cpuUsage: 0, 
+      ramAvailable: 0, 
+      cpuAvailable: 0,
+      ramDeficit: 0,
+      cpuDeficit: 0
+    };
     
     const issues = [];
     const hw = hardwareInfo as any;
     
     const ramRequired = capacity.resources.ramMB / 1024;
     const ramAvailable = hw.totalMemoryGB;
+    const cpuRequired = capacity.resources.cpuCores;
+    const cpuAvailable = hw.cpuCores;
+    
+    // Calcular porcentagens de uso
+    const ramUsage = Math.min((ramRequired / ramAvailable) * 100, 100);
+    const cpuUsage = Math.min((cpuRequired / cpuAvailable) * 100, 100);
+    
+    // Calcular recursos disponíveis
+    const ramFree = Math.max(ramAvailable - ramRequired, 0);
+    const cpuFree = Math.max(cpuAvailable - cpuRequired, 0);
+    
+    // Calcular déficits
+    const ramDeficit = Math.max(ramRequired - ramAvailable, 0);
+    const cpuDeficit = Math.max(cpuRequired - cpuAvailable, 0);
     
     if (ramAvailable < ramRequired) {
-      issues.push(`Memória: ${ramRequired}GB necessário, ${ramAvailable}GB disponível`);
+      issues.push(`Memória: ${ramRequired}GB necessário, ${ramAvailable}GB disponível (falta ${ramDeficit.toFixed(1)}GB)`);
     }
     
-    if (hw.cpuCores < capacity.resources.cpuCores) {
-      issues.push(`CPU: ${capacity.resources.cpuCores} cores necessários, ${hw.cpuCores} disponíveis`);
+    if (cpuAvailable < cpuRequired) {
+      issues.push(`CPU: ${cpuRequired} cores necessários, ${cpuAvailable} disponíveis (falta ${cpuDeficit} cores)`);
     }
     
     return {
       compatible: issues.length === 0,
-      issues
+      issues,
+      ramUsage,
+      cpuUsage,
+      ramAvailable: ramFree,
+      cpuAvailable: cpuFree,
+      ramDeficit,
+      cpuDeficit
     };
+  };
+
+  const getUsageBadgeColor = (percentage: number) => {
+    if (percentage <= 50) return "bg-blue-500 text-white"; // Azul para uso baixo
+    if (percentage <= 80) return "bg-green-500 text-white"; // Verde para uso moderado
+    if (percentage <= 100) return "bg-orange-500 text-white"; // Laranja para uso alto
+    return "bg-red-500 text-white"; // Vermelho para sobrecarga
+  };
+
+  const getUsageBadgeText = (percentage: number) => {
+    if (percentage > 100) return `+${(percentage - 100).toFixed(0)}%`;
+    return `${percentage.toFixed(0)}%`;
   };
 
   return (
@@ -212,8 +253,19 @@ export default function CapacitiesPage() {
                     <Badge className={`${getCapacityColor(capacity.key)} border`}>
                       {capacity.key.toUpperCase()}
                     </Badge>
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-2">
                       {isActive && <Badge variant="default">ATUAL</Badge>}
+                      
+                      {/* Badge de uso de CPU */}
+                      <Badge className={`${getUsageBadgeColor(compatibility.cpuUsage)} text-xs px-2 py-1`}>
+                        CPU {getUsageBadgeText(compatibility.cpuUsage)}
+                      </Badge>
+                      
+                      {/* Badge de uso de RAM */}
+                      <Badge className={`${getUsageBadgeColor(compatibility.ramUsage)} text-xs px-2 py-1`}>
+                        RAM {getUsageBadgeText(compatibility.ramUsage)}
+                      </Badge>
+                      
                       {compatibility.compatible ? (
                         <CheckCircle className="h-4 w-4 text-green-500" />
                       ) : (
@@ -248,22 +300,100 @@ export default function CapacitiesPage() {
                     </div>
                   </div>
 
-                  {/* Compatibilidade */}
-                  <div className="pt-3 border-t">
+                  {/* Análise de Recursos */}
+                  <div className="pt-3 border-t space-y-3">
                     {compatibility.compatible ? (
-                      <div className="flex items-center gap-2 text-green-600">
-                        <CheckCircle className="h-4 w-4" />
-                        <span className="text-sm font-medium">Compatível</span>
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-green-600">
+                          <CheckCircle className="h-4 w-4" />
+                          <span className="text-sm font-medium">100% Compatível</span>
+                        </div>
+                        
+                        {/* Recursos Disponíveis (Azul) */}
+                        <div className="grid grid-cols-2 gap-2 text-xs">
+                          <div className="bg-blue-50 border border-blue-200 rounded p-2">
+                            <div className="flex items-center gap-1 text-blue-600 mb-1">
+                              <MemoryStick className="h-3 w-3" />
+                              <span className="font-medium">RAM Livre</span>
+                            </div>
+                            <div className="text-blue-700 font-bold">
+                              {compatibility.ramAvailable.toFixed(1)}GB
+                            </div>
+                          </div>
+                          
+                          <div className="bg-blue-50 border border-blue-200 rounded p-2">
+                            <div className="flex items-center gap-1 text-blue-600 mb-1">
+                              <Cpu className="h-3 w-3" />
+                              <span className="font-medium">CPU Livre</span>
+                            </div>
+                            <div className="text-blue-700 font-bold">
+                              {compatibility.cpuAvailable} cores
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     ) : (
-                      <div className="space-y-1">
+                      <div className="space-y-2">
                         <div className="flex items-center gap-2 text-red-600">
                           <AlertTriangle className="h-4 w-4" />
-                          <span className="text-sm font-medium">Incompatível</span>
+                          <span className="text-sm font-medium">Hardware Insuficiente</span>
                         </div>
-                        {compatibility.issues.map((issue, idx) => (
-                          <p key={idx} className="text-xs text-red-500 ml-6">{issue}</p>
-                        ))}
+                        
+                        {/* Déficits de Hardware (Vermelho) */}
+                        <div className="grid grid-cols-2 gap-2 text-xs">
+                          {compatibility.ramDeficit > 0 && (
+                            <div className="bg-red-50 border border-red-200 rounded p-2">
+                              <div className="flex items-center gap-1 text-red-600 mb-1">
+                                <MemoryStick className="h-3 w-3" />
+                                <span className="font-medium">Falta RAM</span>
+                              </div>
+                              <div className="text-red-700 font-bold">
+                                +{compatibility.ramDeficit.toFixed(1)}GB
+                              </div>
+                            </div>
+                          )}
+                          
+                          {compatibility.cpuDeficit > 0 && (
+                            <div className="bg-red-50 border border-red-200 rounded p-2">
+                              <div className="flex items-center gap-1 text-red-600 mb-1">
+                                <Cpu className="h-3 w-3" />
+                                <span className="font-medium">Falta CPU</span>
+                              </div>
+                              <div className="text-red-700 font-bold">
+                                +{compatibility.cpuDeficit} cores
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                        
+                        {/* Recursos que têm disponíveis mesmo sendo incompatível */}
+                        {(compatibility.ramAvailable > 0 || compatibility.cpuAvailable > 0) && (
+                          <div className="grid grid-cols-2 gap-2 text-xs">
+                            {compatibility.ramAvailable > 0 && (
+                              <div className="bg-blue-50 border border-blue-200 rounded p-2">
+                                <div className="flex items-center gap-1 text-blue-600 mb-1">
+                                  <MemoryStick className="h-3 w-3" />
+                                  <span className="font-medium">RAM OK</span>
+                                </div>
+                                <div className="text-blue-700 font-bold">
+                                  +{compatibility.ramAvailable.toFixed(1)}GB
+                                </div>
+                              </div>
+                            )}
+                            
+                            {compatibility.cpuAvailable > 0 && (
+                              <div className="bg-blue-50 border border-blue-200 rounded p-2">
+                                <div className="flex items-center gap-1 text-blue-600 mb-1">
+                                  <Cpu className="h-3 w-3" />
+                                  <span className="font-medium">CPU OK</span>
+                                </div>
+                                <div className="text-blue-700 font-bold">
+                                  +{compatibility.cpuAvailable} cores
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
