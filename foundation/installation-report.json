@@ -1,36 +1,8 @@
 {
-  "filesCreated": [
-    "server/routes/foundation-setup.js",
-    "foundation/.config/foundation.json",
-    "foundation/README.md"
-  ],
-  "filesModified": [
-    "Corrigido server/index para usar routes.ts em vez de routes-minimal",
-    "Adicionado import foundation-setup",
-    "client/src/App.tsx (detecção Foundation)"
-  ],
-  "validationResults": {
-    "success": true,
-    "tests": {
-      "filesCreated": {
-        "passed": true,
-        "message": "Todos os arquivos foram criados"
-      },
-      "syntaxValid": {
-        "passed": true,
-        "message": "Sintaxe válida"
-      },
-      "routeIntegration": {
-        "passed": true,
-        "message": "Integração de rotas válida"
-      },
-      "httpRoutes": {
-        "passed": true,
-        "message": "Rotas HTTP funcionando"
-      }
-    }
-  },
+  "filesCreated": [],
+  "filesModified": [],
+  "validationResults": {},
   "rollbackNeeded": false,
-  "success": true,
+  "success": false,
   "errors": []
 }
