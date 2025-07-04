@@ -143,6 +143,9 @@ Changelog:
 - July 4, 2025. Created advanced uninstall system with detailed manifest tracking and foundation-uninstall command
 - July 4, 2025. Added /foundation/uninstall web interface and API endpoint for uninstallation
 - July 4, 2025. Implemented manifest-based tracking to record all installation changes for precise removal
+- July 4, 2025. Reorganized file structure: moved foundation-remove and foundation-uninstall commands to foundation/ directory
+- July 4, 2025. Updated all paths and references to work with new organized structure
+- July 4, 2025. Created virgin state App.tsx that shows welcome message when Foundation not installed
 ```
 
 ## User Preferences

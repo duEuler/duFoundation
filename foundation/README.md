@@ -83,17 +83,22 @@ node foundation-installer-simple.cjs
 ./foundation/foundation-detector.cjs
 
 # Remova completamente se necessário
-./foundation-remove
+./foundation/foundation-remove
 ```
 
 ## 🗑️ Desinstalação
 
-### **Opção 1: Comando Global**
+### **Opção 1: Comando Global (Recomendado)**
 ```bash
-foundation-remove
+./foundation/foundation-uninstall
 ```
 
-### **Opção 2: Script Direto**
+### **Opção 2: Comando Legado**
+```bash
+./foundation/foundation-remove
+```
+
+### **Opção 3: Script Direto**
 ```bash
 node foundation/foundation-remover.cjs
 ```

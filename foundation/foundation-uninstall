@@ -7,7 +7,12 @@ echo "🗑️  Foundation Uninstall - Comando Global v3.0"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 # Detecta onde está o foundation
-if [ -d "foundation" ]; then
+CURRENT_DIR=$(basename "$PWD")
+
+if [ "$CURRENT_DIR" = "foundation" ]; then
+    echo "📁 Executando de dentro da pasta foundation"
+    exec node foundation-uninstaller.cjs "$@"
+elif [ -d "foundation" ]; then
     echo "📁 Foundation encontrado no diretório atual"
     exec node foundation/foundation-uninstaller.cjs "$@"
 elif [ -d "../foundation" ]; then
