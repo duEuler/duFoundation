@@ -1,10 +1,1 @@
-{
-  "integration": {
-    "applied": "2025-07-04T08:30:06.016Z",
-    "modifiedFiles": [
-      "client/src/App.tsx"
-    ],
-    "backupLocation": "foundation/.integration-backup/",
-    "integrator": "foundation-integrator-simple.cjs"
-  }
-}
+{}

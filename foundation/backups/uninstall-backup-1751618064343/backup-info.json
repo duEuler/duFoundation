@@ -1,0 +1,23 @@
+{
+  "createdAt": "2025-07-04T08:34:24.349Z",
+  "reason": "foundation-uninstall",
+  "manifest": {
+    "version": "3.0.0",
+    "installed": "2025-07-04T08:19:21.658Z",
+    "files": [
+      "server/routes/foundation-setup.js",
+      "foundation/.config/foundation.json",
+      "foundation/README.md"
+    ],
+    "modifications": [
+      "Adicionado import foundation-setup"
+    ],
+    "backup": "/home/runner/workspace/foundation/.installation-backup"
+  },
+  "originalFiles": [
+    "server/routes/foundation-setup.js",
+    "foundation/.config/foundation.json",
+    "foundation/README.md"
+  ],
+  "canRestore": true
+}
