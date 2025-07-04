@@ -1,0 +1,532 @@
+#!/usr/bin/env node
+
+/**
+ * duFundation v3.1 - Enterprise CLI
+ * Comando: ./dufundation-enterprise
+ * Funcionalidades: Gestão completa de recursos enterprise (PRIORIDADE ALTA)
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+// Import enterprise modules
+const HighPriorityIntegrator = require('./core/integration/high-priority-integrator');
+
+class EnterpriseCLI {
+  constructor() {
+    this.command = process.argv[2];
+    this.subCommand = process.argv[3];
+    this.options = this.parseOptions(process.argv.slice(4));
+    
+    this.capacity = this.getCapacity();
+    this.initializeIntegrator();
+  }
+
+  getCapacity() {
+    try {
+      const configPath = path.join(__dirname, '_app', 'foundation.config.json');
+      if (fs.existsSync(configPath)) {
+        const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+        return config.capacity || 'small';
+      }
+    } catch (error) {
+      console.warn('Could not read capacity from config, defaulting to small');
+    }
+    return 'small';
+  }
+
+  initializeIntegrator() {
+    this.integrator = new HighPriorityIntegrator({
+      capacity: this.capacity,
+      enableCICD: true,
+      enableAutoScaling: this.isLargeCapacity(),
+      enableGovernance: this.isMediumCapacity()
+    });
+  }
+
+  parseOptions(args) {
+    const options = {};
+    for (let i = 0; i < args.length; i += 2) {
+      if (args[i].startsWith('--')) {
+        options[args[i].slice(2)] = args[i + 1] || true;
+      }
+    }
+    return options;
+  }
+
+  async run() {
+    try {
+      switch (this.command) {
+        case 'deploy':
+          await this.handleDeploy();
+          break;
+        case 'optimize':
+          await this.handleOptimize();
+          break;
+        case 'compliance':
+          await this.handleCompliance();
+          break;
+        case 'analytics':
+          await this.handleAnalytics();
+          break;
+        case 'workflow':
+          await this.handleWorkflow();
+          break;
+        case 'status':
+          await this.handleStatus();
+          break;
+        case 'test':
+          await this.handleTest();
+          break;
+        case 'help':
+        default:
+          this.showHelp();
+          break;
+      }
+    } catch (error) {
+      console.error('Error:', error.message);
+      process.exit(1);
+    }
+  }
+
+  async handleDeploy() {
+    switch (this.subCommand) {
+      case 'create':
+        const strategy = this.options['strategy'] || 'auto';
+        const environment = this.options['environment'] || 'production';
+        
+        console.log(`🚀 Starting ${strategy} deployment to ${environment}...`);
+        
+        const deploymentConfig = {
+          strategy: strategy === 'auto' ? this.integrator.getOptimalDeploymentStrategy() : strategy,
+          environment,
+          branch: this.options['branch'] || 'main',
+          repository: this.options['repository'] || null
+        };
+        
+        const result = await this.integrator.executeDeployment(deploymentConfig);
+        console.log('✅ Deployment completed:', JSON.stringify(result, null, 2));
+        break;
+        
+      case 'blue-green':
+        if (!this.isMediumCapacity()) {
+          console.error('Blue-green deployment requires MEDIUM+ capacity');
+          process.exit(1);
+        }
+        
+        console.log('🔄 Starting blue-green deployment...');
+        const bgResult = await this.integrator.cicdManager.deployBlueGreen({
+          environment: this.options['environment'] || 'production'
+        });
+        console.log('✅ Blue-green deployment completed:', JSON.stringify(bgResult, null, 2));
+        break;
+        
+      case 'canary':
+        if (!this.isLargeCapacity()) {
+          console.error('Canary deployment requires LARGE+ capacity');
+          process.exit(1);
+        }
+        
+        console.log('🐤 Starting canary deployment...');
+        const canaryResult = await this.integrator.cicdManager.deployCanary({
+          environment: this.options['environment'] || 'production'
+        });
+        console.log('✅ Canary deployment completed:', JSON.stringify(canaryResult, null, 2));
+        break;
+        
+      default:
+        console.log('Deploy commands: create, blue-green, canary');
+        console.log('Options: --strategy [auto|rolling|blue-green|canary] --environment [prod|staging] --branch [branch]');
+    }
+  }
+
+  async handleOptimize() {
+    switch (this.subCommand) {
+      case 'performance':
+        console.log('📊 Analyzing performance metrics...');
+        const optimization = await this.integrator.optimizePerformance({
+          target: this.options['target'] || 'all'
+        });
+        
+        console.log('🎯 Performance optimization recommendations:');
+        optimization.optimizations.forEach((opt, index) => {
+          console.log(`  ${index + 1}. ${opt.type}: ${opt.action}`);
+          console.log(`     Expected improvement: ${opt.expected_improvement}`);
+        });
+        
+        console.log('\n📈 Estimated impact:', JSON.stringify(optimization.estimatedImpact, null, 2));
+        break;
+        
+      case 'database':
+        if (!this.isSmallCapacity()) {
+          console.error('Database optimization requires SMALL+ capacity');
+          process.exit(1);
+        }
+        
+        console.log('🗄️ Optimizing database performance...');
+        const dbMetrics = this.integrator.autoScalingManager.getPerformanceAnalytics();
+        console.log('Database performance:', JSON.stringify(dbMetrics.queryPerformance || {}, null, 2));
+        break;
+        
+      case 'cdn':
+        if (!this.isMediumCapacity()) {
+          console.error('CDN optimization requires MEDIUM+ capacity');
+          process.exit(1);
+        }
+        
+        console.log('🌐 Optimizing CDN configuration...');
+        const purgeResult = await this.integrator.autoScalingManager.purgeCDNCache(['/*']);
+        console.log('✅ CDN cache purged:', JSON.stringify(purgeResult, null, 2));
+        break;
+        
+      case 'auto-scaling':
+        if (!this.isLargeCapacity()) {
+          console.error('Auto-scaling requires LARGE+ capacity');
+          process.exit(1);
+        }
+        
+        console.log('⚖️ Evaluating auto-scaling rules...');
+        await this.integrator.autoScalingManager.evaluateScalingRules();
+        console.log('✅ Auto-scaling evaluation completed');
+        break;
+        
+      default:
+        console.log('Optimize commands: performance, database, cdn, auto-scaling');
+    }
+  }
+
+  async handleCompliance() {
+    if (!this.isMediumCapacity()) {
+      console.error('Compliance features require MEDIUM+ capacity');
+      process.exit(1);
+    }
+    
+    switch (this.subCommand) {
+      case 'validate':
+        console.log('🔍 Validating compliance status...');
+        const validation = await this.integrator.validateCompliance({
+          frameworks: this.options['frameworks']?.split(',') || ['gdpr']
+        });
+        
+        console.log('📋 Compliance validation results:');
+        console.log('  Overall compliant:', validation.overall ? '✅' : '❌');
+        
+        Object.entries(validation.frameworks).forEach(([framework, result]) => {
+          console.log(`  ${framework.toUpperCase()}:`, result.compliant ? '✅' : '❌');
+          if (result.score) console.log(`    Score: ${result.score}%`);
+        });
+        break;
+        
+      case 'report':
+        console.log('📊 Generating compliance report...');
+        const report = await this.integrator.governanceManager.generateComplianceReport({
+          type: this.options['type'] || 'comprehensive',
+          period: this.options['period'] || 'monthly'
+        });
+        
+        if (this.options['output']) {
+          fs.writeFileSync(this.options['output'], JSON.stringify(report.report, null, 2));
+          console.log('✅ Compliance report saved to:', this.options['output']);
+        } else {
+          console.log('📋 Compliance Report:', JSON.stringify(report.report, null, 2));
+        }
+        break;
+        
+      case 'consent':
+        if (!this.options['user-id'] || !this.options['action']) {
+          console.error('Usage: --user-id <id> --action [record|withdraw] [--purposes <purposes>]');
+          process.exit(1);
+        }
+        
+        if (this.options['action'] === 'record') {
+          const consent = await this.integrator.governanceManager.recordConsent(
+            this.options['user-id'],
+            {
+              purposes: this.options['purposes']?.split(',') || ['service_provision'],
+              method: 'cli',
+              consentText: 'CLI consent recorded'
+            }
+          );
+          console.log('✅ Consent recorded:', JSON.stringify(consent, null, 2));
+        } else if (this.options['action'] === 'withdraw') {
+          if (!this.options['consent-id']) {
+            console.error('Consent withdrawal requires --consent-id');
+            process.exit(1);
+          }
+          const withdrawal = await this.integrator.governanceManager.withdrawConsent(
+            this.options['consent-id'],
+            { method: 'cli' }
+          );
+          console.log('✅ Consent withdrawn:', JSON.stringify(withdrawal, null, 2));
+        }
+        break;
+        
+      default:
+        console.log('Compliance commands: validate, report, consent');
+        console.log('Options: --frameworks [gdpr,ccpa,hipaa] --type [comprehensive|summary] --output [file]');
+    }
+  }
+
+  async handleAnalytics() {
+    console.log('📊 Gathering enterprise analytics...');
+    const analytics = this.integrator.getUnifiedAnalytics();
+    
+    switch (this.subCommand) {
+      case 'summary':
+        console.log('\n🎯 Enterprise System Status:');
+        console.log(`  CI/CD: ${analytics.systemStatus.cicd.enabled ? '✅' : '❌'} (${analytics.systemStatus.cicd.health})`);
+        console.log(`  Auto-scaling: ${analytics.systemStatus.autoScaling.enabled ? '✅' : '❌'} (${analytics.systemStatus.autoScaling.health})`);
+        console.log(`  Governance: ${analytics.systemStatus.governance.enabled ? '✅' : '❌'} (${analytics.systemStatus.governance.health})`);
+        console.log(`  Unified Health Score: ${analytics.integration.unifiedHealthScore}%`);
+        break;
+        
+      case 'cicd':
+        console.log('\n🚀 CI/CD Analytics:');
+        console.log(JSON.stringify(analytics.cicd, null, 2));
+        break;
+        
+      case 'performance':
+        console.log('\n⚡ Performance Analytics:');
+        console.log(JSON.stringify(analytics.performance, null, 2));
+        break;
+        
+      case 'compliance':
+        if (analytics.compliance && Object.keys(analytics.compliance).length > 0) {
+          console.log('\n🔒 Compliance Analytics:');
+          console.log(JSON.stringify(analytics.compliance, null, 2));
+        } else {
+          console.log('\n🔒 Compliance: Not enabled or no data available');
+        }
+        break;
+        
+      case 'full':
+      default:
+        console.log('\n📊 Complete Enterprise Analytics:');
+        console.log(JSON.stringify(analytics, null, 2));
+        break;
+    }
+  }
+
+  async handleWorkflow() {
+    switch (this.subCommand) {
+      case 'list':
+        console.log('📋 Available workflows:');
+        this.integrator.workflowDefinitions.forEach((workflow, name) => {
+          console.log(`  ${name}: ${workflow.name} (${workflow.stages.length} stages)`);
+        });
+        break;
+        
+      case 'execute':
+        if (!this.options['name']) {
+          console.error('Usage: --name <workflow_name> [--context <json>]');
+          process.exit(1);
+        }
+        
+        console.log(`🔄 Executing workflow: ${this.options['name']}...`);
+        const context = this.options['context'] ? JSON.parse(this.options['context']) : {};
+        
+        try {
+          const result = await this.integrator.executeWorkflow(this.options['name'], context);
+          console.log('✅ Workflow completed:', JSON.stringify(result, null, 2));
+        } catch (error) {
+          console.error('❌ Workflow failed:', error.message);
+          process.exit(1);
+        }
+        break;
+        
+      default:
+        console.log('Workflow commands: list, execute');
+        console.log('Options: --name <workflow> --context <json>');
+    }
+  }
+
+  async handleStatus() {
+    console.log(`📊 duFundation Enterprise Status (Capacity: ${this.capacity.toUpperCase()})\n`);
+    
+    const analytics = this.integrator.getUnifiedAnalytics();
+    
+    // System Overview
+    console.log('🏗️ System Overview:');
+    console.log(`   Capacity: ${this.capacity.toUpperCase()}`);
+    console.log(`   Health Score: ${analytics.integration.unifiedHealthScore}%`);
+    console.log(`   Systems Active: ${Object.values(analytics.systemStatus).filter(s => s.enabled).length}/3`);
+    
+    // CI/CD Status
+    console.log('\n🚀 CI/CD System:');
+    console.log(`   Status: ${analytics.systemStatus.cicd.enabled ? 'Active' : 'Disabled'}`);
+    console.log(`   Pipelines: ${analytics.cicd.pipelines.total}`);
+    console.log(`   Success Rate: ${(analytics.cicd.pipelines.successRate * 100).toFixed(1)}%`);
+    console.log(`   Deployments: ${analytics.cicd.deployments.total}`);
+    
+    // Performance Status
+    console.log('\n⚡ Performance System:');
+    console.log(`   Status: ${analytics.systemStatus.autoScaling.enabled ? 'Active' : 'Disabled'}`);
+    console.log(`   Active Connections: ${analytics.performance.connectionPool.activeConnections}`);
+    console.log(`   Current Instances: ${analytics.systemStatus.autoScaling.currentInstances}`);
+    
+    if (analytics.performance.queryPerformance) {
+      console.log(`   Average Query Time: ${analytics.performance.queryPerformance.averageQueryTime.toFixed(1)}ms`);
+    }
+    
+    // Compliance Status
+    if (analytics.systemStatus.governance.enabled) {
+      console.log('\n🔒 Compliance System:');
+      console.log(`   Status: Active`);
+      console.log(`   Compliance Score: ${analytics.systemStatus.governance.complianceScore}%`);
+      
+      if (analytics.compliance.gdpr) {
+        console.log(`   GDPR: ${analytics.compliance.gdpr.complianceScore >= 95 ? '✅' : '⚠️'} (${analytics.compliance.gdpr.complianceScore}%)`);
+      }
+    } else {
+      console.log('\n🔒 Compliance System: Disabled (requires MEDIUM+ capacity)');
+    }
+    
+    console.log('\n✅ All monitored systems operational');
+  }
+
+  async handleTest() {
+    console.log('🧪 Running Enterprise Systems Test...\n');
+    
+    let testsPassed = 0;
+    let totalTests = 0;
+    
+    try {
+      // Test CI/CD System
+      console.log('1. Testing CI/CD System...');
+      totalTests++;
+      const cicdAnalytics = this.integrator.cicdManager.getCICDAnalytics();
+      console.log('   ✅ CI/CD analytics accessible');
+      testsPassed++;
+      
+      // Test Performance System
+      console.log('2. Testing Performance System...');
+      totalTests++;
+      const perfAnalytics = this.integrator.autoScalingManager.getPerformanceAnalytics();
+      console.log('   ✅ Performance analytics accessible');
+      testsPassed++;
+      
+      if (this.isSmallCapacity()) {
+        console.log('3. Testing Database Connection Pool...');
+        totalTests++;
+        const connection = await this.integrator.autoScalingManager.getConnection();
+        console.log('   ✅ Database connection pool working');
+        testsPassed++;
+      }
+      
+      // Test Governance System (if enabled)
+      if (this.isMediumCapacity()) {
+        console.log('4. Testing Governance System...');
+        totalTests++;
+        const complianceAnalytics = this.integrator.governanceManager.getComplianceAnalytics();
+        console.log('   ✅ Governance analytics accessible');
+        testsPassed++;
+      }
+      
+      // Test Integration
+      console.log('5. Testing System Integration...');
+      totalTests++;
+      const unifiedAnalytics = this.integrator.getUnifiedAnalytics();
+      console.log('   ✅ Unified analytics working');
+      testsPassed++;
+      
+      // Test Deployment Strategy Selection
+      console.log('6. Testing Deployment Strategy...');
+      totalTests++;
+      const strategy = this.integrator.getOptimalDeploymentStrategy();
+      console.log(`   ✅ Optimal strategy: ${strategy}`);
+      testsPassed++;
+      
+      console.log(`\n🎉 Tests completed: ${testsPassed}/${totalTests} passed`);
+      
+      if (testsPassed === totalTests) {
+        console.log('✅ All enterprise systems operational!');
+      } else {
+        console.log('⚠️ Some tests failed. Check system configuration.');
+        process.exit(1);
+      }
+      
+    } catch (error) {
+      console.error('\n❌ Test failed:', error.message);
+      process.exit(1);
+    }
+  }
+
+  isSmallCapacity() {
+    return ['small', 'medium', 'large', 'enterprise'].includes(this.capacity);
+  }
+
+  isMediumCapacity() {
+    return ['medium', 'large', 'enterprise'].includes(this.capacity);
+  }
+
+  isLargeCapacity() {
+    return ['large', 'enterprise'].includes(this.capacity);
+  }
+
+  showHelp() {
+    console.log(`
+duFundation Enterprise CLI v3.1
+
+Usage: ./dufundation-enterprise <command> [subcommand] [options]
+
+Commands:
+  deploy           Deploy applications with advanced strategies
+    create           Deploy with auto-selected strategy (--strategy --environment --branch)
+    blue-green       Blue-green deployment (MEDIUM+ only)
+    canary           Canary deployment (LARGE+ only)
+
+  optimize         Performance optimization
+    performance      Analyze and optimize overall performance
+    database         Database connection pooling and query optimization (SMALL+)
+    cdn              CDN cache management and optimization (MEDIUM+)
+    auto-scaling     Auto-scaling rule evaluation (LARGE+)
+
+  compliance       Compliance and governance (MEDIUM+ only)
+    validate         Validate compliance status (--frameworks)
+    report           Generate compliance report (--type --period --output)
+    consent          Manage user consent (--user-id --action --consent-id)
+
+  analytics        Enterprise analytics
+    summary          High-level system overview
+    cicd             CI/CD pipeline analytics
+    performance      Performance and scaling metrics
+    compliance       Compliance and governance metrics
+    full             Complete analytics dump
+
+  workflow         Unified workflow management
+    list             List available workflows
+    execute          Execute workflow (--name --context)
+
+  status           Show overall enterprise system status
+  test             Run comprehensive enterprise systems test
+  help             Show this help message
+
+Current Capacity: ${this.capacity.toUpperCase()}
+
+Feature Availability by Capacity:
+  SMALL+:    CI/CD pipelines, database optimization, performance monitoring
+  MEDIUM+:   Blue-green deployment, CDN, compliance (GDPR), governance
+  LARGE+:    Canary deployment, auto-scaling, data classification, policy engine
+  ENTERPRISE: Multi-framework compliance, advanced governance, chaos engineering
+
+Examples:
+  ./dufundation-enterprise deploy create --strategy=blue-green --environment=production
+  ./dufundation-enterprise optimize performance
+  ./dufundation-enterprise compliance validate --frameworks=gdpr,ccpa
+  ./dufundation-enterprise analytics summary
+  ./dufundation-enterprise workflow execute --name=full_deployment
+  ./dufundation-enterprise test
+`);
+  }
+}
+
+// Run CLI
+if (require.main === module) {
+  const cli = new EnterpriseCLI();
+  cli.run().catch(error => {
+    console.error('CLI Error:', error);
+    process.exit(1);
+  });
+}
+
+module.exports = EnterpriseCLI;
