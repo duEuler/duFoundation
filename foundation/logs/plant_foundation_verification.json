@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-07-04T04:27:48.968Z",
+  "version": "3.0.0",
+  "results": {
+    "totalItems": 21,
+    "existingItems": 21,
+    "missingItems": [],
+    "corruptedItems": [],
+    "validItems": [
+      "package.json",
+      "client/src/App.tsx",
+      "client/src/foundation-setup.tsx",
+      "shared/schema.ts",
+      "server/index.ts",
+      "server/routes-minimal.ts",
+      "server/storage-minimal.ts",
+      "foundation/",
+      "foundation/foundation-installer.cjs",
+      "foundation/scripts/",
+      "foundation/scripts/plant_foundation.cjs",
+      "foundation/config/",
+      "foundation/docs/",
+      "foundation/logs/",
+      "foundation/automation/",
+      "foundation/.trash/",
+      "foundation/REPLIT_ORDER_EXECUTION.md",
+      "vite.config.ts",
+      "tailwind.config.ts",
+      "drizzle.config.ts",
+      "tsconfig.json"
+    ],
+    "completionPercentage": 100
+  },
+  "foundationReady": true
+}

@@ -7,9 +7,43 @@
 
 const fs = require('fs');
 const path = require('path');
+const readline = require('readline');
 
 console.log('🏗️  DuEuler Foundation v3.0 - Instalador Inicial');
 console.log('📦 Instalando apenas o componente Setup...\n');
+
+// Função para confirmar instalação com o usuário
+async function askUserConfirmation() {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+
+  return new Promise((resolve) => {
+    console.log('\n🌟 DuEuler Foundation v3.0 - Sistema de Instalação');
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    console.log('⚠️  ATENÇÃO: Esta operação irá instalar o sistema foundation completo.');
+    console.log('📦 Isso inclui: Scripts, Dependências, Configurações e Estrutura Base');
+    console.log('🔧 Capacidade: SMALL (10K-50K usuários)');
+    console.log('📊 Recursos: Monitoring, Security, Performance Optimization');
+    console.log('🌱 Scripts: plant_foundation para verificação de estrutura');
+    console.log('');
+    
+    rl.question('🔥 Deseja continuar com a instalação? (S/SIM): ', (answer) => {
+      rl.close();
+      
+      if (answer.toUpperCase() === 'S' || answer.toUpperCase() === 'SIM') {
+        console.log('✅ Instalação confirmada! Iniciando...\n');
+        resolve(true);
+      } else {
+        console.log('❌ Instalação cancelada pelo usuário.');
+        console.log('💡 Execute novamente quando estiver pronto.');
+        console.log('🔄 Para instalar, execute: node foundation/foundation-installer.cjs');
+        process.exit(0); // Para a execução
+      }
+    });
+  });
+}
 
 // Estrutura mínima do foundation
 const FOUNDATION_STRUCTURE = {
@@ -491,9 +525,35 @@ npm run db:push
   console.log('   ✓ Documentação criada');
 }
 
-// Função principal
-function main() {
+// Função principal (async para suportar confirmação do usuário)
+async function main() {
   try {
+    // Primeira etapa: Confirmar com o usuário
+    const confirmed = await askUserConfirmation();
+    
+    if (!confirmed) {
+      console.log('❌ Instalação cancelada.');
+      process.exit(0);
+    }
+    
+    // Segunda etapa: Executar scripts plant_foundation para verificar estrutura
+    console.log('🌱 Executando scripts plant_foundation...');
+    console.log('🔍 Verificando estrutura do projeto...');
+    
+    // Executar plant_foundation se existir
+    try {
+      const { execSync } = require('child_process');
+      if (fs.existsSync('foundation/scripts/plant_foundation.cjs')) {
+        console.log('📋 Executando verificação de estrutura...');
+        execSync('node foundation/scripts/plant_foundation.cjs', { stdio: 'inherit' });
+      } else {
+        console.log('⚠️  Script plant_foundation não encontrado, criando...');
+      }
+    } catch (error) {
+      console.log('⚠️  Verificação inicial não passou, continuando com instalação...');
+    }
+    
+    // Terceira etapa: Criar estrutura foundation
     createDirectoryStructure();
     createMinimalApp();
     createFoundationSetup();
@@ -508,6 +568,10 @@ function main() {
     console.log('   - client/src/foundation-setup.tsx');
     console.log('   - shared/schema.ts (mínimo)');
     console.log('   - Documentação em foundation/docs/');
+    console.log('\n🌱 Próximos passos:');
+    console.log('   1. Sistema "virgem" ativo - apenas setup inicial');
+    console.log('   2. Após configuração, sistema completo será carregado');
+    console.log('   3. Scripts plant_foundation verificarão integridade');
     
   } catch (error) {
     console.error('❌ Erro na instalação:', error.message);
