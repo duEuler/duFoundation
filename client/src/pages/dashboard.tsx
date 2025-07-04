@@ -19,7 +19,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      setLocation("/login");
+      setLocation("/foundation/login");
     }
   }, [isAuthenticated, setLocation]);
 

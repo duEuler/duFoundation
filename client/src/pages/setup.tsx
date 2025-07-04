@@ -40,7 +40,7 @@ export default function SetupPage() {
         description: "Redirecionando para a página de login...",
       });
       // Immediate redirect instead of setTimeout
-      setLocation("/login");
+      setLocation("/foundation/login");
     },
     onError: (error: any) => {
       toast({

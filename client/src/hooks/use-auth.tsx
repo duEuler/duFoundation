@@ -45,7 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(data.user);
       setIsAuthenticated(true);
       queryClient.invalidateQueries({ queryKey: ["currentUser"] });
-      setLocation("/dashboard");
+      setLocation("/foundation/dashboard");
       toast({
         title: "Login realizado com sucesso!",
         description: `Bem-vindo, ${data.user.username}!`,
@@ -69,7 +69,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
     setIsAuthenticated(false);
     queryClient.clear();
-    setLocation("/login");
+    setLocation("/foundation/login");
     toast({
       title: "Logout realizado com sucesso!",
       description: "Você foi desconectado do sistema.",

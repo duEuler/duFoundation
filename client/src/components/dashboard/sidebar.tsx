@@ -26,10 +26,10 @@ export function Sidebar() {
   const [isOpen, setIsOpen] = useState(true);
 
   const adminMenuItems = [
-    { icon: LayoutDashboard, label: "Dashboard", href: "/" },
-    { icon: Users, label: "Gestão de Usuários", href: "/users" },
-    { icon: Shield, label: "Permissões", href: "/permissions" },
-    { icon: Settings, label: "Configurações", href: "/settings" },
+    { icon: LayoutDashboard, label: "Dashboard", href: "/foundation/" },
+    { icon: Users, label: "Gestão de Usuários", href: "/foundation/users" },
+    { icon: Shield, label: "Permissões", href: "/foundation/permissions" },
+    { icon: Settings, label: "Configurações", href: "/foundation/settings" },
   ];
 
   const foundationMenuItems = [
@@ -38,16 +38,16 @@ export function Sidebar() {
   ];
 
   const managerMenuItems = [
-    { icon: BarChart3, label: "Relatórios", href: "/reports" },
-    { icon: UsersRound, label: "Equipe", href: "/team" },
-    { icon: FolderKanban, label: "Projetos", href: "/projects" },
+    { icon: BarChart3, label: "Relatórios", href: "/foundation/reports" },
+    { icon: UsersRound, label: "Equipe", href: "/foundation/team" },
+    { icon: FolderKanban, label: "Projetos", href: "/foundation/projects" },
   ];
 
   const generalMenuItems = [
-    { icon: Home, label: "Início", href: "/" },
-    { icon: User, label: "Perfil", href: "/profile" },
-    { icon: Bell, label: "Notificações", href: "/notifications" },
-    { icon: HelpCircle, label: "Ajuda", href: "/help" },
+    { icon: Home, label: "Início", href: "/foundation/" },
+    { icon: User, label: "Perfil", href: "/foundation/profile" },
+    { icon: Bell, label: "Notificações", href: "/foundation/notifications" },
+    { icon: HelpCircle, label: "Ajuda", href: "/foundation/help" },
   ];
 
   const shouldShowAdminMenu = user?.role === "admin";
