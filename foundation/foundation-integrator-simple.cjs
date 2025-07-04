@@ -1,4 +1,21 @@
-import React, { useState, useEffect } from "react";
+#!/usr/bin/env node
+
+/**
+ * duEuler Foundation v3.0 - Integrador Simples
+ * Modifica apenas o App.tsx da raiz para integrar com o Foundation
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+const ROOT_DIR = path.resolve(__dirname, '..');
+const CLIENT_SRC = path.join(ROOT_DIR, 'client', 'src');
+const APP_TSX_PATH = path.join(CLIENT_SRC, 'App.tsx');
+
+console.log('🔧 Integrando Foundation v3.0 com aplicação externa...');
+
+// Template do App.tsx integrado
+const INTEGRATED_APP_TEMPLATE = `import React, { useState, useEffect } from "react";
 
 // Aplicação "virgem" que detecta Foundation e oferece acesso
 function WelcomePage() {
@@ -104,3 +121,41 @@ function App() {
 }
 
 export default App;
+`;
+
+function integrateFoundation() {
+  try {
+    // Verificar se arquivo existe
+    if (!fs.existsSync(APP_TSX_PATH)) {
+      console.error('❌ App.tsx não encontrado em:', APP_TSX_PATH);
+      return false;
+    }
+
+    // Fazer backup
+    const backupPath = APP_TSX_PATH + '.backup-' + Date.now();
+    fs.copyFileSync(APP_TSX_PATH, backupPath);
+    console.log('📦 Backup criado:', backupPath);
+
+    // Escrever novo App.tsx
+    fs.writeFileSync(APP_TSX_PATH, INTEGRATED_APP_TEMPLATE);
+    console.log('✅ App.tsx integrado com Foundation');
+
+    return true;
+  } catch (error) {
+    console.error('❌ Erro na integração:', error.message);
+    return false;
+  }
+}
+
+// Executar integração
+if (integrateFoundation()) {
+  console.log('\n🎉 Integração concluída com sucesso!');
+  console.log('\n📋 Próximos passos:');
+  console.log('   1. Reinicie o servidor: npm run dev');
+  console.log('   2. Acesse o Foundation em: /foundation/setup');
+  console.log('   3. Configure sua organização');
+  console.log('\n💡 O Foundation permanece isolado em foundation/_app/');
+} else {
+  console.log('\n❌ Falha na integração. Verifique os logs acima.');
+  process.exit(1);
+}
