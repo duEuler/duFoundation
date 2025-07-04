@@ -1,38 +1,14 @@
 {
   "version": "3.0.0",
-  "capacity": "SMALL",
-  "installedAt": "2025-07-04T05:35:20.294Z",
-  "installedBy": "foundation-detector",
+  "installed": "2025-07-04T06:06:14.650Z",
   "files": [
-    "server/routes/foundation-setup.js"
+    "server/routes",
+    "server/routes/foundation-setup.js",
+    "foundation/.config/foundation.json",
+    "foundation/README.md"
   ],
-  "routeModifications": [
-    {
-      "file": "server/routes.ts",
-      "type": "import",
-      "description": "Adicionada importação do foundation-setup",
-      "content": "const foundationSetup = require('./routes/foundation-setup');\n",
-      "line": 1
-    },
-    {
-      "file": "server/routes.ts",
-      "type": "route",
-      "description": "Adicionado uso da rota foundation",
-      "content": "app.use(foundationSetup);\n",
-      "searchPattern": "app.use("
-    }
+  "modifications": [
+    "Registrada rota Foundation no servidor"
   ],
-  "directories": [
-    "server/routes"
-  ],
-  "configurations": {
-    "routes": {
-      "/foundation/setup": "Foundation setup interface"
-    }
-  },
-  "uninstall": {
-    "canRevert": true,
-    "requiresBackup": true,
-    "cleanupDirectories": true
-  }
+  "backup": "/home/runner/workspace/foundation/.installation-backup"
 }
