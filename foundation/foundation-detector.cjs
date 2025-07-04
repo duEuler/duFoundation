@@ -4,6 +4,11 @@
  * Foundation Detector v3.0
  * Sistema de auto-detecção e instalação inteligente
  * 
+ * ⚠️  VERIFICAÇÃO MANDATÓRIA DE COMPATIBILIDADE ⚠️
+ * - SEMPRE executa verificação ANTES de qualquer operação
+ * - SE houver incompatibilidades: PARA IMEDIATAMENTE
+ * - NÃO permite prosseguir até correção dos problemas
+ * 
  * Funcionalidades:
  * - Detecta se foundation já está instalado no projeto
  * - Pergunta ao usuário sobre instalação (S/N/I)
@@ -14,6 +19,7 @@
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
+const { spawn } = require('child_process');
 
 class FoundationDetector {
   constructor() {
@@ -160,6 +166,28 @@ class FoundationDetector {
 
   async installFoundation() {
     try {
+      // ⚠️ VERIFICAÇÃO MANDATÓRIA DE COMPATIBILIDADE ⚠️
+      console.log('🔍 VERIFICAÇÃO OBRIGATÓRIA DE COMPATIBILIDADE');
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+      
+      const compatibilityResult = await this.verifyCompatibilityMandatory();
+      if (!compatibilityResult.compatible) {
+        console.log('\n🛑 INSTALAÇÃO BLOQUEADA - INCOMPATIBILIDADES CRÍTICAS');
+        console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+        
+        compatibilityResult.errors.forEach((error, index) => {
+          console.log(`${index + 1}. ❌ ${error}`);
+        });
+        
+        console.log('\n📋 AÇÕES NECESSÁRIAS:');
+        console.log('   • Corrija TODOS os erros listados acima');
+        console.log('   • Execute novamente após as correções');
+        console.log('   • NÃO prossiga até que todos os problemas sejam resolvidos');
+        
+        process.exit(1); // PARAR IMEDIATAMENTE
+      }
+      
+      console.log('✅ Compatibilidade verificada - Prosseguindo com instalação');
       console.log('📦 Instalando Foundation básico...');
       
       // 1. Instala arquivos essenciais
@@ -446,6 +474,90 @@ module.exports = router;
     console.log('');
     console.log('📚 Documentação completa em:');
     console.log('   foundation/README.md');
+  }
+  /**
+   * ⚠️ VERIFICAÇÃO MANDATÓRIA DE COMPATIBILIDADE ⚠️
+   * Esta função DEVE ser executada antes de qualquer operação
+   * Se houver incompatibilidades, PARA IMEDIATAMENTE
+   */
+  async verifyCompatibilityMandatory() {
+    const result = {
+      compatible: true,
+      errors: [],
+      warnings: [],
+      checks: []
+    };
+
+    // Verificação 1: ES Modules vs CommonJS
+    result.checks.push('🔍 Verificando compatibilidade ES Modules...');
+    
+    // Verificar server/routes.ts
+    const routesPath = path.join(this.projectRoot, 'server/routes.ts');
+    if (fs.existsSync(routesPath)) {
+      const content = fs.readFileSync(routesPath, 'utf8');
+      
+      if (content.includes('require(') && content.includes('foundation-setup')) {
+        result.errors.push('server/routes.ts usa require() com foundation-setup - deve usar import ES modules');
+        result.compatible = false;
+      }
+    }
+
+    // Verificar server/index.ts
+    const indexPath = path.join(this.projectRoot, 'server/index.ts');
+    if (fs.existsSync(indexPath)) {
+      const content = fs.readFileSync(indexPath, 'utf8');
+      
+      if (content.includes('routes-minimal') && !content.includes('"./routes"')) {
+        result.errors.push('server/index.ts está usando routes-minimal - deve usar routes completo');
+        result.compatible = false;
+      }
+    }
+
+    // Verificação 2: Estrutura de arquivos obrigatórios
+    result.checks.push('🔍 Verificando estrutura do projeto...');
+    
+    const requiredFiles = [
+      'server/index.ts',
+      'server/routes.ts', 
+      'package.json'
+    ];
+
+    for (const file of requiredFiles) {
+      if (!fs.existsSync(path.join(this.projectRoot, file))) {
+        result.errors.push(`Arquivo obrigatório não encontrado: ${file}`);
+        result.compatible = false;
+      }
+    }
+
+    // Verificação 3: Foundation setup route se existir
+    const foundationSetupPath = path.join(this.projectRoot, 'server/routes/foundation-setup.js');
+    if (fs.existsSync(foundationSetupPath)) {
+      result.checks.push('🔍 Verificando rota foundation-setup existente...');
+      
+      const content = fs.readFileSync(foundationSetupPath, 'utf8');
+      
+      if (content.includes('module.exports') && !content.includes('export default')) {
+        result.errors.push('server/routes/foundation-setup.js usa module.exports - deve usar export default');
+        result.compatible = false;
+      }
+      
+      if (content.includes('require(') && content.includes('express')) {
+        result.errors.push('server/routes/foundation-setup.js usa require() - deve usar import');
+        result.compatible = false;
+      }
+    }
+
+    // Mostrar resultado da verificação
+    if (result.compatible) {
+      console.log('   ✅ Todas as verificações passaram');
+    } else {
+      console.log('\n❌ PROBLEMAS DE COMPATIBILIDADE ENCONTRADOS:');
+      result.errors.forEach((error, index) => {
+        console.log(`   ${index + 1}. ${error}`);
+      });
+    }
+
+    return result;
   }
 }
 
