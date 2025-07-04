@@ -14,7 +14,9 @@ import {
   Bell,
   HelpCircle,
   LogOut,
-  TrendingUp
+  TrendingUp,
+  Package,
+  Monitor
 } from "lucide-react";
 
 export function Sidebar() {
@@ -26,6 +28,11 @@ export function Sidebar() {
     { icon: Users, label: "Gestão de Usuários", href: "/users" },
     { icon: Shield, label: "Permissões", href: "/permissions" },
     { icon: Settings, label: "Configurações", href: "/settings" },
+  ];
+
+  const foundationMenuItems = [
+    { icon: Package, label: "Dependências & Bibliotecas", href: "/foundation/dependencies" },
+    { icon: Monitor, label: "Monitoramento Avançado", href: "/foundation/monitoring" },
   ];
 
   const managerMenuItems = [
@@ -68,6 +75,26 @@ export function Sidebar() {
             </div>
             <ul className="space-y-1 px-3">
               {adminMenuItems.map((item) => (
+                <li key={item.href}>
+                  <a href={item.href} className="nav-item">
+                    <item.icon size={20} className="mr-3" />
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {shouldShowAdminMenu && (
+          <div className="mt-6">
+            <div className="px-6 mb-4">
+              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
+                Foundation Analytics
+              </h3>
+            </div>
+            <ul className="space-y-1 px-3">
+              {foundationMenuItems.map((item) => (
                 <li key={item.href}>
                   <a href={item.href} className="nav-item">
                     <item.icon size={20} className="mr-3" />
