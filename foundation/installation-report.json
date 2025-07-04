@@ -5,8 +5,7 @@
     "foundation/README.md"
   ],
   "filesModified": [
-    "Adicionado import foundation-setup",
-    "Registrada rota Foundation no servidor"
+    "Adicionado import foundation-setup"
   ],
   "validationResults": {
     "success": true,

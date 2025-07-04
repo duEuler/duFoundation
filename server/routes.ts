@@ -700,8 +700,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-
-
   // Foundation routes
   app.use(foundationSetup);
 
