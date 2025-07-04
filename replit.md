@@ -221,4 +221,10 @@ Changelog:
 
 ```
 Preferred communication style: Simple, everyday language.
+Architecture Rules:
+- SEMPRE criar funcionalidades dentro da pasta foundation/
+- Aplicativos para gerenciar o Foundation devem estar em foundation/_app/
+- Manter foco em usuários leigos, evitar jargões técnicos
+- Usar sistema de onboarding por etapas para formulários grandes
+- CLI é bem-vindo, mas interfaces simplificadas são prioridade
 ```
