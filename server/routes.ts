@@ -417,7 +417,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
                         <span class="metric-value">Ativo</span>
                     </div>
                     <div class="actions">
-                        <a href="/api/health" class="btn btn-primary">Verificar Saúde</a>
+                        <a href="/api/health" target="_blank" class="btn btn-primary">Verificar Saúde</a>
+                        <button class="btn btn-secondary" onclick="testAllApis()">Testar APIs</button>
                     </div>
                 </div>
 
@@ -438,6 +439,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                     </div>
                     <div class="actions">
                         <button class="btn btn-primary" onclick="loadUserStats()">Atualizar</button>
+                        <button class="btn btn-secondary" onclick="showUsersList()">Ver Usuários</button>
                     </div>
                 </div>
 
@@ -458,6 +460,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                     </div>
                     <div class="actions">
                         <a href="/foundation/setup" class="btn btn-primary">Reconfigurar</a>
+                        <button class="btn btn-secondary" onclick="changeCapacity()">Alterar Capacidade</button>
                     </div>
                 </div>
 
@@ -476,9 +479,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
                         <span>Uptime</span>
                         <span class="metric-value" id="uptime">-</span>
                     </div>
+                    <div class="metric">
+                        <span>Requisições</span>
+                        <span class="metric-value" id="requestCount">-</span>
+                    </div>
                     <div class="actions">
                         <button class="btn btn-primary" onclick="loadMetrics()">Atualizar Métricas</button>
+                        <button class="btn btn-secondary" onclick="toggleAutoRefresh()">Auto-Refresh</button>
                     </div>
+                </div>
+            </div>
+
+            <!-- Logs de Atividade Recente -->
+            <div class="card">
+                <h3>Atividade Recente</h3>
+                <div id="activityLogs" style="max-height: 300px; overflow-y: auto;">
+                    <p style="color: #6b7280; text-align: center; padding: 20px;">Carregando atividades...</p>
+                </div>
+                <div class="actions">
+                    <button class="btn btn-primary" onclick="loadActivity()">Atualizar Logs</button>
+                    <button class="btn btn-secondary" onclick="clearLogs()">Limpar Logs</button>
                 </div>
             </div>
         </div>
@@ -531,10 +551,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
             document.getElementById('dashboardContent').style.display = 'block';
         }
 
+        let autoRefreshInterval = null;
+        let autoRefreshEnabled = false;
+
         async function loadAllData() {
             await Promise.all([
                 loadSystemStatus(),
-                loadMetrics()
+                loadMetrics(),
+                loadActivity()
             ]);
         }
 
@@ -578,6 +602,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
                     const memPercent = (data.memory_usage / data.memory_total * 100).toFixed(1);
                     document.getElementById('memoryUsage').textContent = memPercent + '%';
                 }
+                if (data.request_count !== undefined) {
+                    document.getElementById('requestCount').textContent = data.request_count;
+                }
                 
                 // Uptime do processo
                 const response2 = await fetch('/api/health');
@@ -596,8 +623,154 @@ export async function registerRoutes(app: Express): Promise<Server> {
             await loadSystemStatus();
         }
 
+        async function loadActivity() {
+            try {
+                const response = await fetch('/api/activity/recent', {
+                    headers: getAuthHeaders()
+                });
+                
+                if (response.ok) {
+                    const activities = await response.json();
+                    const container = document.getElementById('activityLogs');
+                    
+                    if (activities.length === 0) {
+                        container.innerHTML = '<p style="color: #6b7280; text-align: center; padding: 20px;">Nenhuma atividade recente</p>';
+                        return;
+                    }
+                    
+                    container.innerHTML = activities.map(activity => \`
+                        <div style="padding: 12px; border-bottom: 1px solid #f3f4f6; display: flex; justify-content: space-between;">
+                            <div>
+                                <strong>\${activity.action}</strong>
+                                <p style="color: #6b7280; font-size: 14px; margin-top: 4px;">\${activity.description}</p>
+                            </div>
+                            <span style="color: #6b7280; font-size: 12px;">
+                                \${new Date(activity.createdAt).toLocaleString('pt-BR')}
+                            </span>
+                        </div>
+                    \`).join('');
+                } else {
+                    document.getElementById('activityLogs').innerHTML = 
+                        '<p style="color: #dc2626; text-align: center; padding: 20px;">Erro ao carregar atividades</p>';
+                }
+            } catch (error) {
+                console.error('Erro ao carregar atividade:', error);
+                document.getElementById('activityLogs').innerHTML = 
+                    '<p style="color: #dc2626; text-align: center; padding: 20px;">Erro de conexão</p>';
+            }
+        }
+
+        async function testAllApis() {
+            const results = [];
+            const apis = [
+                { name: 'Health', url: '/api/health' },
+                { name: 'System Status', url: '/api/system/status' },
+                { name: 'Metrics', url: '/api/metrics' },
+                { name: 'Auth Me', url: '/api/auth/me' },
+                { name: 'Activity', url: '/api/activity/recent' }
+            ];
+
+            for (const api of apis) {
+                try {
+                    const response = await fetch(api.url, { headers: getAuthHeaders() });
+                    results.push(\`✓ \${api.name}: \${response.status}\`);
+                } catch (error) {
+                    results.push(\`✗ \${api.name}: Erro\`);
+                }
+            }
+
+            alert('Teste de APIs:\\n\\n' + results.join('\\n'));
+        }
+
+        async function showUsersList() {
+            try {
+                const response = await fetch('/api/users', {
+                    headers: getAuthHeaders()
+                });
+                
+                if (response.ok) {
+                    const users = await response.json();
+                    const userList = users.map(user => 
+                        \`\${user.username} (\${user.role}) - \${user.isActive ? 'Ativo' : 'Inativo'}\`
+                    ).join('\\n');
+                    
+                    alert('Usuários do Sistema:\\n\\n' + userList);
+                } else {
+                    alert('Erro ao carregar lista de usuários');
+                }
+            } catch (error) {
+                alert('Erro de conexão ao carregar usuários');
+            }
+        }
+
+        async function changeCapacity() {
+            const newCapacity = prompt('Nova capacidade (nano, micro, small, medium, large, enterprise):');
+            
+            if (!newCapacity) return;
+            
+            const maxUsers = prompt('Número máximo de usuários (opcional):');
+            
+            try {
+                const response = await fetch('/api/foundation/change-capacity', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...getAuthHeaders()
+                    },
+                    body: JSON.stringify({
+                        newCapacity: newCapacity.toLowerCase(),
+                        maxUsers: maxUsers ? parseInt(maxUsers) : null
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (response.ok) {
+                    alert('Capacidade alterada com sucesso!');
+                    loadSystemStatus(); // Recarregar dados
+                } else {
+                    alert('Erro: ' + result.message);
+                }
+            } catch (error) {
+                alert('Erro de conexão ao alterar capacidade');
+            }
+        }
+
+        function toggleAutoRefresh() {
+            if (autoRefreshEnabled) {
+                clearInterval(autoRefreshInterval);
+                autoRefreshEnabled = false;
+                document.querySelector('button[onclick="toggleAutoRefresh()"]').textContent = 'Auto-Refresh';
+                document.querySelector('button[onclick="toggleAutoRefresh()"]').style.background = '#6b7280';
+            } else {
+                autoRefreshInterval = setInterval(() => {
+                    loadMetrics();
+                    loadActivity();
+                }, 5000); // A cada 5 segundos
+                autoRefreshEnabled = true;
+                document.querySelector('button[onclick="toggleAutoRefresh()"]').textContent = 'Parar Auto-Refresh';
+                document.querySelector('button[onclick="toggleAutoRefresh()"]').style.background = '#dc2626';
+            }
+        }
+
+        async function clearLogs() {
+            if (confirm('Limpar todos os logs de atividade? Esta ação não pode ser desfeita.')) {
+                // Por enquanto, apenas limpar da tela
+                document.getElementById('activityLogs').innerHTML = 
+                    '<p style="color: #6b7280; text-align: center; padding: 20px;">Logs limpos</p>';
+                
+                setTimeout(() => {
+                    loadActivity();
+                }, 2000);
+            }
+        }
+
         function logout() {
             if (confirm('Tem certeza que deseja sair?')) {
+                if (autoRefreshEnabled) {
+                    clearInterval(autoRefreshInterval);
+                }
+                
                 fetch('/api/logout', {
                     method: 'POST',
                     headers: getAuthHeaders()
@@ -1368,6 +1541,101 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Metrics error:", error);
       res.status(500).json({ message: "Erro ao obter métricas" });
+    }
+  });
+
+  /**
+   * Activity Logs API - Logs de atividade recente
+   * Endpoint: GET /api/activity/recent
+   */
+  app.get("/api/activity/recent", authenticateUser, async (req, res) => {
+    try {
+      const activities = await storage.getRecentActivity(10);
+      res.json(activities);
+    } catch (error) {
+      console.error("Activity logs error:", error);
+      res.status(500).json({ message: "Erro ao obter logs de atividade" });
+    }
+  });
+
+  /**
+   * Users Management API - Gestão de usuários 
+   * Endpoint: GET /api/users
+   */
+  app.get("/api/users", authenticateUser, async (req, res) => {
+    try {
+      const users = await storage.getAllUsers();
+      // Remover senhas dos dados retornados
+      const safeUsers = users.map(user => ({
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        isActive: user.isActive,
+        lastLogin: user.lastLogin,
+        createdAt: user.createdAt
+      }));
+      res.json(safeUsers);
+    } catch (error) {
+      console.error("Users error:", error);
+      res.status(500).json({ message: "Erro ao obter usuários" });
+    }
+  });
+
+  /**
+   * System Configuration API - Configuração do sistema
+   * Endpoint: GET /api/config
+   */
+  app.get("/api/config", authenticateUser, async (req, res) => {
+    try {
+      const config = await storage.getSystemConfig();
+      res.json(config);
+    } catch (error) {
+      console.error("Config error:", error);
+      res.status(500).json({ message: "Erro ao obter configuração" });
+    }
+  });
+
+  /**
+   * Foundation Capacity Change API - Mudança de capacidade
+   * Endpoint: POST /api/foundation/change-capacity
+   */
+  app.post("/api/foundation/change-capacity", authenticateUser, async (req: any, res) => {
+    try {
+      const { newCapacity, maxUsers } = req.body;
+      
+      if (!newCapacity) {
+        return res.status(400).json({ message: "Nova capacidade é obrigatória" });
+      }
+
+      // Verificar se capacidade é válida
+      const validCapacities = ['nano', 'micro', 'small', 'medium', 'large', 'enterprise'];
+      if (!validCapacities.includes(newCapacity)) {
+        return res.status(400).json({ message: "Capacidade inválida" });
+      }
+
+      // Atualizar configuração do sistema
+      const updatedConfig = await storage.updateSystemConfig({
+        foundationCapacity: newCapacity,
+        maxConcurrentUsers: maxUsers || null,
+        updatedAt: new Date()
+      });
+
+      // Log da atividade
+      await storage.createActivityLog({
+        userId: req.user.id,
+        action: "capacity_change",
+        description: `Capacidade alterada para ${newCapacity} (máx. ${maxUsers || 'ilimitado'} usuários)`,
+      });
+
+      res.json({ 
+        message: "Capacidade alterada com sucesso",
+        config: updatedConfig 
+      });
+
+    } catch (error) {
+      console.error("Capacity change error:", error);
+      res.status(500).json({ message: "Erro ao alterar capacidade" });
     }
   });
 
