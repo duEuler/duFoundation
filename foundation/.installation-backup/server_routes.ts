@@ -702,6 +702,127 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Foundation routes
   app.use(foundationSetup);
 
+  // Foundation complete installation endpoint
+  app.post("/api/foundation/install", async (req, res) => {
+    try {
+      const {
+        adminUsername,
+        adminPassword,
+        adminEmail,
+        organization,
+        department,
+        environment,
+        capacity,
+        maxUsers,
+        cacheTTL,
+        enableMonitoring,
+        enableBackups,
+        enableSSL,
+        fullSetup
+      } = req.body;
+
+      // Validações básicas
+      if (!adminUsername || !adminPassword || !organization || !capacity) {
+        return res.status(400).json({ 
+          message: "Dados obrigatórios não fornecidos: usuário admin, senha, organização e capacidade são necessários" 
+        });
+      }
+
+      // Verificar se já existe configuração
+      const existingConfig = await storage.getSystemConfig();
+      if (existingConfig && existingConfig.setupCompleted) {
+        return res.status(400).json({ 
+          message: "Sistema já foi configurado. Use o painel administrativo para modificações." 
+        });
+      }
+
+      // Validar capacidade
+      if (!FOUNDATION_CONFIGS[capacity]) {
+        return res.status(400).json({ 
+          message: `Capacidade inválida: ${capacity}. Use: ${Object.keys(FOUNDATION_CONFIGS).join(', ')}` 
+        });
+      }
+
+      const config = getFoundationConfig(capacity);
+      const finalMaxUsers = maxUsers || config.userRange.max;
+
+      // Criar usuário administrativo
+      const hashedPassword = await bcrypt.hash(adminPassword, 10);
+      const adminUser = await storage.createUser({
+        username: adminUsername,
+        password: hashedPassword,
+        email: adminEmail || null,
+        role: "admin"
+      });
+
+      // Criar configuração do sistema
+      const systemConfig = await storage.createSystemConfig({
+        organizationName: organization,
+        environment: environment || 'production',
+        foundationCapacity: capacity,
+        maxConcurrentUsers: finalMaxUsers,
+        cacheTTL: cacheTTL || 300,
+        setupCompleted: true
+      });
+
+      // Log da atividade
+      await storage.createActivityLog({
+        userId: adminUser.id,
+        action: "foundation_install",
+        description: `Foundation v3.0 instalado - Capacidade: ${capacity.toUpperCase()}, Org: ${organization}`,
+        metadata: {
+          capacity,
+          maxUsers: finalMaxUsers,
+          features: {
+            monitoring: enableMonitoring,
+            backups: enableBackups,
+            ssl: enableSSL
+          }
+        }
+      });
+
+      // Métricas iniciais
+      await storage.createMetric({
+        metricType: "foundation_install",
+        value: capacity,
+        metadata: {
+          timestamp: new Date().toISOString(),
+          config: {
+            capacity,
+            maxUsers: finalMaxUsers,
+            organization
+          }
+        }
+      });
+
+      res.json({
+        success: true,
+        message: "Foundation instalado com sucesso!",
+        data: {
+          adminUser: { 
+            id: adminUser.id, 
+            username: adminUser.username, 
+            email: adminUser.email 
+          },
+          systemConfig: {
+            organization: systemConfig.organizationName,
+            capacity: systemConfig.foundationCapacity,
+            maxUsers: systemConfig.maxConcurrentUsers,
+            environment: systemConfig.environment
+          },
+          loginUrl: "/login"
+        }
+      });
+
+    } catch (error) {
+      console.error("Erro na instalação Foundation:", error);
+      res.status(500).json({ 
+        message: "Erro interno do servidor durante a instalação",
+        error: error.message 
+      });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

@@ -1,6 +1,6 @@
 {
   "version": "3.0.0",
-  "installed": "2025-07-04T11:19:22.577Z",
+  "installed": "2025-07-04T08:42:47.288Z",
   "files": [
     "server/routes/foundation-setup.js",
     "foundation/.config/foundation.json",
