@@ -167,11 +167,12 @@ class FoundationDetector {
   async installFoundation() {
     try {
       // ⚠️ VERIFICAÇÃO MANDATÓRIA DE COMPATIBILIDADE ⚠️
-      console.log('🔍 VERIFICAÇÃO OBRIGATÓRIA DE COMPATIBILIDADE');
+      console.log('🔍 VERIFICAÇÃO COMPLETA E ANTECIPAÇÃO DE PROBLEMAS');
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
       
-      const compatibilityResult = await this.verifyCompatibilityMandatory();
-      if (!compatibilityResult.compatible) {
+      const { verifyComprehensiveCompatibility } = await import('./comprehensive-checker.js');
+      const compatibilityResult = await verifyComprehensiveCompatibility();
+      if (!compatibilityResult.success) {
         console.log('\n🛑 INSTALAÇÃO BLOQUEADA - INCOMPATIBILIDADES CRÍTICAS');
         console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
         
