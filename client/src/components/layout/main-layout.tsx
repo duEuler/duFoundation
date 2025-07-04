@@ -41,16 +41,17 @@ export function MainLayout({
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Header with Totals */}
-        {showTotals && (
-          <div className="border-b bg-background p-4 space-y-4">
-            {title && (
-              <h1 className="text-2xl font-bold">{title}</h1>
-            )}
-            
-            {/* Totalizadores */}
-            <div className="grid grid-cols-4 gap-4">
+      <div className="flex-1 overflow-auto">
+        <div className="p-6">
+          {/* Header with Totals */}
+          {showTotals && (
+            <div className="mb-6 space-y-4">
+              {title && (
+                <h1 className="text-2xl font-bold">{title}</h1>
+              )}
+              
+              {/* Totalizadores */}
+              <div className="grid grid-cols-4 gap-4">
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Usuários Ativos</CardTitle>
@@ -135,12 +136,11 @@ export function MainLayout({
                   ))}
                 </div>
               </div>
-            )}
-          </div>
-        )}
+              )}
+            </div>
+          )}
 
-        {/* Content Area */}
-        <div className="flex-1 overflow-auto p-6">
+          {/* Content Area */}
           {children}
         </div>
       </div>

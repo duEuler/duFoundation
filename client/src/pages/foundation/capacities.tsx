@@ -22,6 +22,22 @@ import {
   Globe
 } from "lucide-react";
 import { useState } from "react";
+import { 
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface FoundationCapacity {
   key: string;
@@ -39,6 +55,8 @@ interface FoundationCapacity {
 
 export default function CapacitiesPage() {
   const [selectedCapacity, setSelectedCapacity] = useState<string | null>(null);
+  const [changeCapacityDialog, setChangeCapacityDialog] = useState(false);
+  const [targetCapacity, setTargetCapacity] = useState<string>("");
 
   const { data: capacities } = useQuery<FoundationCapacity[]>({
     queryKey: ['/api/foundation/capacities'],
@@ -459,8 +477,8 @@ export default function CapacitiesPage() {
                           className="w-full"
                           onClick={(e) => {
                             e.stopPropagation();
-                            // TODO: Implementar mudança de capacidade
-                            console.log(`Switching to ${capacity.key}`);
+                            setTargetCapacity(capacity.key);
+                            setChangeCapacityDialog(true);
                           }}
                         >
                           {capacity.userRange.max > (currentCapacityData?.userRange.max || 0) ? (
@@ -475,6 +493,63 @@ export default function CapacitiesPage() {
                             </>
                           )}
                         </Button>
+                      )}
+                      
+                      {/* Alertas para capacidades incompatíveis */}
+                      {!isActive && !compatibility.compatible && (
+                        <div className="space-y-3">
+                          <Alert variant="destructive">
+                            <AlertTriangle className="h-4 w-4" />
+                            <AlertDescription className="text-sm">
+                              <strong>Hardware Insuficiente:</strong><br/>
+                              {compatibility.ramDeficit > 0 && (
+                                <span>• Falta {compatibility.ramDeficit.toFixed(1)}GB de RAM<br/></span>
+                              )}
+                              {compatibility.cpuDeficit > 0 && (
+                                <span>• Falta {compatibility.cpuDeficit} cores de CPU<br/></span>
+                              )}
+                            </AlertDescription>
+                          </Alert>
+                          
+                          <div className="p-3 bg-amber-50 border border-amber-200 rounded-md">
+                            <div className="text-sm text-amber-800">
+                              <strong>💡 Recomendações:</strong>
+                              <ul className="mt-2 space-y-1 ml-2">
+                                <li>• Contratar hardware com configuração adequada</li>
+                                <li>• Migrar para capacidade compatível com seu hardware atual</li>
+                                <li>• Verificar capacidades verdes que são 100% compatíveis</li>
+                              </ul>
+                            </div>
+                          </div>
+                          
+                          {/* Sugestão de capacidade compatível */}
+                          {(() => {
+                            const compatibleCapacities = capacities?.filter(c => {
+                              const comp = checkCompatibility(c);
+                              return comp.compatible;
+                            }) || [];
+                            
+                            const recommendedCapacity = compatibleCapacities
+                              .filter(c => c.key !== currentCapacity)
+                              .sort((a, b) => b.userRange.max - a.userRange.max)[0];
+                            
+                            return recommendedCapacity && (
+                              <Button 
+                                size="sm" 
+                                variant="outline"
+                                className="w-full border-green-500 text-green-700 hover:bg-green-50"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setTargetCapacity(recommendedCapacity.key);
+                                  setChangeCapacityDialog(true);
+                                }}
+                              >
+                                <CheckCircle className="h-4 w-4 mr-2" />
+                                Migrar para {recommendedCapacity.key.toUpperCase()} (Recomendado)
+                              </Button>
+                            );
+                          })()}
+                        </div>
                       )}
                     </div>
                   )}
@@ -539,6 +614,80 @@ export default function CapacitiesPage() {
             </CardContent>
           </Card>
         )}
+
+        {/* Dialog de Confirmação para Mudança de Capacidade */}
+        <Dialog open={changeCapacityDialog} onOpenChange={setChangeCapacityDialog}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Confirmar Mudança de Capacidade</DialogTitle>
+              <DialogDescription>
+                Você está prestes a alterar a capacidade Foundation de <strong>{currentCapacity.toUpperCase()}</strong> para <strong>{targetCapacity.toUpperCase()}</strong>.
+              </DialogDescription>
+            </DialogHeader>
+            
+            <div className="space-y-4">
+              <Alert>
+                <AlertTriangle className="h-4 w-4" />
+                <AlertDescription>
+                  Esta ação irá:
+                  <ul className="mt-2 space-y-1 ml-4">
+                    <li>• Reconfigurar os recursos do sistema</li>
+                    <li>• Ajustar configurações de monitoramento</li>
+                    <li>• Aplicar novas configurações de segurança</li>
+                    <li>• Reiniciar alguns serviços do sistema</li>
+                  </ul>
+                </AlertDescription>
+              </Alert>
+
+              {targetCapacity && capacities?.find(c => c.key === targetCapacity) && (() => {
+                const targetCapacityData = capacities.find(c => c.key === targetCapacity)!;
+                const targetCompatibility = checkCompatibility(targetCapacityData);
+                
+                return (
+                  <div className="p-3 bg-blue-50 border border-blue-200 rounded-md">
+                    <h4 className="font-medium text-blue-800 mb-2">Nova Configuração:</h4>
+                    <div className="grid grid-cols-2 gap-2 text-sm text-blue-700">
+                      <div>Usuários: {formatNumber(targetCapacityData.userRange.min)}-{formatNumber(targetCapacityData.userRange.max)}</div>
+                      <div>RAM: {(targetCapacityData.resources.ramMB / 1024).toFixed(0)}GB</div>
+                      <div>CPU: {targetCapacityData.resources.cpuCores} cores</div>
+                      <div>Storage: {targetCapacityData.resources.storageGB}GB</div>
+                    </div>
+                    
+                    {targetCompatibility.compatible && (
+                      <div className="mt-2 flex items-center gap-2 text-green-600">
+                        <CheckCircle className="h-4 w-4" />
+                        <span className="text-sm font-medium">Hardware compatível</span>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+            </div>
+
+            <DialogFooter>
+              <Button 
+                variant="outline" 
+                onClick={() => setChangeCapacityDialog(false)}
+              >
+                Cancelar
+              </Button>
+              <Button 
+                onClick={async () => {
+                  try {
+                    // TODO: Implementar mudança real de capacidade
+                    console.log(`Changing capacity to ${targetCapacity}`);
+                    setChangeCapacityDialog(false);
+                    // Aqui você pode adicionar a lógica de mudança de capacidade
+                  } catch (error) {
+                    console.error('Erro ao alterar capacidade:', error);
+                  }
+                }}
+              >
+                Confirmar Alteração
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </MainLayout>
   );
