@@ -3,7 +3,14 @@
 # DuEuler Foundation - Script de Conveniência
 # Facilita a execução dos comandos foundation
 
-FOUNDATION_DIR="foundation"
+# Detectar se estamos dentro da pasta foundation ou na raiz
+if [ -f "foundation-installer.cjs" ]; then
+    FOUNDATION_DIR="."
+elif [ -f "foundation/foundation-installer.cjs" ]; then
+    FOUNDATION_DIR="foundation"
+else
+    FOUNDATION_DIR="."
+fi
 
 # Função para mostrar ajuda
 show_help() {
@@ -25,7 +32,7 @@ show_help() {
 check_foundation() {
     if [ ! -f "$FOUNDATION_DIR/foundation-installer.cjs" ]; then
         echo "❌ Foundation não encontrado em: $FOUNDATION_DIR/"
-        echo "💡 Certifique-se de estar na raiz do projeto"
+        echo "💡 Certifique-se de estar na raiz do projeto ou pasta foundation"
         exit 1
     fi
 }

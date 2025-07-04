@@ -1,0 +1,36 @@
+{
+  "foundation": {
+    "version": "3.0.0",
+    "autoInstall": false,
+    "confirmBeforeInstall": true,
+    "capacity": "SMALL",
+    "commands": {
+      "install": "node foundation/foundation-installer.cjs",
+      "verify": "node foundation/scripts/plant_foundation.cjs",
+      "help": "bash foundation/foundation.sh help"
+    },
+    "integrations": {
+      "replit": {
+        "workflows": [
+          {
+            "name": "Foundation Install",
+            "command": "node foundation/foundation-installer.cjs",
+            "description": "Instalar DuEuler Foundation v3.0"
+          },
+          {
+            "name": "Foundation Verify", 
+            "command": "node foundation/scripts/plant_foundation.cjs",
+            "description": "Verificar estrutura do foundation"
+          }
+        ]
+      }
+    },
+    "paths": {
+      "installer": "foundation/foundation-installer.cjs",
+      "verifier": "foundation/scripts/plant_foundation.cjs",
+      "config": "foundation/config/",
+      "docs": "foundation/docs/",
+      "logs": "foundation/logs/"
+    }
+  }
+}
