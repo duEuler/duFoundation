@@ -24,7 +24,7 @@ Complete enterprise-grade development framework based on official duEuler projec
 - 6,500+ lines of validated code
 
 #### 3. Automation Engine
-- foundation-setup.cjs script for project initialization
+- foundation-installer.cjs script for project initialization
 - Intelligent capacity tier detection
 - Dependency resolution and installation
 - Template processing with variable substitution

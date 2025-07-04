@@ -27,11 +27,11 @@ O Foundation v3.0 foi instalado com sucesso em seu projeto utilizando a arquitet
 
 ## 🛠️ Comandos Disponíveis
 
-<!-- REVISAR-DESATUALIZADO: Comandos foundation-scanner e foundation-migrator não existem mais -->
-- `node foundation/foundation-scanner.cjs` - Análise completa do projeto
-- `node foundation/foundation-auto-scanner.cjs` - Scanner automático (primeira vez)
 - `node foundation/foundation-installer.cjs` - Instalação do Foundation
+- `node foundation/foundation-scanner.cjs` - Scanner automático (primeira vez)
 - `node foundation/foundation-remover.cjs` - Desinstalação inteligente completa
+
+📋 **Guia Completo:** Ver [INSTALLATION_COMMANDS_CONSOLIDATED.md](./INSTALLATION_COMMANDS_CONSOLIDATED.md) para todos os comandos e exemplos
 
 ## 📋 Arquivos Instalados
 

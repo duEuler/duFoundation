@@ -84,7 +84,7 @@ node dueuler-foundation/automation/setup-replit-md.cjs --apply-existing
 ### Quick Setup (Recommended)
 ```bash
 # Complete setup for enterprise capacity
-node dueuler-foundation/automation/foundation-setup.cjs \
+node foundation/foundation-installer.cjs \
   --capacity enterprise \
   --name "MyEnterprisePlatform" \
   --description "Advanced enterprise platform"
@@ -99,16 +99,16 @@ npm run foundation:validate
 node dueuler-foundation/automation/install-dependencies.cjs --capacity micro
 
 # 2. Configure documentation
-node dueuler-foundation/automation/setup-replit-md.cjs --capacity micro
+node foundation/foundation-scanner.cjs --capacity micro
 
-# 3. Apply configuration templates
-node dueuler-foundation/automation/foundation-setup.cjs --skip-deps --capacity micro
+# 3. Apply configuration templates  
+node foundation/foundation-installer.cjs --skip-deps --capacity micro
 ```
 
 ### Capacity Migration
 ```bash
 # Upgrade from micro to enterprise
-node dueuler-foundation/automation/foundation-setup.cjs \
+node foundation/foundation-installer.cjs \
   --capacity enterprise \
   --name "ExistingProject"
 ```
@@ -196,7 +196,7 @@ npm run test:urgent
 ### Debug Mode
 ```bash
 # Verbose output for troubleshooting
-node dueuler-foundation/automation/foundation-setup.cjs \
+node foundation/foundation-installer.cjs \
   --capacity enterprise \
   --verbose
 ```
@@ -209,7 +209,7 @@ node dueuler-foundation/automation/foundation-setup.cjs \
 cp package.json package.json.backup
 
 # Apply foundation templates
-node dueuler-foundation/automation/foundation-setup.cjs \
+node foundation/foundation-installer.cjs \
   --capacity large \
   --name "ExistingProject"
 
