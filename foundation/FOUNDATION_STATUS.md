@@ -139,6 +139,45 @@ node foundation/test-installation.cjs
 - **Descrição**: Padronizar comandos entre todos os documentos
 - **Resultado**: Comandos sincronizados em 6 documentos principais
 
+## 🔧 AÇÕES DE MÉDIA PRIORIDADE - CONCLUÍDAS
+
+### 1. Exemplos Práticos no TROUBLESHOOTING ✅
+- **Status**: **CONCLUÍDO** - 4 de Julho de 2025
+- **Arquivo**: `TROUBLESHOOTING.md`
+- **Descrição**: Adicionados exemplos práticos detalhados baseados em problemas reais
+- **Resultado**: 15+ exemplos práticos com comandos de diagnóstico e correção
+
+### 2. Reorganização de Arquivos de Análise ✅
+- **Status**: **CONCLUÍDO** - 4 de Julho de 2025
+- **Estrutura**: `docs/analysis/`
+- **Descrição**: Arquivos de análise movidos para estrutura organizacional
+- **Resultado**: 5 arquivos reorganizados com documentação de navegação
+
+### 3. Configurações Técnicas Detalhadas ✅
+- **Status**: **CONCLUÍDO** - 4 de Julho de 2025
+- **Arquivo**: `CONFIGURACOES_TECNICAS_DETALHADAS.md`
+- **Descrição**: Configurações avançadas para todos os tiers de capacidade
+- **Resultado**: Guia completo com 500+ linhas de configurações técnicas
+
+---
+
+## 📋 AÇÕES DE BAIXA PRIORIDADE - RESTANTES
+
+### 1. Templates de Projeto Específicos 🔄
+- **Status**: **PENDENTE**
+- **Descrição**: Templates prontos para diferentes tipos de projeto
+- **Estimativa**: 2-3 horas de desenvolvimento
+
+### 2. Sistema de Plugins 🔄
+- **Status**: **PENDENTE**
+- **Descrição**: Arquitetura extensível para funcionalidades customizadas
+- **Estimativa**: 4-5 horas de desenvolvimento
+
+### 3. Interface de Administração Web 🔄
+- **Status**: **PENDENTE**
+- **Descrição**: Painel web para gestão completa do Foundation
+- **Estimativa**: 3-4 horas de desenvolvimento
+
 ## 🎯 PRÓXIMOS MARCOS
 
 1. **Portabilidade Completa**: Teste em múltiplos tipos de projeto

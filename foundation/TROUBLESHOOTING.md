@@ -46,6 +46,40 @@ grep '"type"' package.json
 **Sintomas:**
 ```
 Error: Cannot find module './utils'
+Error: Cannot find module '@/components/ui/button'
+Cannot resolve dependency: lucide-react
+```
+
+**Causa:** Caminhos incorretos ou dependências ausentes
+
+**Exemplo Real - Projeto React:**
+```bash
+# Erro comum encontrado
+npm run dev
+> Error: Cannot find module '@/components/ui/button'
+
+# Diagnóstico
+ls client/src/components/ui/
+# Se não existe, instalar dependências UI
+```
+
+**Solução:**
+```bash
+# 1. Verificar aliases no vite.config.ts
+cat vite.config.ts | grep "alias"
+
+# 2. Instalar componentes UI ausentes
+npm install @radix-ui/react-button lucide-react
+
+# 3. Recriar componentes se necessário
+mkdir -p client/src/components/ui
+```
+
+**Verificação:**
+```bash
+# Testar imports
+node -e "console.log(require.resolve('@/lib/utils'))"
+# Deve resolver sem erro
 ```
 
 **Causa:** ES modules requer extensão .js em imports locais
@@ -106,14 +140,157 @@ TypeError: registerRoutes is not a function
 grep "registerRoutes" server/routes.ts
 ```
 
+**Exemplo Real - Erro Comum:**
+```bash
+# Instalação falha com:
+node foundation/foundation-installer.cjs
+> TypeError: registerRoutes is not a function
+
+# Verificar arquivo atual
+cat server/routes.ts | head -5
+> // Arquivo sem export function registerRoutes
+```
+
 **Solução:**
 ```typescript
-// server/routes.ts
+// server/routes.ts - Template Correto
+import { Express } from 'express';
+import { createServer, Server } from 'http';
+
 export async function registerRoutes(app: Express): Promise<Server> {
-  // suas rotas aqui
+  // API routes
+  app.get('/api/health', (req, res) => {
+    res.json({ status: 'ok' });
+  });
+
+  // Foundation routes
+  app.get('/foundation/setup', (req, res) => {
+    res.sendFile(path.join(__dirname, '../dist/public/index.html'));
+  });
+  
   const httpServer = createServer(app);
   return httpServer;
 }
+```
+
+**Verificação:**
+```bash
+# Testar se função existe
+node -e "import('./server/routes.js').then(m => console.log(typeof m.registerRoutes))"
+# Deve mostrar: function
+```
+
+---
+
+#### ❌ "Cannot GET /foundation/setup"
+
+**Sintomas:**
+```bash
+curl http://localhost:5000/foundation/setup
+# Retorna: Cannot GET /foundation/setup
+```
+
+**Exemplo Real - Rota Não Registrada:**
+```bash
+# Verificar se rota está definida
+grep -r "/foundation/setup" server/
+# Se não encontrar, rota não foi registrada
+
+# Verificar se Foundation foi instalado
+ls foundation/.foundation-manifest.json
+# Se não existe, Foundation não instalado
+```
+
+**Solução:**
+```typescript
+// server/routes.ts - Adicionar rota Foundation
+app.get('/foundation/setup', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist/public/index.html'));
+});
+
+// Ou se Foundation não instalado:
+node foundation/foundation-installer.cjs
+```
+
+### **3. Problemas de Dependências**
+
+#### ❌ "Module not found: @radix-ui/react-button"
+
+**Sintomas:**
+```bash
+npm run dev
+> Error: Cannot resolve dependency @radix-ui/react-button
+```
+
+**Diagnóstico Rápido:**
+```bash
+# Verificar se dependência está instalada
+npm list @radix-ui/react-button
+# Se erro, não está instalada
+
+# Verificar package.json
+grep "radix-ui" package.json
+```
+
+**Solução:**
+```bash
+# Instalar dependências UI ausentes
+npm install @radix-ui/react-button @radix-ui/react-slot
+npm install lucide-react class-variance-authority
+
+# Verificar instalação
+npm list | grep radix
+```
+
+### **4. Problemas do Foundation**
+
+#### ❌ "Foundation scanner fails with permission error"
+
+**Sintomas:**
+```bash
+node foundation/foundation-scanner.cjs
+> Error: EACCES: permission denied, open '.foundation-scanned'
+```
+
+**Causa Comum:** Permissões de arquivo incorretas
+
+**Solução:**
+```bash
+# Corrigir permissões
+chmod 755 foundation/
+chmod 644 foundation/*.cjs
+chmod 644 .foundation-*
+
+# Testar novamente
+node foundation/foundation-scanner.cjs
+```
+
+#### ❌ "Foundation installation stuck at verification"
+
+**Exemplo Real:**
+```bash
+node foundation/foundation-installer.cjs
+> Verificando compatibilidade...
+> [instalação trava aqui]
+```
+
+**Diagnóstico:**
+```bash
+# Verificar se há processos travados
+ps aux | grep foundation
+
+# Verificar logs
+tail -f foundation/logs/installation.log
+
+# Forçar limpeza
+rm -f .foundation-* foundation/.foundation-*
+```
+
+**Solução:**
+```bash
+# Reinstalação limpa
+node foundation/foundation-remover.cjs --force --clean-traces
+node foundation/foundation-installer.cjs --force
 ```
 
 ---
