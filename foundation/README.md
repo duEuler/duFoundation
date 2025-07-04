@@ -201,10 +201,10 @@ node foundation/foundation-remover.cjs
 
 ## 📚 Documentação Adicional
 
-- `foundation/.replit`: Configuração do Replit
-- `foundation/foundation.config.json`: Configurações do sistema
-- `foundation/REPLIT_ORDER_EXECUTION.md`: Ordem de execução dos arquivos
-- `foundation/backups/`: Backups automáticos de remoção
+- **FOUNDATION.md** - Documentação técnica completa do Foundation v3.0
+- **foundation.config.json** - Configurações centrais do sistema
+- **../replit.md** (raiz) - Documentação geral do projeto e integração
+- **backups/** - Backups automáticos de remoção
 
 ## 🎉 Exemplo de Uso Completo
 
