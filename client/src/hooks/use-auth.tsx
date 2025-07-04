@@ -1,4 +1,4 @@
-import { useState, createContext, useContext, useEffect, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { useLocation } from "wouter";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { authService, type AuthUser } from "@/lib/auth";
@@ -45,7 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(data.user);
       setIsAuthenticated(true);
       queryClient.invalidateQueries({ queryKey: ["currentUser"] });
-      setLocation("/foundation/dashboard");
+      setLocation("/dashboard");
       toast({
         title: "Login realizado com sucesso!",
         description: `Bem-vindo, ${data.user.username}!`,
@@ -69,7 +69,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
     setIsAuthenticated(false);
     queryClient.clear();
-    setLocation("/foundation/login");
+    setLocation("/login");
     toast({
       title: "Logout realizado com sucesso!",
       description: "Você foi desconectado do sistema.",

@@ -1,0 +1,76 @@
+{
+  "classification": "INCOMPATÍVEL",
+  "score": 30,
+  "maxScore": 100,
+  "issues": [
+    {
+      "severity": "CRITICAL",
+      "message": "package.json não encontrado",
+      "recommendation": "Projeto deve ter package.json válido"
+    },
+    {
+      "severity": "SUCCESS",
+      "message": "Estrutura de projeto completa"
+    },
+    {
+      "severity": "CRITICAL",
+      "message": "Arquivo principal do servidor não encontrado",
+      "recommendation": "Criar server/index.ts com configuração Express"
+    },
+    {
+      "severity": "MAJOR",
+      "message": "Sistema de rotas não encontrado",
+      "recommendation": "Criar server/routes.ts para organização das rotas"
+    },
+    {
+      "severity": "MAJOR",
+      "message": "Função registerRoutes não encontrada",
+      "recommendation": "Implementar função registerRoutes no servidor"
+    },
+    {
+      "severity": "MINOR",
+      "message": "TypeScript não configurado",
+      "recommendation": "Adicionar tsconfig.json recomendado"
+    }
+  ],
+  "recommendations": [
+    "❌ Projeto requer modificações significativas",
+    "📖 Consultar: NEW-PROJECT-GUIDE.md para projetos novos",
+    "🔧 Resolver problemas críticos antes de continuar"
+  ],
+  "requirements": [],
+  "analysis": {
+    "projectStructure": {
+      "requiredDirs": [
+        "server",
+        "client",
+        "shared"
+      ],
+      "foundDirs": [
+        "server",
+        "client",
+        "shared"
+      ],
+      "missingDirs": []
+    },
+    "serverFiles": [],
+    "moduleSystem": {
+      "type": "UNKNOWN",
+      "hasESImports": false,
+      "hasCommonJSRequire": false
+    },
+    "routeSystem": {
+      "type": "NONE",
+      "hasRegisterRoutes": false,
+      "usesExpress": false
+    },
+    "typescript": {
+      "configured": false
+    },
+    "existingFoundation": {
+      "installed": false,
+      "hasDirectory": false
+    }
+  },
+  "scorePercentage": 30
+}

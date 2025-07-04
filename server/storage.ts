@@ -1,10 +1,19 @@
 import { 
   users, 
+  sessions, 
   systemConfig, 
+  systemMetrics, 
+  activityLogs,
   type User, 
   type InsertUser,
+  type Session,
+  type InsertSession,
   type SystemConfig,
-  type InsertSystemConfig
+  type InsertSystemConfig,
+  type SystemMetric,
+  type InsertSystemMetric,
+  type ActivityLog,
+  type InsertActivityLog
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, gte } from "drizzle-orm";
@@ -17,10 +26,24 @@ export interface IStorage {
   updateUser(id: number, updates: Partial<User>): Promise<User | undefined>;
   getAllUsers(): Promise<User[]>;
   
-  // System configuration  
+  // Session management
+  createSession(session: InsertSession): Promise<Session>;
+  getSession(id: string): Promise<Session | undefined>;
+  deleteSession(id: string): Promise<void>;
+  getActiveSessionsCount(): Promise<number>;
+  
+  // System configuration
   getSystemConfig(): Promise<SystemConfig | undefined>;
   createSystemConfig(config: InsertSystemConfig): Promise<SystemConfig>;
   updateSystemConfig(updates: Partial<SystemConfig>): Promise<SystemConfig | undefined>;
+  
+  // Metrics
+  createMetric(metric: InsertSystemMetric): Promise<SystemMetric>;
+  getLatestMetrics(): Promise<SystemMetric[]>;
+  
+  // Activity logs
+  createActivityLog(log: InsertActivityLog): Promise<ActivityLog>;
+  getRecentActivity(limit?: number): Promise<ActivityLog[]>;
 }
 
 export class DatabaseStorage implements IStorage {

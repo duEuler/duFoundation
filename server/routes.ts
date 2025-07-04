@@ -1,32 +1,28 @@
-import foundationSetup from './routes/foundation-setup.js';
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { storage } from "./storage-minimal";
+import { storage } from "./storage";
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
-import { setupSchema, insertUserSchema } from "@shared/schema";
+import { setupSchema, loginSchema, insertUserSchema } from "@shared/schema";
 import { z } from "zod";
+import { monitoringService, createMonitoringMiddleware } from "./monitoring";
+import { getFoundationConfig, validateCapacityForUsers, suggestCapacityForUsers, FOUNDATION_CONFIGS } from "./foundation-config";
 import * as os from 'os';
 
 export async function registerRoutes(app: Express): Promise<Server> {
   const SETUP_PASSWORD = "dueuler2024";
   
+  // Apply monitoring middleware to all routes
+  app.use(createMonitoringMiddleware(monitoringService));
+
   // Setup endpoint
   app.post("/api/setup", async (req, res) => {
     try {
       const data = setupSchema.parse(req.body);
       
-      if (data.setupPassword !== SETUP_PASSWORD) {
+      // Se não é wizard, valida senha de configuração
+      if (!data.wizard && data.setupPassword !== SETUP_PASSWORD) {
         return res.status(401).json({ message: "Senha de configuração inválida" });
-      }
-
-      // Validate Foundation capacity for configured users
-      if (!validateCapacityForUsers(data.foundationCapacity, data.maxConcurrentUsers)) {
-        const suggestedCapacity = suggestCapacityForUsers(data.maxConcurrentUsers);
-        const capacityConfig = getFoundationConfig(suggestedCapacity);
-        return res.status(400).json({ 
-          message: `Capacidade ${data.foundationCapacity} não suporta ${data.maxConcurrentUsers} usuários. Recomendamos: ${suggestedCapacity} (${capacityConfig.userRange.min}-${capacityConfig.userRange.max} usuários)` 
-        });
       }
 
       // Check if setup already completed
@@ -35,12 +31,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Sistema já foi configurado" });
       }
 
+      // Mapear capacity do wizard para foundationCapacity
+      const foundationCapacity = data.capacity || data.foundationCapacity || 'small';
+      
+      // Validar capacidade se não for wizard
+      if (!data.wizard && !validateCapacityForUsers(foundationCapacity, data.maxConcurrentUsers)) {
+        const suggestedCapacity = suggestCapacityForUsers(data.maxConcurrentUsers);
+        const capacityConfig = getFoundationConfig(suggestedCapacity);
+        return res.status(400).json({ 
+          message: `Capacidade ${foundationCapacity} não suporta ${data.maxConcurrentUsers} usuários. Recomendamos: ${suggestedCapacity} (${capacityConfig.userRange.min}-${capacityConfig.userRange.max} usuários)` 
+        });
+      }
+
       // Create or update system configuration
       const config = existingConfig 
         ? await storage.updateSystemConfig({
             organizationName: data.organizationName,
             environment: data.environment,
-            foundationCapacity: data.foundationCapacity,
+            foundationCapacity: foundationCapacity,
             maxConcurrentUsers: data.maxConcurrentUsers,
             cacheTTL: data.cacheTTL,
             setupCompleted: true,
@@ -48,20 +56,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
         : await storage.createSystemConfig({
             organizationName: data.organizationName,
             environment: data.environment,
-            foundationCapacity: data.foundationCapacity,
+            foundationCapacity: foundationCapacity,
             maxConcurrentUsers: data.maxConcurrentUsers,
             cacheTTL: data.cacheTTL,
             setupCompleted: true,
           });
 
-      // Create default admin user if none exists
+      // Create admin user (wizard ou modo tradicional)
       const adminUser = await storage.getUserByUsername("admin");
       if (!adminUser) {
-        const hashedPassword = await bcrypt.hash("admin123", 10);
+        const adminEmail = data.adminEmail || "admin@dueuler.com";
+        const adminPassword = data.adminPassword || "admin123";
+        const hashedPassword = await bcrypt.hash(adminPassword, 10);
+        
         await storage.createUser({
           username: "admin",
           password: hashedPassword,
-          email: "admin@dueuler.com",
+          email: adminEmail,
           role: "admin",
         });
       }
@@ -82,6 +93,55 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ setupCompleted: config?.setupCompleted || false });
     } catch (error) {
       res.status(500).json({ message: "Erro interno do servidor" });
+    }
+  });
+
+  // System status endpoint
+  app.get("/api/system/status", async (req, res) => {
+    try {
+      const config = await storage.getSystemConfig();
+      res.json({ setupComplete: config?.setupCompleted || false });
+    } catch (error) {
+      res.status(500).json({ message: "Erro interno do servidor" });
+    }
+  });
+
+  // System detection endpoint
+  app.get("/api/system/detect", async (req, res) => {
+    try {
+      const totalMemory = os.totalmem();
+      const freeMemory = os.freemem();
+      const cpuCount = os.cpus().length;
+      const platform = os.platform();
+      const nodeVersion = process.version;
+      
+      // Convert memory to GB for easier reading
+      const totalMemoryGB = Math.round(totalMemory / (1024 * 1024 * 1024));
+      const freeMemoryGB = Math.round(freeMemory / (1024 * 1024 * 1024));
+      
+      // Determine recommended capacity based on system specs
+      let recommendedCapacity = 'small'; // default
+      
+      if (totalMemoryGB >= 8 && cpuCount >= 4) {
+        recommendedCapacity = 'large';
+      } else if (totalMemoryGB >= 4 && cpuCount >= 2) {
+        recommendedCapacity = 'small';
+      } else {
+        recommendedCapacity = 'nano';
+      }
+      
+      const systemInfo = {
+        cpu: `${cpuCount} cores (${os.cpus()[0]?.model || 'Unknown'})`,
+        memory: `${totalMemoryGB}GB total, ${freeMemoryGB}GB free`,
+        platform: `${platform} ${os.release()}`,
+        nodeVersion: nodeVersion,
+        recommendedCapacity: recommendedCapacity
+      };
+      
+      res.json(systemInfo);
+    } catch (error) {
+      console.error('Error detecting system info:', error);
+      res.status(500).json({ message: "Erro ao detectar informações do sistema" });
     }
   });
 
@@ -560,11 +620,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // System Health API - for simplified interface
   app.get("/api/system/health", async (req, res) => {
     try {
-      // Simple health check without dependencies
+      const systemMetrics = monitoringService.getLatestMetrics();
+      
       const health = {
-        database: 'connected', // Assume connected if no error
-        server: 'healthy',
-        monitoring: 'active'
+        database: systemMetrics.database_connections > 0 ? 'connected' : 'disconnected',
+        server: systemMetrics.response_time_avg < 1000 ? 'healthy' : 'warning',
+        monitoring: systemMetrics.active_connections > 0 ? 'active' : 'inactive'
       };
       
       res.json(health);
@@ -592,22 +653,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Foundation já está instalado" });
       }
 
-      // Simplified capacity configurations
-      const capacityConfigs = {
-        'SMALL': { min: 1000, max: 10000 },
-        'MEDIUM': { min: 10000, max: 100000 },
-        'LARGE': { min: 100000, max: 500000 },
-        'ENTERPRISE': { min: 500000, max: 1000000 }
-      };
-
-      const userRange = capacityConfigs[capacity as keyof typeof capacityConfigs] || capacityConfigs.SMALL;
+      // Get Foundation config for the selected capacity
+      const foundationConfig = getFoundationConfig(capacity);
+      const maxConcurrentUsers = foundationConfig.userRange.max;
 
       // Create default system configuration
       const defaultConfig = {
         organizationName: "Minha Organização",
         environment: "development" as const,
         foundationCapacity: capacity,
-        maxConcurrentUsers: userRange.max,
+        maxConcurrentUsers: maxConcurrentUsers,
         cacheTTL: 3600,
         setupCompleted: true,
         lastUpdate: new Date(),
@@ -636,21 +691,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({
         message: "Foundation instalado com sucesso",
         config: config,
-        foundationConfig: {
-          capacity: capacity,
-          userRange: userRange,
-          description: `Configuração ${capacity} - suporta ${userRange.min.toLocaleString()} a ${userRange.max.toLocaleString()} usuários`
-        },
+        foundationConfig: foundationConfig,
         quickSetup: quickSetup || wizard
       });
     } catch (error: any) {
       res.status(500).json({ message: `Erro na instalação: ${error.message}` });
     }
   });
-
-  // Register Foundation Setup routes
-  // Foundation routes
-  app.use(foundationSetup);
 
   const httpServer = createServer(app);
   return httpServer;
