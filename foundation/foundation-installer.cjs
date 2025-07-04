@@ -55,6 +55,7 @@ class FoundationInstaller {
       await this.installFoundationRoutes();
       await this.integrateWithServer();
       await this.createFoundationFiles();
+      await this.integrateProjectInterface();
       await this.updateManifest();
 
       // Validação funcional completa
@@ -294,6 +295,30 @@ class FoundationInstaller {
   }
 
   /**
+   * INTEGRAR INTERFACE DO PROJETO (MODIFICAÇÃO MÍNIMA)
+   */
+  async integrateProjectInterface() {
+    console.log('🔗 Integrando interface do projeto...');
+    
+    try {
+      const FoundationIntegratorSimple = require('./foundation-integrator-simple.cjs');
+      const integrator = new FoundationIntegratorSimple();
+      
+      // Executar integração automática
+      await integrator.integrate();
+      
+      this.results.filesModified.push('client/src/App.tsx (detecção Foundation)');
+      console.log('✅ Interface do projeto integrada automaticamente');
+      
+    } catch (error) {
+      console.log('⚠️ Aviso: Integração de interface falhou:', error.message);
+      console.log('💡 Execute manualmente: node foundation/foundation-integrator-simple.cjs');
+      this.results.warnings = this.results.warnings || [];
+      this.results.warnings.push('Integração automática da interface falhou');
+    }
+  }
+
+  /**
    * ATUALIZAR MANIFESTO
    */
   async updateManifest() {
@@ -303,7 +328,8 @@ class FoundationInstaller {
       installed: new Date().toISOString(),
       files: this.results.filesCreated,
       modifications: this.results.filesModified,
-      backup: this.backupDir
+      backup: this.backupDir,
+      warnings: this.results.warnings || []
     };
 
     fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));

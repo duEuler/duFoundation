@@ -29,7 +29,8 @@ O Foundation v3.0 foi instalado com sucesso em seu projeto utilizando a arquitet
 
 - `foundation-scanner` - Análise completa do projeto
 - `foundation-migrator` - Migração automática
-- `foundation-remove` - Desinstalação completa
+- `foundation-remove` - Desinstalação completa (usa foundation-uninstaller)
+- `foundation-uninstall` - Comando avançado de desinstalação
 
 ## 📋 Arquivos Instalados
 

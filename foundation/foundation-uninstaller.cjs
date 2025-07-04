@@ -175,10 +175,13 @@ class FoundationUninstaller {
       // 3. Reverte modificações em rotas
       await this.revertRouteModifications(manifest.routeModifications || []);
       
-      // 4. Remove diretórios vazios
+      // 4. Remove integração de interface
+      await this.removeProjectIntegration();
+      
+      // 5. Remove diretórios vazios
       await this.removeEmptyDirectories(manifest.directories || []);
       
-      // 5. Remove arquivos de controle
+      // 6. Remove arquivos de controle
       await this.removeControlFiles();
       
       // 6. Verifica se projeto está limpo
@@ -390,6 +393,23 @@ class FoundationUninstaller {
           // Ignora erros de diretórios não vazios
         }
       }
+    }
+  }
+
+  async removeProjectIntegration() {
+    console.log('🔗 Removendo integração de interface...');
+    
+    try {
+      const FoundationIntegratorSimple = require('./foundation-integrator-simple.cjs');
+      const integrator = new FoundationIntegratorSimple();
+      
+      // Executar remoção automática da integração
+      await integrator.removeIntegration();
+      console.log('   ✓ Integração de interface removida automaticamente');
+      
+    } catch (error) {
+      console.log('   ⚠️ Aviso: Remoção automática de interface falhou:', error.message);
+      console.log('   💡 App.tsx pode precisar ser restaurado manualmente');
     }
   }
 

@@ -254,6 +254,12 @@ Changelog:
 - July 4, 2025. Redução de 60% nos arquivos da raiz (20+ → 8 essenciais) melhorando navegação e performance
 - July 4, 2025. Implementada estrutura hierárquica: raiz (essenciais), core/ (técnico), docs/ (específico), archive/ (histórico)
 - July 4, 2025. Foundation v3.0 estrutura de arquivos limpa, organizada e otimizada para diferentes perfis de usuário
+- July 4, 2025. Implementada integração automática de interface durante instalação/desinstalação do Foundation
+- July 4, 2025. Adicionada função integrateProjectInterface() no foundation-installer.cjs para modificação automática do App.tsx
+- July 4, 2025. Adicionada função removeProjectIntegration() no foundation-uninstaller.cjs para limpeza automática
+- July 4, 2025. Consolidados scripts de desinstalação: removido foundation-remover.cjs duplicado, mantido apenas foundation-uninstaller.cjs
+- July 4, 2025. Atualizado foundation-remove para chamar foundation-uninstaller.cjs em vez do removedor obsoleto
+- July 4, 2025. Sistema de instalação/desinstalação agora completamente automatizado: modifica e restaura App.tsx automaticamente
 ```
 
 ## User Preferences
