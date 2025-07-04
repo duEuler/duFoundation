@@ -1,0 +1,21 @@
+{
+  "timestamp": "2025-07-04T05:56:36.430Z",
+  "action": "foundation-removal",
+  "projectRoot": "/home/runner/workspace",
+  "markerData": {
+    "version": "3.0.0",
+    "capacity": "SMALL",
+    "installedAt": "2025-07-04T05:35:20.291Z",
+    "installedBy": "foundation-detector",
+    "files": [
+      "server/routes/foundation-setup.js"
+    ]
+  },
+  "files": [
+    {
+      "path": "server/routes/foundation-setup.js",
+      "content": "// Foundation Setup Route - Auto-gerado (ES Modules)\nimport express from 'express';\nconst router = express.Router();\n\n// Rota principal do Foundation Setup\nrouter.get('/foundation/setup', (req, res) => {\n  const html = `\n<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Foundation Setup v3.0</title>\n  <style>\n    body { font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }\n    .container { max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }\n    h1 { color: #2563eb; margin: 0 0 20px 0; }\n    .status { background: #dcfce7; color: #166534; padding: 15px; border-radius: 8px; margin: 20px 0; }\n    .feature { background: #f8fafc; padding: 15px; border-left: 4px solid #3b82f6; margin: 10px 0; }\n    .command { background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 8px; font-family: monospace; margin: 10px 0; }\n    .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb; color: #6b7280; }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <h1>🌟 DuEuler Foundation v3.0</h1>\n    \n    <div class=\"status\">\n      ✅ Foundation instalado e funcionando perfeitamente!\n    </div>\n\n    <h2>🚀 Capacidades Ativadas</h2>\n    \n    <div class=\"feature\">\n      <strong>📊 Sistema de Monitoramento Avançado</strong><br>\n      Métricas em tempo real, dashboards e alertas inteligentes\n    </div>\n    \n    <div class=\"feature\">\n      <strong>📦 Gerenciamento de Dependências</strong><br>\n      Instalação automática e otimização de pacotes\n    </div>\n    \n    <div class=\"feature\">\n      <strong>🏗️ Templates Empresariais</strong><br>\n      Estruturas pré-configuradas para diferentes cenários\n    </div>\n    \n    <div class=\"feature\">\n      <strong>⚡ Automação Inteligente</strong><br>\n      Scripts de deploy, backup e manutenção automática\n    </div>\n\n    <h2>🛠️ Comandos Disponíveis</h2>\n    \n    <div class=\"command\">\n      foundation-remove\n    </div>\n    <p>Remove completamente o Foundation do projeto</p>\n\n    <h2>📚 Próximos Passos</h2>\n    <ol>\n      <li>Explore as funcionalidades acima</li>\n      <li>Configure suas preferências de monitoramento</li>\n      <li>Personalize os templates conforme necessário</li>\n      <li>Execute testes de performance</li>\n    </ol>\n\n    <div class=\"footer\">\n      <p><strong>DuEuler Foundation v3.0</strong> - Sistema empresarial de desenvolvimento</p>\n      <p>Instalado em: ${new Date().toLocaleString('pt-BR')}</p>\n    </div>\n  </div>\n</body>\n</html>\n  `;\n  \n  res.send(html);\n});\n\nexport default router;\n",
+      "size": 2739
+    }
+  ]
+}
