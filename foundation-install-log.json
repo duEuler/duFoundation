@@ -1,0 +1,53 @@
+{
+  "installer": "Foundation App Installer v3.0",
+  "startTime": "2025-07-04T03:45:24.583Z",
+  "endTime": "2025-07-04T03:45:24.673Z",
+  "duration": "0s",
+  "operations": [
+    {
+      "timestamp": "2025-07-04T03:45:24.594Z",
+      "operation": "CHECK_INSTALLATION",
+      "details": {
+        "description": "Aplicação Foundation não instalada",
+        "installed": false
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:45:24.597Z",
+      "operation": "CREATE_APP_STRUCTURE",
+      "details": {
+        "description": "Estrutura da aplicação Foundation criada",
+        "directories": 10
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:45:24.671Z",
+      "operation": "MOVE_APP_FILES",
+      "details": {
+        "description": "Arquivos da aplicação movidos",
+        "moved": 95,
+        "skipped": 0
+      },
+      "success": true
+    },
+    {
+      "timestamp": "2025-07-04T03:45:24.673Z",
+      "operation": "CREATE_INSTALLATION_MARKER",
+      "details": {
+        "description": "Marcador de instalação criado",
+        "file": "./foundation/FOUNDATION_APP_INSTALLED.md"
+      },
+      "success": true
+    }
+  ],
+  "errors": [],
+  "conflicts": [],
+  "status": "completed",
+  "summary": {
+    "totalOperations": 4,
+    "totalErrors": 0,
+    "totalConflicts": 0
+  }
+}
