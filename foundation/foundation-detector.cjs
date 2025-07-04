@@ -361,6 +361,64 @@ module.exports = router;
 
     fs.writeFileSync(this.markerPath, JSON.stringify(markerData, null, 2));
     console.log('📄 Marker de instalação criado');
+    
+    // Cria manifesto detalhado para uninstall
+    await this.createDetailedManifest();
+  }
+
+  async createDetailedManifest() {
+    const manifestData = {
+      version: '3.0.0',
+      capacity: 'SMALL',
+      installedAt: new Date().toISOString(),
+      installedBy: 'foundation-detector',
+      
+      // Arquivos criados que devem ser removidos
+      files: [
+        'server/routes/foundation-setup.js'
+      ],
+      
+      // Modificações feitas em arquivos existentes
+      routeModifications: [
+        {
+          file: 'server/routes.ts',
+          type: 'import',
+          description: 'Adicionada importação do foundation-setup',
+          content: "const foundationSetup = require('./routes/foundation-setup');\n",
+          line: 1
+        },
+        {
+          file: 'server/routes.ts',
+          type: 'route',
+          description: 'Adicionado uso da rota foundation',
+          content: "app.use(foundationSetup);\n",
+          searchPattern: "app.use("
+        }
+      ],
+      
+      // Diretórios criados (para remover se vazios)
+      directories: [
+        'server/routes'
+      ],
+      
+      // Configurações e dependências
+      configurations: {
+        routes: {
+          '/foundation/setup': 'Foundation setup interface'
+        }
+      },
+      
+      // Metadados para o uninstaller
+      uninstall: {
+        canRevert: true,
+        requiresBackup: true,
+        cleanupDirectories: true
+      }
+    };
+
+    const manifestPath = path.join(this.projectRoot, '.foundation-manifest.json');
+    fs.writeFileSync(manifestPath, JSON.stringify(manifestData, null, 2));
+    console.log('📄 Manifesto detalhado criado para uninstall');
   }
 
   createIgnoreFile() {

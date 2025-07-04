@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Foundation Uninstall - Comando Global v3.0
+# Desinstalação avançada com registro detalhado
+
+echo "🗑️  Foundation Uninstall - Comando Global v3.0"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+# Detecta onde está o foundation
+if [ -d "foundation" ]; then
+    echo "📁 Foundation encontrado no diretório atual"
+    exec node foundation/foundation-uninstaller.cjs "$@"
+elif [ -d "../foundation" ]; then
+    echo "📁 Foundation encontrado no diretório pai"
+    exec node ../foundation/foundation-uninstaller.cjs "$@"
+else
+    echo "❌ Foundation não encontrado"
+    echo "💡 Execute este comando da raiz do projeto ou da pasta foundation"
+    exit 1
+fi
