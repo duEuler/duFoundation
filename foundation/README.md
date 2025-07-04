@@ -40,11 +40,27 @@ O Foundation v3.0 foi instalado com sucesso em seu projeto utilizando a arquitet
 - `.foundation-installed` - Marcador de instalação
 - `.foundation-manifest.json` - Manifesto detalhado
 
-## 🔧 Suporte
+## 📚 Documentação Essencial
 
-Para problemas ou dúvidas, consulte:
-- `foundation/TROUBLESHOOTING.md`
-- `foundation/FOUNDATION-ARCHITECTURE.md`
+- **[FOUNDATION_STATUS.md](./FOUNDATION_STATUS.md)** - Status consolidado e métricas atuais
+- **[FOUNDATION-ARCHITECTURE.md](./FOUNDATION-ARCHITECTURE.md)** - Arquitetura técnica detalhada
+- **[INSTALLATION_COMMANDS_CONSOLIDATED.md](./INSTALLATION_COMMANDS_CONSOLIDATED.md)** - Todos os comandos e exemplos
+- **[TROUBLESHOOTING.md](./TROUBLESHOOTING.md)** - Resolução de problemas
+
+## 🗂️ Estrutura Organizada
+
+```
+foundation/
+├── README.md                               # Este arquivo - ponto de entrada
+├── FOUNDATION_STATUS.md                    # Status consolidado do sistema
+├── FOUNDATION-ARCHITECTURE.md              # Documentação técnica
+├── INSTALLATION_COMMANDS_CONSOLIDATED.md   # Comandos padronizados
+├── 
+├── core/                                   # Documentação técnica avançada
+├── docs/                                   # Documentação específica
+│   └── archive/                           # Arquivos históricos
+└── [scripts e automação]
+```
 
 ---
 
