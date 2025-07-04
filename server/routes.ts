@@ -732,8 +732,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             const [loading, setLoading] = useState(false);
             const [formData, setFormData] = useState({
                 organizationName: '',
-                capacity: 'SMALL',
-                maxUsers: 1000
+                capacity: 'nano',
+                maxUsers: 100
             });
             
             const handleInstall = async () => {
@@ -793,10 +793,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
                                     onChange={(e) => setFormData({...formData, capacity: e.target.value})}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 >
-                                    <option value="SMALL">Pequeno (até 50K usuários)</option>
-                                    <option value="MEDIUM">Médio (até 200K usuários)</option>
-                                    <option value="LARGE">Grande (até 500K usuários)</option>
-                                    <option value="ENTERPRISE">Empresarial (1M+ usuários)</option>
+                                    <option value="nano">Nano (até 1K usuários)</option>
+                                    <option value="micro">Micro (até 10K usuários)</option>
+                                    <option value="small">Pequeno (até 50K usuários)</option>
+                                    <option value="medium">Médio (até 200K usuários)</option>
+                                    <option value="large">Grande (até 500K usuários)</option>
+                                    <option value="enterprise">Empresarial (1M+ usuários)</option>
                                 </select>
                             </div>
                             
@@ -833,7 +835,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             );
         }
         
-        ReactDOM.render(<FoundationSetup />, document.getElementById('foundation-root'));
+        const root = ReactDOM.createRoot(document.getElementById('foundation-root'));
+        root.render(<FoundationSetup />);
     </script>
 </body>
 </html>`;

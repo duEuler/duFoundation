@@ -181,6 +181,10 @@ Changelog:
 - July 4, 2025. Sistema de documentação baseado em problemas reais encontrados durante desenvolvimento
 - July 4, 2025. Arquitetura de Padronização Progressiva Híbrida completa e documentada
 - July 4, 2025. Foundation v3.0 totalmente preparado para uso empresarial com múltiplos projetos
+- July 4, 2025. Corrigida lista completa de capacidades no formulário de setup (nano, micro, small, medium, large, enterprise)
+- July 4, 2025. Implementada página HTML standalone para /foundation/setup com formulário funcional completo
+- July 4, 2025. Corrigidos warnings do React 18 (ReactDOM.render → createRoot)
+- July 4, 2025. Sistema de onboarding funcionando completamente - usuário pode selecionar todas as capacidades disponíveis
 - July 4, 2025. CORREÇÃO ARQUITETURAL: Removidos arquivos incorretos da raiz (tsconfig.json, vite.config.js, tailwind.config.js)  
 - July 4, 2025. Implementado isolamento total do Foundation - todas funcionalidades dentro de foundation/_app/
 - July 4, 2025. Criado foundation/_app/README.md com regras de integração e modificação de arquivos externos
