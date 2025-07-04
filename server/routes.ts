@@ -1,3 +1,4 @@
+const foundationSetup = require('./routes/foundation-setup');
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage-minimal";
@@ -11,8 +12,8 @@ import * as os from 'os';
 export async function registerRoutes(app: Express): Promise<Server> {
   const SETUP_PASSWORD = "dueuler2024";
   
-  // Apply monitoring middleware to all routes
-  app.use(createMonitoringMiddleware(monitoringService));
+  // Apply foundation setup route
+  app.use(foundationSetup);
 
   // Setup endpoint
   app.post("/api/setup", async (req, res) => {

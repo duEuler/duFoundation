@@ -1,0 +1,37 @@
+#!/usr/bin/env node
+
+/**
+ * Foundation Remove - Comando Global
+ * Script de conveniência para executar o foundation-remover
+ */
+
+const fs = require('fs');
+const path = require('path');
+const { spawn } = require('child_process');
+
+const foundationDir = path.join(__dirname, 'foundation');
+const removerScript = path.join(foundationDir, 'foundation-remover.cjs');
+
+// Verifica se o script existe
+if (!fs.existsSync(removerScript)) {
+  console.log('❌ Foundation Remover não encontrado');
+  console.log('💡 Certifique-se de que a pasta foundation/ existe');
+  process.exit(1);
+}
+
+// Executa o script de remoção
+console.log('🗑️  Executando Foundation Remover...\n');
+
+const child = spawn('node', [removerScript], {
+  stdio: 'inherit',
+  cwd: foundationDir
+});
+
+child.on('close', (code) => {
+  process.exit(code);
+});
+
+child.on('error', (error) => {
+  console.error('❌ Erro ao executar Foundation Remover:', error.message);
+  process.exit(1);
+});

@@ -1,24 +1,23 @@
 modules = ["nodejs-20"]
-run = "node foundation-installer.cjs"
+run = "node foundation-detector.cjs"
 hidden = [".config", ".git", "node_modules", "logs", ".trash"]
 
 [nix]
 channel = "stable-24_05"
 
 [workflows]
-runButton = "Foundation"
+runButton = "Foundation Detector"
 
 [[workflows.workflow]]
-name = "Foundation"
-mode = "parallel"
+name = "Foundation Detector"
 author = "dueuler"
 
 [[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "Install Foundation"
+task = "shell.exec"
+args = "node foundation-detector.cjs"
 
 [[workflows.workflow]]
-name = "Install Foundation"
+name = "Foundation Install"
 author = "dueuler"
 
 [[workflows.workflow.tasks]]
@@ -26,12 +25,12 @@ task = "shell.exec"
 args = "node foundation-installer.cjs"
 
 [[workflows.workflow]]
-name = "Verify Foundation"
+name = "Foundation Remove"
 author = "dueuler"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "node scripts/plant_foundation.cjs"
+args = "node foundation-remover.cjs"
 
 [[workflows.workflow]]
 name = "Foundation Status"
@@ -40,11 +39,3 @@ author = "dueuler"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "bash foundation.sh status"
-
-[[workflows.workflow]]
-name = "Foundation Help"
-author = "dueuler"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "bash foundation.sh help"
