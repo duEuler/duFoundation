@@ -34,14 +34,27 @@ class FoundationRemover {
 
   async remove() {
     try {
-      // Verifica se está instalado
-      if (!this.isInstalled()) {
+      // Verifica se há algo para limpar
+      const hasTraces = this.hasFoundationTraces();
+      
+      if (!this.isInstalled() && !hasTraces) {
         console.log('⚠️  Foundation não está instalado neste projeto');
-        console.log('💡 Nada para remover');
+        console.log('💡 Nenhum rastro encontrado para limpar');
         return;
       }
 
-      // Pergunta confirmação
+      if (!this.isInstalled() && hasTraces) {
+        console.log('🔍 Foundation não está instalado, mas encontrados rastros...');
+        console.log('📋 Rastros encontrados:');
+        this.listFoundationTraces();
+        console.log('');
+        
+        // Pergunta se quer limpar rastros
+        await this.askTraceCleanup();
+        return;
+      }
+
+      // Foundation instalado - pergunta confirmação completa
       await this.askConfirmation();
 
     } catch (error) {
@@ -52,6 +65,86 @@ class FoundationRemover {
 
   isInstalled() {
     return fs.existsSync(this.markerPath);
+  }
+
+  hasFoundationTraces() {
+    const tracesToCheck = [
+      '.foundation-scanned',
+      '.foundation-ignore', 
+      'foundation/scan-report.json',
+      'foundation/installation-report.json'
+    ];
+
+    return tracesToCheck.some(trace => 
+      fs.existsSync(path.join(this.projectRoot, trace))
+    );
+  }
+
+  listFoundationTraces() {
+    const tracesToCheck = [
+      { file: '.foundation-scanned', desc: 'Flag de scanner automático' },
+      { file: '.foundation-ignore', desc: 'Flag de ignorar instalação' },
+      { file: 'foundation/scan-report.json', desc: 'Relatório de análise' },
+      { file: 'foundation/installation-report.json', desc: 'Relatório de instalação' }
+    ];
+
+    tracesToCheck.forEach(trace => {
+      const fullPath = path.join(this.projectRoot, trace.file);
+      if (fs.existsSync(fullPath)) {
+        console.log(`   🔍 ${trace.file} - ${trace.desc}`);
+      }
+    });
+  }
+
+  async askTraceCleanup() {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    });
+
+    return new Promise((resolve) => {
+      rl.question('🧹 Deseja limpar todos os rastros do Foundation? (S/N): ', async (answer) => {
+        rl.close();
+        
+        const choice = answer.toUpperCase().trim();
+        if (choice === 'S' || choice === 'SIM') {
+          await this.cleanFoundationTraces();
+          console.log('✅ Todos os rastros do Foundation foram removidos!');
+        } else {
+          console.log('ℹ️  Limpeza cancelada. Rastros preservados.');
+        }
+        
+        resolve();
+      });
+    });
+  }
+
+  async cleanFoundationTraces() {
+    console.log('🧹 Limpando rastros do Foundation...');
+    
+    const tracesToRemove = [
+      '.foundation-scanned',
+      '.foundation-ignore',
+      'foundation/scan-report.json', 
+      'foundation/installation-report.json'
+    ];
+
+    let removedCount = 0;
+    
+    tracesToRemove.forEach(trace => {
+      const fullPath = path.join(this.projectRoot, trace);
+      if (fs.existsSync(fullPath)) {
+        fs.unlinkSync(fullPath);
+        console.log(`   ❌ ${trace}`);
+        removedCount++;
+      }
+    });
+
+    if (removedCount === 0) {
+      console.log('   ℹ️  Nenhum rastro encontrado para remover');
+    } else {
+      console.log(`   ✅ ${removedCount} arquivo(s) removido(s)`);
+    }
   }
 
   async askConfirmation() {

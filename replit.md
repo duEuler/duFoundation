@@ -183,6 +183,10 @@ Changelog:
 - July 4, 2025. Documentação AUTO-SCANNER-GUIDE.md criada explicando comportamento automático e antecipação inteligente
 - July 4, 2025. README.md atualizado com nova funcionalidade de scanner automático v3.0
 - July 4, 2025. Sistema de "antecipação inteligente" funcionando: análise automática segura na primeira execução
+- July 4, 2025. Sistema de desinstalação inteligente atualizado: detecta e limpa rastros mesmo sem instalação
+- July 4, 2025. foundation-remover.cjs agora oferece 3 cenários: instalação completa, apenas rastros, ou projeto limpo
+- July 4, 2025. Limpeza inteligente de rastros: .foundation-scanned, .foundation-ignore, relatórios de análise
+- July 4, 2025. Sistema Foundation v3.0 totalmente limpo e portável: instalação, uso e remoção completos
 ```
 
 ## User Preferences
