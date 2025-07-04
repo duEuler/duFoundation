@@ -172,6 +172,14 @@ Changelog:
 - July 4, 2025. Sistema de verificação preventiva funcionando - bloqueia instalações incompatíveis
 - July 4, 2025. Templates ES modules gerando código correto automaticamente
 - July 4, 2025. Foundation v3.0 completamente funcional e portável para outros projetos
+- July 4, 2025. CONSOLIDAÇÃO COMPLETA: Reescrito sistema de rotas unificando 4 arquivos conflitantes
+- July 4, 2025. Eliminados conflitos de middleware Vite interceptando APIs Foundation
+- July 4, 2025. Sistema de login consolidado funcionando (/api/login + /foundation/login)
+- July 4, 2025. Credenciais funcionais: admin/admin123 com sessão e bcrypt
+- July 4, 2025. Wizard de 6 etapas totalmente funcional em /foundation/setup
+- July 4, 2025. APIs críticas registradas ANTES do Vite middleware (ordem correta)
+- July 4, 2025. Foundation routes nativas (sem routers externos conflitantes)
+- July 4, 2025. Sistema de autenticação com sessões e middleware unificado
 - July 4, 2025. DOCUMENTAÇÃO COMPLETA: Criada documentação completa do sistema Foundation v3.0
 - July 4, 2025. Implementado guia de novos projetos (NEW-PROJECT-GUIDE.md) com padrões obrigatórios
 - July 4, 2025. Criado guia de migração (MIGRATION-GUIDE.md) para projetos existentes com soluções reais
