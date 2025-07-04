@@ -4,9 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { AuthProvider } from "@/hooks/use-auth";
-import { UserLevelSelector } from "@/components/UserLevelSelector";
-import { SimpleInterface } from "@/components/SimpleInterface";
+import { AuthProvider, useAuth } from "@/hooks/use-auth";
 import { SetupWizard } from "@/components/SetupWizard";
 import SetupPage from "@/pages/setup";
 import LoginPage from "@/pages/login";
@@ -15,8 +13,7 @@ import DependenciesPage from "@/pages/dependencies";
 import CapacitiesPage from "@/pages/capacities";
 import NotFound from "@/pages/not-found";
 
-type UserLevel = 'beginner' | 'developer' | 'expert' | null;
-type AppMode = 'level-selection' | 'setup-wizard' | 'simple-interface' | 'full-app';
+type AppMode = 'onboarding' | 'login' | 'app';
 
 function Router() {
   return (
@@ -33,81 +30,59 @@ function Router() {
 }
 
 function AppContent() {
-  const [userLevel, setUserLevel] = useState<UserLevel>(null);
-  const [appMode, setAppMode] = useState<AppMode>('level-selection');
-  const [foundationInstalled, setFoundationInstalled] = useState<boolean | null>(null);
+  const { user } = useAuth();
+  const [appMode, setAppMode] = useState<AppMode>('onboarding');
+  const [isSetupComplete, setIsSetupComplete] = useState<boolean | null>(null);
 
   useEffect(() => {
-    // Verificar se Foundation está instalado
-    checkFoundationStatus();
-    
-    // Verificar se usuário já escolheu um nível
-    const savedLevel = localStorage.getItem('foundation-user-level');
-    if (savedLevel) {
-      setUserLevel(savedLevel as UserLevel);
-      setAppMode(savedLevel === 'beginner' ? 'simple-interface' : 'full-app');
-    }
+    checkSystemStatus();
   }, []);
 
-  const checkFoundationStatus = async () => {
+  const checkSystemStatus = async () => {
     try {
-      const response = await fetch('/api/foundation/status');
-      const data = await response.json();
-      setFoundationInstalled(data.installed);
-    } catch (error) {
-      setFoundationInstalled(false);
-    }
-  };
-
-  const handleLevelSelect = (level: UserLevel) => {
-    setUserLevel(level);
-    localStorage.setItem('foundation-user-level', level || '');
-    
-    if (level === 'beginner') {
-      if (foundationInstalled) {
-        setAppMode('simple-interface');
+      // Verificar se o sistema já foi configurado
+      const response = await fetch('/api/system/status');
+      if (response.ok) {
+        const data = await response.json();
+        if (data.setupComplete) {
+          setIsSetupComplete(true);
+          setAppMode(user ? 'app' : 'login');
+        } else {
+          setIsSetupComplete(false);
+          setAppMode('onboarding');
+        }
       } else {
-        setAppMode('setup-wizard');
+        setIsSetupComplete(false);
+        setAppMode('onboarding');
       }
-    } else {
-      setAppMode('full-app');
+    } catch (error) {
+      setIsSetupComplete(false);
+      setAppMode('onboarding');
     }
-  };
-
-  const handleModeChange = (mode: 'developer' | 'expert') => {
-    setUserLevel(mode);
-    localStorage.setItem('foundation-user-level', mode);
-    setAppMode('full-app');
   };
 
   const handleSetupComplete = () => {
-    setFoundationInstalled(true);
-    setAppMode('simple-interface');
-  };
-
-  const handleSetupCancel = () => {
-    setAppMode('level-selection');
-    setUserLevel(null);
-    localStorage.removeItem('foundation-user-level');
+    setIsSetupComplete(true);
+    setAppMode('login');
   };
 
   // Renderização baseada no modo atual
   switch (appMode) {
-    case 'level-selection':
-      return <UserLevelSelector onLevelSelect={handleLevelSelect} />;
-      
-    case 'setup-wizard':
+    case 'onboarding':
       return (
         <SetupWizard 
           onComplete={handleSetupComplete}
-          onCancel={handleSetupCancel}
         />
       );
       
-    case 'simple-interface':
-      return <SimpleInterface onModeChange={handleModeChange} />;
+    case 'login':
+      if (user) {
+        setAppMode('app');
+        return null; // Vai rerender para 'app'
+      }
+      return <LoginPage />;
       
-    case 'full-app':
+    case 'app':
     default:
       return <Router />;
   }

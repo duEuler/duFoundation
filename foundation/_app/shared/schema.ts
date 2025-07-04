@@ -105,12 +105,16 @@ export const loginSchema = z.object({
 });
 
 export const setupSchema = z.object({
-  setupPassword: z.string().min(1),
+  setupPassword: z.string().min(1).optional(), // Para compatibilidade com wizard
   organizationName: z.string().min(1),
-  environment: z.enum(["development", "staging", "production"]),
-  foundationCapacity: z.enum(["nano", "micro", "small", "medium", "large", "enterprise"]),
+  adminEmail: z.string().email().optional(), // Novo campo para wizard
+  adminPassword: z.string().min(6).optional(), // Novo campo para wizard
+  environment: z.enum(["development", "staging", "production"]).default("production"),
+  foundationCapacity: z.enum(["nano", "micro", "small", "medium", "large", "enterprise"]).optional(),
+  capacity: z.enum(["nano", "small", "large"]).optional(), // Alias para wizard
   maxConcurrentUsers: z.number().min(1).max(50000).default(10000),
   cacheTTL: z.number().min(60).max(3600).default(300),
+  wizard: z.boolean().optional(), // Flag para indicar que veio do wizard
 });
 
 // Types

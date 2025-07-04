@@ -20,17 +20,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const data = setupSchema.parse(req.body);
       
-      if (data.setupPassword !== SETUP_PASSWORD) {
+      // Se não é wizard, valida senha de configuração
+      if (!data.wizard && data.setupPassword !== SETUP_PASSWORD) {
         return res.status(401).json({ message: "Senha de configuração inválida" });
-      }
-
-      // Validate Foundation capacity for configured users
-      if (!validateCapacityForUsers(data.foundationCapacity, data.maxConcurrentUsers)) {
-        const suggestedCapacity = suggestCapacityForUsers(data.maxConcurrentUsers);
-        const capacityConfig = getFoundationConfig(suggestedCapacity);
-        return res.status(400).json({ 
-          message: `Capacidade ${data.foundationCapacity} não suporta ${data.maxConcurrentUsers} usuários. Recomendamos: ${suggestedCapacity} (${capacityConfig.userRange.min}-${capacityConfig.userRange.max} usuários)` 
-        });
       }
 
       // Check if setup already completed
@@ -39,12 +31,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Sistema já foi configurado" });
       }
 
+      // Mapear capacity do wizard para foundationCapacity
+      const foundationCapacity = data.capacity || data.foundationCapacity || 'small';
+      
+      // Validar capacidade se não for wizard
+      if (!data.wizard && !validateCapacityForUsers(foundationCapacity, data.maxConcurrentUsers)) {
+        const suggestedCapacity = suggestCapacityForUsers(data.maxConcurrentUsers);
+        const capacityConfig = getFoundationConfig(suggestedCapacity);
+        return res.status(400).json({ 
+          message: `Capacidade ${foundationCapacity} não suporta ${data.maxConcurrentUsers} usuários. Recomendamos: ${suggestedCapacity} (${capacityConfig.userRange.min}-${capacityConfig.userRange.max} usuários)` 
+        });
+      }
+
       // Create or update system configuration
       const config = existingConfig 
         ? await storage.updateSystemConfig({
             organizationName: data.organizationName,
             environment: data.environment,
-            foundationCapacity: data.foundationCapacity,
+            foundationCapacity: foundationCapacity,
             maxConcurrentUsers: data.maxConcurrentUsers,
             cacheTTL: data.cacheTTL,
             setupCompleted: true,
@@ -52,20 +56,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
         : await storage.createSystemConfig({
             organizationName: data.organizationName,
             environment: data.environment,
-            foundationCapacity: data.foundationCapacity,
+            foundationCapacity: foundationCapacity,
             maxConcurrentUsers: data.maxConcurrentUsers,
             cacheTTL: data.cacheTTL,
             setupCompleted: true,
           });
 
-      // Create default admin user if none exists
+      // Create admin user (wizard ou modo tradicional)
       const adminUser = await storage.getUserByUsername("admin");
       if (!adminUser) {
-        const hashedPassword = await bcrypt.hash("admin123", 10);
+        const adminEmail = data.adminEmail || "admin@dueuler.com";
+        const adminPassword = data.adminPassword || "admin123";
+        const hashedPassword = await bcrypt.hash(adminPassword, 10);
+        
         await storage.createUser({
           username: "admin",
           password: hashedPassword,
-          email: "admin@dueuler.com",
+          email: adminEmail,
           role: "admin",
         });
       }
@@ -86,6 +93,55 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ setupCompleted: config?.setupCompleted || false });
     } catch (error) {
       res.status(500).json({ message: "Erro interno do servidor" });
+    }
+  });
+
+  // System status endpoint
+  app.get("/api/system/status", async (req, res) => {
+    try {
+      const config = await storage.getSystemConfig();
+      res.json({ setupComplete: config?.setupCompleted || false });
+    } catch (error) {
+      res.status(500).json({ message: "Erro interno do servidor" });
+    }
+  });
+
+  // System detection endpoint
+  app.get("/api/system/detect", async (req, res) => {
+    try {
+      const totalMemory = os.totalmem();
+      const freeMemory = os.freemem();
+      const cpuCount = os.cpus().length;
+      const platform = os.platform();
+      const nodeVersion = process.version;
+      
+      // Convert memory to GB for easier reading
+      const totalMemoryGB = Math.round(totalMemory / (1024 * 1024 * 1024));
+      const freeMemoryGB = Math.round(freeMemory / (1024 * 1024 * 1024));
+      
+      // Determine recommended capacity based on system specs
+      let recommendedCapacity = 'small'; // default
+      
+      if (totalMemoryGB >= 8 && cpuCount >= 4) {
+        recommendedCapacity = 'large';
+      } else if (totalMemoryGB >= 4 && cpuCount >= 2) {
+        recommendedCapacity = 'small';
+      } else {
+        recommendedCapacity = 'nano';
+      }
+      
+      const systemInfo = {
+        cpu: `${cpuCount} cores (${os.cpus()[0]?.model || 'Unknown'})`,
+        memory: `${totalMemoryGB}GB total, ${freeMemoryGB}GB free`,
+        platform: `${platform} ${os.release()}`,
+        nodeVersion: nodeVersion,
+        recommendedCapacity: recommendedCapacity
+      };
+      
+      res.json(systemInfo);
+    } catch (error) {
+      console.error('Error detecting system info:', error);
+      res.status(500).json({ message: "Erro ao detectar informações do sistema" });
     }
   });
 

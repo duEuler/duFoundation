@@ -1,22 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { CheckCircle, Circle, ArrowRight, ArrowLeft } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { CheckCircle, Circle, ArrowRight, ArrowLeft, Monitor, Cpu, HardDrive } from 'lucide-react';
 
 interface SetupWizardProps {
   onComplete: () => void;
-  onCancel: () => void;
 }
 
-export function SetupWizard({ onComplete, onCancel }: SetupWizardProps) {
+interface SystemInfo {
+  cpu: string;
+  memory: string;
+  platform: string;
+  nodeVersion: string;
+  recommendedCapacity: string;
+}
+
+export function SetupWizard({ onComplete }: SetupWizardProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedCapacity, setSelectedCapacity] = useState<string | null>(null);
   const [isInstalling, setIsInstalling] = useState(false);
   const [installProgress, setInstallProgress] = useState(0);
   const [installError, setInstallError] = useState<string | null>(null);
+  const [systemInfo, setSystemInfo] = useState<SystemInfo | null>(null);
+  const [organizationData, setOrganizationData] = useState({
+    name: '',
+    email: '',
+    password: ''
+  });
 
   const capacityOptions = [
     {
@@ -52,6 +67,16 @@ export function SetupWizard({ onComplete, onCancel }: SetupWizardProps) {
       description: 'Vamos configurar o Foundation para seu projeto'
     },
     {
+      id: 'organization',
+      title: 'Dados da Organização',
+      description: 'Informe os dados básicos da sua empresa ou projeto'
+    },
+    {
+      id: 'system-check',
+      title: 'Verificação do Sistema',
+      description: 'Analisando sua máquina para recomendação ideal'
+    },
+    {
       id: 'capacity',
       title: 'Escolha o Tamanho',
       description: 'Selecione a capacidade adequada para seu projeto'
@@ -72,6 +97,34 @@ export function SetupWizard({ onComplete, onCancel }: SetupWizardProps) {
       description: 'Foundation está pronto para uso'
     }
   ];
+
+  useEffect(() => {
+    // Carregar informações do sistema automaticamente
+    if (steps[currentStep].id === 'system-check') {
+      detectSystemInfo();
+    }
+  }, [currentStep]);
+
+  const detectSystemInfo = async () => {
+    try {
+      const response = await fetch('/api/system/detect');
+      const data = await response.json();
+      setSystemInfo(data);
+      
+      // Auto-selecionar capacidade baseada na recomendação
+      setSelectedCapacity(data.recommendedCapacity);
+    } catch (error) {
+      console.error('Erro ao detectar sistema:', error);
+      // Fallback para dados básicos
+      setSystemInfo({
+        cpu: 'Detectando...',
+        memory: 'Detectando...',
+        platform: 'Detectando...',
+        nodeVersion: 'Detectando...',
+        recommendedCapacity: 'small'
+      });
+    }
+  };
 
   const nextStep = () => {
     if (currentStep < steps.length - 1) {
@@ -106,12 +159,15 @@ export function SetupWizard({ onComplete, onCancel }: SetupWizardProps) {
       }
 
       // Simular chamada real para API
-      const response = await fetch('/api/foundation/install', {
+      const response = await fetch('/api/setup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          organizationName: organizationData.name,
+          adminEmail: organizationData.email,
+          adminPassword: organizationData.password,
           capacity: selectedCapacity,
-          quickSetup: true,
+          environment: 'production',
           wizard: true
         })
       });
@@ -153,6 +209,129 @@ export function SetupWizard({ onComplete, onCancel }: SetupWizardProps) {
                 <li>✅ Interface de gestão amigável</li>
               </ul>
             </div>
+          </div>
+        );
+
+      case 'organization':
+        return (
+          <div className="space-y-6">
+            <div className="text-center mb-6">
+              <h2 className="text-xl font-bold mb-2">Dados da Organização</h2>
+              <p className="text-gray-600">
+                Informe os dados básicos para criar o primeiro usuário administrativo
+              </p>
+            </div>
+            
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="orgName">Nome da Organização/Projeto</Label>
+                <Input
+                  id="orgName"
+                  value={organizationData.name}
+                  onChange={(e) => setOrganizationData({...organizationData, name: e.target.value})}
+                  placeholder="Ex: Minha Empresa Ltda"
+                  className="mt-1"
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="adminEmail">Email do Administrador</Label>
+                <Input
+                  id="adminEmail"
+                  type="email"
+                  value={organizationData.email}
+                  onChange={(e) => setOrganizationData({...organizationData, email: e.target.value})}
+                  placeholder="admin@empresa.com"
+                  className="mt-1"
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="adminPassword">Senha do Administrador</Label>
+                <Input
+                  id="adminPassword"
+                  type="password"
+                  value={organizationData.password}
+                  onChange={(e) => setOrganizationData({...organizationData, password: e.target.value})}
+                  placeholder="Escolha uma senha segura"
+                  className="mt-1"
+                />
+              </div>
+            </div>
+
+            <Alert>
+              <AlertDescription>
+                Estes dados serão usados para criar o primeiro usuário administrativo do sistema.
+                Você poderá adicionar mais usuários depois da instalação.
+              </AlertDescription>
+            </Alert>
+          </div>
+        );
+
+      case 'system-check':
+        return (
+          <div className="space-y-6">
+            <div className="text-center mb-6">
+              <div className="text-4xl mb-4">⚡</div>
+              <h2 className="text-xl font-bold mb-2">Analisando seu Sistema</h2>
+              <p className="text-gray-600">
+                Detectando automaticamente as configurações ideais para seu ambiente
+              </p>
+            </div>
+            
+            {systemInfo ? (
+              <div className="space-y-4">
+                <Card className="p-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="flex items-center space-x-3">
+                      <Cpu className="w-5 h-5 text-blue-500" />
+                      <div>
+                        <p className="text-sm font-medium">Processador</p>
+                        <p className="text-xs text-gray-600">{systemInfo.cpu}</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center space-x-3">
+                      <HardDrive className="w-5 h-5 text-green-500" />
+                      <div>
+                        <p className="text-sm font-medium">Memória</p>
+                        <p className="text-xs text-gray-600">{systemInfo.memory}</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center space-x-3">
+                      <Monitor className="w-5 h-5 text-purple-500" />
+                      <div>
+                        <p className="text-sm font-medium">Plataforma</p>
+                        <p className="text-xs text-gray-600">{systemInfo.platform}</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center space-x-3">
+                      <Circle className="w-5 h-5 text-yellow-500" />
+                      <div>
+                        <p className="text-sm font-medium">Node.js</p>
+                        <p className="text-xs text-gray-600">{systemInfo.nodeVersion}</p>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+
+                <div className="bg-green-50 p-4 rounded-lg">
+                  <h3 className="font-semibold text-green-800 mb-2">💡 Recomendação Automática</h3>
+                  <p className="text-sm text-green-700">
+                    Baseado na análise do seu sistema, recomendamos a configuração <strong>
+                    {capacityOptions.find(opt => opt.id === systemInfo.recommendedCapacity)?.name}</strong>.
+                    Você pode ajustar na próxima etapa se necessário.
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center space-y-4">
+                <Progress value={75} className="w-full" />
+                <p className="text-sm text-gray-600">Analisando sistema...</p>
+              </div>
+            )}
           </div>
         );
 
@@ -317,6 +496,12 @@ export function SetupWizard({ onComplete, onCancel }: SetupWizardProps) {
 
   const canProceed = () => {
     switch (steps[currentStep].id) {
+      case 'organization':
+        return organizationData.name.trim() !== '' && 
+               organizationData.email.trim() !== '' && 
+               organizationData.password.trim() !== '';
+      case 'system-check':
+        return systemInfo !== null;
       case 'capacity':
         return selectedCapacity !== null;
       case 'install':
