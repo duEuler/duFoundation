@@ -69,7 +69,7 @@
     },
     "existingFoundation": {
       "installed": false,
-      "hasDirectory": false
+      "hasDirectory": true
     }
   },
   "scorePercentage": 30

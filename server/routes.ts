@@ -1,3 +1,4 @@
+import foundationSetup from './routes/foundation-setup.js';
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
@@ -700,6 +701,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
 
+
+  // Foundation routes
+  app.use(foundationSetup);
 
   const httpServer = createServer(app);
   return httpServer;
