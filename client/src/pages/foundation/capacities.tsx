@@ -304,7 +304,15 @@ export default function CapacitiesPage() {
                       <div className="space-y-2">
                         <div className="flex items-center gap-2 text-green-600">
                           <CheckCircle className="h-4 w-4" />
-                          <span className="text-sm font-medium">Hardware Suporta {capacity.key.toUpperCase()}</span>
+                          <span className="text-sm font-medium">
+                            {compatibility.ramAvailable > 0 || compatibility.cpuAvailable > 0 
+                              ? `Sobra ${Math.min(
+                                  Math.floor((hardwareInfo as any).totalMemoryGB / (capacity.resources.ramMB / 1024)),
+                                  Math.floor((hardwareInfo as any).cpuCores / capacity.resources.cpuCores)
+                                )}x capacidades` 
+                              : `Uso balanceado para ${capacity.key.toUpperCase()}`
+                            }
+                          </span>
                         </div>
                         
                         {/* Recursos Disponíveis (Azul) ou Uso Completo */}
@@ -331,7 +339,7 @@ export default function CapacitiesPage() {
                             }`}>
                               {compatibility.ramAvailable === 0 
                                 ? 'USO COMPLETO' 
-                                : `${compatibility.ramAvailable.toFixed(1)}GB`
+                                : `${((compatibility.ramAvailable / (hardwareInfo as any).totalMemoryGB) * 100).toFixed(0)}% livre`
                               }
                             </div>
                           </div>
@@ -358,7 +366,7 @@ export default function CapacitiesPage() {
                             }`}>
                               {compatibility.cpuAvailable === 0 
                                 ? 'USO COMPLETO' 
-                                : `${compatibility.cpuAvailable} cores`
+                                : `${((compatibility.cpuAvailable / (hardwareInfo as any).cpuCores) * 100).toFixed(0)}% livre`
                               }
                             </div>
                           </div>
