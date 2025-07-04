@@ -13,6 +13,9 @@ import * as os from 'os';
 export async function registerRoutes(app: Express): Promise<Server> {
   const SETUP_PASSWORD = "dueuler2024";
   
+  // Foundation routes - PRIMEIRO para evitar conflito com Vite middleware
+  app.use(foundationSetup);
+  
   // Apply monitoring middleware to all routes
   app.use(createMonitoringMiddleware(monitoringService));
 
@@ -640,9 +643,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Foundation Install API - for wizard setup
-
-  // Foundation routes
-  app.use(foundationSetup);
 
   // Debug endpoint
   app.post("/api/foundation/debug", async (req, res) => {
