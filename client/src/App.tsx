@@ -24,7 +24,7 @@ function WelcomePage() {
   };
 
   const redirectToFoundation = () => {
-    console.log('Redirecionando para /foundation/setup');
+    console.log('Redirecionando para Foundation');
     window.location.href = '/foundation/setup';
   };
 
