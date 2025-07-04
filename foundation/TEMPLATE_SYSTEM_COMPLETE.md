@@ -100,7 +100,7 @@ Complete enterprise stack with:
 ## Automation Scripts
 
 ### 1. Foundation Setup Script
-- **File:** `automation/foundation-setup.cjs`
+- **File:** `foundation-installer.cjs`
 - **Features:** 
   - Automatic capacity detection
   - Template application with variable substitution
@@ -151,13 +151,13 @@ NANO (1-1K) → MICRO (1K-10K) → SMALL (10K-50K) → LARGE (100K-1M) → ENTER
 ### Quick Setup - MICRO Capacity
 ```bash
 cd dueuler-foundation
-node automation/foundation-setup.cjs --capacity micro --name "MyProject" --description "MICRO capacity setup"
+node foundation/foundation-installer.cjs --capacity micro --name "MyProject" --description "MICRO capacity setup"
 ```
 
 ### Enterprise Setup
 ```bash
 cd dueuler-foundation
-node automation/foundation-setup.cjs --capacity enterprise --name "EnterpriseApp" --description "Full enterprise stack"
+node foundation/foundation-installer.cjs --capacity enterprise --name "EnterpriseApp" --description "Full enterprise stack"
 ```
 
 ## Testing Results

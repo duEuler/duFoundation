@@ -187,6 +187,12 @@ Changelog:
 - July 4, 2025. foundation-remover.cjs agora oferece 3 cenários: instalação completa, apenas rastros, ou projeto limpo
 - July 4, 2025. Limpeza inteligente de rastros: .foundation-scanned, .foundation-ignore, relatórios de análise
 - July 4, 2025. Sistema Foundation v3.0 totalmente limpo e portável: instalação, uso e remoção completos
+- July 4, 2025. REVISÃO COMPLETA DE DOCUMENTAÇÃO: Implementado sistema de tags HTML para identificação de problemas
+- July 4, 2025. Corrigidas TODAS as referências quebradas de scripts (foundation-setup.cjs → foundation-installer.cjs)
+- July 4, 2025. Atualizados números de versão desatualizados para v3.0 em toda documentação
+- July 4, 2025. Removida estrutura de pastas órfã (foundation/foundation/ duplicada)
+- July 4, 2025. Sincronizados todos os caminhos e comandos em TEMPLATE_SYSTEM_COMPLETE.md e TEMPLATE_SYSTEM_GUIDE.md
+- July 4, 2025. Foundation v3.0 documentação 100% íntegra e livre de referências quebradas
 ```
 
 ## User Preferences

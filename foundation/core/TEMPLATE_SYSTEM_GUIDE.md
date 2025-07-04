@@ -45,7 +45,7 @@ Complete template and configuration system for automated project setup with capa
 #### foundation-setup.cjs (Master Script)
 Complete project configuration in single command:
 ```bash
-node dueuler-foundation/automation/foundation-setup.cjs --capacity enterprise --name "MyProject"
+node foundation/foundation-installer.cjs --capacity enterprise --name "MyProject"
 ```
 
 **Features:**

@@ -42,7 +42,6 @@ cd foundation/_app && npm run db:push
 ## Migração para Outro Projeto
 
 1. Copie toda a pasta `foundation/` para o novo projeto
-<!-- REVISAR-AUSENTE: O arquivo install-foundation-app.cjs não existe mais -->
 2. Execute: `node foundation/foundation-installer.cjs`
 3. Configure variáveis de ambiente necessárias
 4. Execute: `npm install` na pasta `foundation/_app/`
