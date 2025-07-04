@@ -164,7 +164,8 @@ export default function CapacitiesPage() {
   };
 
   const getUsageBadgeColor = (percentage: number) => {
-    if (percentage <= 100) return "bg-green-500 text-white"; // Verde para compatível (100% ou menos)
+    if (percentage < 100) return "bg-blue-500 text-white"; // Azul para uso eficiente (menos de 100%)
+    if (percentage === 100) return "bg-green-500 text-white"; // Verde para uso completo (exatamente 100%)
     return "bg-red-500 text-white"; // Vermelho para incompatível (mais de 100%)
   };
 
