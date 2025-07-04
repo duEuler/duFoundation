@@ -1,0 +1,6464 @@
+{
+  "timestamp": "2025-07-04T06:38:20.913Z",
+  "summary": {
+    "totalFiles": 607,
+    "totalLinks": 248,
+    "validLinks": 107,
+    "brokenLinks": 141,
+    "successRate": 43.145161290322584
+  },
+  "errors": [
+    {
+      "file": "_app/node_modules/@nodelib/fs.scandir/README.md",
+      "link": "./src/types/index.ts",
+      "line": 80,
+      "reason": "Arquivo não encontrado: ./src/types/index.ts"
+    },
+    {
+      "file": "_app/node_modules/@nodelib/fs.scandir/README.md",
+      "link": "./src/utils/fs.ts",
+      "line": 80,
+      "reason": "Arquivo não encontrado: ./src/utils/fs.ts"
+    },
+    {
+      "file": "_app/node_modules/@nodelib/fs.scandir/README.md",
+      "link": "./src/adapters/fs.ts",
+      "line": 127,
+      "reason": "Arquivo não encontrado: ./src/adapters/fs.ts"
+    },
+    {
+      "file": "_app/node_modules/@nodelib/fs.stat/README.md",
+      "link": "./src/adapters/fs.ts",
+      "line": 102,
+      "reason": "Arquivo não encontrado: ./src/adapters/fs.ts"
+    },
+    {
+      "file": "_app/node_modules/@nodelib/fs.walk/README.md",
+      "link": "./src/types/index.ts",
+      "line": 91,
+      "reason": "Arquivo não encontrado: ./src/types/index.ts"
+    },
+    {
+      "file": "_app/node_modules/@nodelib/fs.walk/README.md",
+      "link": "./src/settings.ts",
+      "line": 121,
+      "reason": "Arquivo não encontrado: ./src/settings.ts"
+    },
+    {
+      "file": "_app/node_modules/@nodelib/fs.walk/README.md",
+      "link": "./src/settings.ts",
+      "line": 133,
+      "reason": "Arquivo não encontrado: ./src/settings.ts"
+    },
+    {
+      "file": "_app/node_modules/@nodelib/fs.walk/README.md",
+      "link": "./src/settings.ts",
+      "line": 145,
+      "reason": "Arquivo não encontrado: ./src/settings.ts"
+    },
+    {
+      "file": "_app/node_modules/@pkgjs/parseargs/README.md",
+      "link": "CONTRIBUTING.md",
+      "line": 264,
+      "reason": "Arquivo não encontrado: CONTRIBUTING.md"
+    },
+    {
+      "file": "_app/node_modules/ansi-styles/readme.md",
+      "link": "screenshot.png",
+      "line": 7,
+      "reason": "Arquivo não encontrado: screenshot.png"
+    },
+    {
+      "file": "_app/node_modules/braces/README.md",
+      "link": "CHANGELOG.md",
+      "line": 17,
+      "reason": "Arquivo não encontrado: CHANGELOG.md"
+    },
+    {
+      "file": "_app/node_modules/braces/README.md",
+      "link": "www.gnu.org/software/bash/",
+      "line": 23,
+      "reason": "Arquivo não encontrado: www.gnu.org/software/bash/"
+    },
+    {
+      "file": "_app/node_modules/braces/README.md",
+      "link": "test/support/generate.js",
+      "line": 484,
+      "reason": "Arquivo não encontrado: test/support/generate.js"
+    },
+    {
+      "file": "_app/node_modules/braces/README.md",
+      "link": "../../issues/new",
+      "line": 532,
+      "reason": "Arquivo não encontrado: ../../issues/new"
+    },
+    {
+      "file": "_app/node_modules/braces/README.md",
+      "link": ".verb.md",
+      "line": 550,
+      "reason": "Arquivo não encontrado: .verb.md"
+    },
+    {
+      "file": "_app/node_modules/chokidar/README.md",
+      "link": ".github/full_changelog.md",
+      "line": 289,
+      "reason": "Arquivo não encontrado: .github/full_changelog.md"
+    },
+    {
+      "file": "_app/node_modules/clsx/readme.md",
+      "link": "bench",
+      "line": 3,
+      "reason": "Arquivo não encontrado: bench"
+    },
+    {
+      "file": "_app/node_modules/clsx/readme.md",
+      "link": "bench",
+      "line": 110,
+      "reason": "Arquivo não encontrado: bench"
+    },
+    {
+      "file": "_app/node_modules/cmdk/README.md",
+      "link": "/ARCHITECTURE.md",
+      "line": 7,
+      "reason": "Arquivo não encontrado: /ARCHITECTURE.md"
+    },
+    {
+      "file": "_app/node_modules/cmdk/README.md",
+      "link": "website/styles/cmdk",
+      "line": 430,
+      "reason": "Arquivo não encontrado: website/styles/cmdk"
+    },
+    {
+      "file": "_app/node_modules/commander/CHANGELOG.md",
+      "link": "./changelogs/CHANGELOG-1.md",
+      "line": 387,
+      "reason": "Arquivo não encontrado: ./changelogs/CHANGELOG-1.md"
+    },
+    {
+      "file": "_app/node_modules/commander/CHANGELOG.md",
+      "link": "./changelogs/CHANGELOG-0.md",
+      "line": 388,
+      "reason": "Arquivo não encontrado: ./changelogs/CHANGELOG-0.md"
+    },
+    {
+      "file": "_app/node_modules/commander/Readme.md",
+      "link": "./Readme_zh-CN.md",
+      "line": 10,
+      "reason": "Arquivo não encontrado: ./Readme_zh-CN.md"
+    },
+    {
+      "file": "_app/node_modules/cookie/README.md",
+      "link": "rfc-cutler-httpbis-partitioned-cookies",
+      "line": 112,
+      "reason": "Arquivo não encontrado: rfc-cutler-httpbis-partitioned-cookies"
+    },
+    {
+      "file": "_app/node_modules/debug/README.md",
+      "link": "./examples/node/app.js",
+      "line": 20,
+      "reason": "Arquivo não encontrado: ./examples/node/app.js"
+    },
+    {
+      "file": "_app/node_modules/debug/README.md",
+      "link": "./examples/node/worker.js",
+      "line": 43,
+      "reason": "Arquivo não encontrado: ./examples/node/worker.js"
+    },
+    {
+      "file": "_app/node_modules/debug/README.md",
+      "link": "./examples/node/stdout.js",
+      "line": 252,
+      "reason": "Arquivo não encontrado: ./examples/node/stdout.js"
+    },
+    {
+      "file": "_app/node_modules/depd/Readme.md",
+      "link": "files/message.png",
+      "line": 161,
+      "reason": "Arquivo não encontrado: files/message.png"
+    },
+    {
+      "file": "_app/node_modules/express/Readme.md",
+      "link": "Contributing.md",
+      "line": 147,
+      "reason": "Arquivo não encontrado: Contributing.md"
+    },
+    {
+      "file": "_app/node_modules/express/Readme.md",
+      "link": "Security.md",
+      "line": 151,
+      "reason": "Arquivo não encontrado: Security.md"
+    },
+    {
+      "file": "_app/node_modules/express-session/README.md",
+      "link": "rfc-cutler-httpbis-partitioned-cookies",
+      "line": 94,
+      "reason": "Arquivo não encontrado: rfc-cutler-httpbis-partitioned-cookies"
+    },
+    {
+      "file": "_app/node_modules/express-session/node_modules/cookie/README.md",
+      "link": "rfc-cutler-httpbis-partitioned-cookies",
+      "line": 112,
+      "reason": "Arquivo não encontrado: rfc-cutler-httpbis-partitioned-cookies"
+    },
+    {
+      "file": "_app/node_modules/fill-range/README.md",
+      "link": "../../issues/new",
+      "line": 177,
+      "reason": "Arquivo não encontrado: ../../issues/new"
+    },
+    {
+      "file": "_app/node_modules/fill-range/README.md",
+      "link": ".verb.md",
+      "line": 195,
+      "reason": "Arquivo não encontrado: .verb.md"
+    },
+    {
+      "file": "_app/node_modules/http-errors/README.md",
+      "link": "\\[msg]\\",
+      "line": 97,
+      "reason": "Arquivo não encontrado: \\[msg]\\"
+    },
+    {
+      "file": "_app/node_modules/is-extglob/README.md",
+      "link": "../../issues/new",
+      "line": 73,
+      "reason": "Arquivo não encontrado: ../../issues/new"
+    },
+    {
+      "file": "_app/node_modules/is-extglob/README.md",
+      "link": ".verb.md",
+      "line": 77,
+      "reason": "Arquivo não encontrado: .verb.md"
+    },
+    {
+      "file": "_app/node_modules/is-glob/README.md",
+      "link": "../../issues/new",
+      "line": 144,
+      "reason": "Arquivo não encontrado: ../../issues/new"
+    },
+    {
+      "file": "_app/node_modules/is-glob/README.md",
+      "link": ".verb.md",
+      "line": 162,
+      "reason": "Arquivo não encontrado: .verb.md"
+    },
+    {
+      "file": "_app/node_modules/is-number/README.md",
+      "link": "./test.js",
+      "line": 34,
+      "reason": "Arquivo não encontrado: ./test.js"
+    },
+    {
+      "file": "_app/node_modules/is-number/README.md",
+      "link": "./benchmark/index.js",
+      "line": 99,
+      "reason": "Arquivo não encontrado: ./benchmark/index.js"
+    },
+    {
+      "file": "_app/node_modules/is-number/README.md",
+      "link": "../../issues/new",
+      "line": 126,
+      "reason": "Arquivo não encontrado: ../../issues/new"
+    },
+    {
+      "file": "_app/node_modules/is-number/README.md",
+      "link": ".verb.md",
+      "line": 144,
+      "reason": "Arquivo não encontrado: .verb.md"
+    },
+    {
+      "file": "_app/node_modules/json5/README.md",
+      "link": "./SECURITY.md",
+      "line": 249,
+      "reason": "Arquivo não encontrado: ./SECURITY.md"
+    },
+    {
+      "file": "_app/node_modules/micromatch/README.md",
+      "link": "./test",
+      "line": 108,
+      "reason": "Arquivo não encontrado: ./test"
+    },
+    {
+      "file": "_app/node_modules/micromatch/README.md",
+      "link": ".github/contributing.md",
+      "line": 912,
+      "reason": "Arquivo não encontrado: .github/contributing.md"
+    },
+    {
+      "file": "_app/node_modules/micromatch/README.md",
+      "link": "../../issues",
+      "line": 918,
+      "reason": "Arquivo não encontrado: ../../issues"
+    },
+    {
+      "file": "_app/node_modules/micromatch/README.md",
+      "link": "../../issues/new",
+      "line": 932,
+      "reason": "Arquivo não encontrado: ../../issues/new"
+    },
+    {
+      "file": "_app/node_modules/micromatch/README.md",
+      "link": ".github/contributing.md",
+      "line": 934,
+      "reason": "Arquivo não encontrado: .github/contributing.md"
+    },
+    {
+      "file": "_app/node_modules/micromatch/README.md",
+      "link": ".verb.md",
+      "line": 952,
+      "reason": "Arquivo não encontrado: .verb.md"
+    },
+    {
+      "file": "_app/node_modules/mitt/README.md",
+      "link": "../../issues",
+      "line": 186,
+      "reason": "Arquivo não encontrado: ../../issues"
+    },
+    {
+      "file": "_app/node_modules/mitt/README.md",
+      "link": "../../issues/new",
+      "line": 187,
+      "reason": "Arquivo não encontrado: ../../issues/new"
+    },
+    {
+      "file": "_app/node_modules/modern-screenshot/README.md",
+      "link": "src/converts/dom-to-png.ts",
+      "line": 102,
+      "reason": "Arquivo não encontrado: src/converts/dom-to-png.ts"
+    },
+    {
+      "file": "_app/node_modules/modern-screenshot/README.md",
+      "link": "src/converts/dom-to-svg.ts",
+      "line": 103,
+      "reason": "Arquivo não encontrado: src/converts/dom-to-svg.ts"
+    },
+    {
+      "file": "_app/node_modules/modern-screenshot/README.md",
+      "link": "src/converts/dom-to-jpeg.ts",
+      "line": 104,
+      "reason": "Arquivo não encontrado: src/converts/dom-to-jpeg.ts"
+    },
+    {
+      "file": "_app/node_modules/modern-screenshot/README.md",
+      "link": "src/converts/dom-to-webp.ts",
+      "line": 105,
+      "reason": "Arquivo não encontrado: src/converts/dom-to-webp.ts"
+    },
+    {
+      "file": "_app/node_modules/modern-screenshot/README.md",
+      "link": "src/converts/dom-to-data-url.ts",
+      "line": 106,
+      "reason": "Arquivo não encontrado: src/converts/dom-to-data-url.ts"
+    },
+    {
+      "file": "_app/node_modules/modern-screenshot/README.md",
+      "link": "src/converts/dom-to-blob.ts",
+      "line": 110,
+      "reason": "Arquivo não encontrado: src/converts/dom-to-blob.ts"
+    },
+    {
+      "file": "_app/node_modules/modern-screenshot/README.md",
+      "link": "src/converts/dom-to-pixel.ts",
+      "line": 111,
+      "reason": "Arquivo não encontrado: src/converts/dom-to-pixel.ts"
+    },
+    {
+      "file": "_app/node_modules/modern-screenshot/README.md",
+      "link": "src/converts/dom-to-foreign-object-svg.ts",
+      "line": 115,
+      "reason": "Arquivo não encontrado: src/converts/dom-to-foreign-object-svg.ts"
+    },
+    {
+      "file": "_app/node_modules/modern-screenshot/README.md",
+      "link": "src/converts/dom-to-image.ts",
+      "line": 116,
+      "reason": "Arquivo não encontrado: src/converts/dom-to-image.ts"
+    },
+    {
+      "file": "_app/node_modules/modern-screenshot/README.md",
+      "link": "src/converts/dom-to-canvas.ts",
+      "line": 117,
+      "reason": "Arquivo não encontrado: src/converts/dom-to-canvas.ts"
+    },
+    {
+      "file": "_app/node_modules/modern-screenshot/README.md",
+      "link": "src/options.ts",
+      "line": 121,
+      "reason": "Arquivo não encontrado: src/options.ts"
+    },
+    {
+      "file": "_app/node_modules/modern-screenshot/README.md",
+      "link": "src/context.ts",
+      "line": 154,
+      "reason": "Arquivo não encontrado: src/context.ts"
+    },
+    {
+      "file": "_app/node_modules/modern-screenshot/README.zh-CN.md",
+      "link": "src/converts/dom-to-png.ts",
+      "line": 102,
+      "reason": "Arquivo não encontrado: src/converts/dom-to-png.ts"
+    },
+    {
+      "file": "_app/node_modules/modern-screenshot/README.zh-CN.md",
+      "link": "src/converts/dom-to-svg.ts",
+      "line": 103,
+      "reason": "Arquivo não encontrado: src/converts/dom-to-svg.ts"
+    },
+    {
+      "file": "_app/node_modules/modern-screenshot/README.zh-CN.md",
+      "link": "src/converts/dom-to-jpeg.ts",
+      "line": 104,
+      "reason": "Arquivo não encontrado: src/converts/dom-to-jpeg.ts"
+    },
+    {
+      "file": "_app/node_modules/modern-screenshot/README.zh-CN.md",
+      "link": "src/converts/dom-to-webp.ts",
+      "line": 105,
+      "reason": "Arquivo não encontrado: src/converts/dom-to-webp.ts"
+    },
+    {
+      "file": "_app/node_modules/modern-screenshot/README.zh-CN.md",
+      "link": "src/converts/dom-to-data-url.ts",
+      "line": 106,
+      "reason": "Arquivo não encontrado: src/converts/dom-to-data-url.ts"
+    },
+    {
+      "file": "_app/node_modules/modern-screenshot/README.zh-CN.md",
+      "link": "src/converts/dom-to-blob.ts",
+      "line": 110,
+      "reason": "Arquivo não encontrado: src/converts/dom-to-blob.ts"
+    },
+    {
+      "file": "_app/node_modules/modern-screenshot/README.zh-CN.md",
+      "link": "src/converts/dom-to-pixel.ts",
+      "line": 111,
+      "reason": "Arquivo não encontrado: src/converts/dom-to-pixel.ts"
+    },
+    {
+      "file": "_app/node_modules/modern-screenshot/README.zh-CN.md",
+      "link": "src/converts/dom-to-foreign-object-svg.ts",
+      "line": 115,
+      "reason": "Arquivo não encontrado: src/converts/dom-to-foreign-object-svg.ts"
+    },
+    {
+      "file": "_app/node_modules/modern-screenshot/README.zh-CN.md",
+      "link": "src/converts/dom-to-image.ts",
+      "line": 116,
+      "reason": "Arquivo não encontrado: src/converts/dom-to-image.ts"
+    },
+    {
+      "file": "_app/node_modules/modern-screenshot/README.zh-CN.md",
+      "link": "src/converts/dom-to-canvas.ts",
+      "line": 117,
+      "reason": "Arquivo não encontrado: src/converts/dom-to-canvas.ts"
+    },
+    {
+      "file": "_app/node_modules/modern-screenshot/README.zh-CN.md",
+      "link": "src/options.ts",
+      "line": 121,
+      "reason": "Arquivo não encontrado: src/options.ts"
+    },
+    {
+      "file": "_app/node_modules/modern-screenshot/README.zh-CN.md",
+      "link": "src/context.ts",
+      "line": 154,
+      "reason": "Arquivo não encontrado: src/context.ts"
+    },
+    {
+      "file": "_app/node_modules/nanoid/README.md",
+      "link": "./README.ru.md",
+      "line": 6,
+      "reason": "Arquivo não encontrado: ./README.ru.md"
+    },
+    {
+      "file": "_app/node_modules/nanoid/README.md",
+      "link": "./README.zh-CN.md",
+      "line": 6,
+      "reason": "Arquivo não encontrado: ./README.zh-CN.md"
+    },
+    {
+      "file": "_app/node_modules/nanoid/README.md",
+      "link": "./README.id-ID.md",
+      "line": 6,
+      "reason": "Arquivo não encontrado: ./README.id-ID.md"
+    },
+    {
+      "file": "_app/node_modules/next-themes/README.md",
+      "link": "./examples/multi-theme/README.md",
+      "line": 293,
+      "reason": "Arquivo não encontrado: ./examples/multi-theme/README.md"
+    },
+    {
+      "file": "_app/node_modules/node-addon-api/README.md",
+      "link": "doc/README.md",
+      "line": 12,
+      "reason": "Arquivo não encontrado: doc/README.md"
+    },
+    {
+      "file": "_app/node_modules/node-addon-api/README.md",
+      "link": "doc/README.md",
+      "line": 19,
+      "reason": "Arquivo não encontrado: doc/README.md"
+    },
+    {
+      "file": "_app/node_modules/node-addon-api/README.md",
+      "link": "CHANGELOG.md",
+      "line": 25,
+      "reason": "Arquivo não encontrado: CHANGELOG.md"
+    },
+    {
+      "file": "_app/node_modules/node-addon-api/README.md",
+      "link": "CONTRIBUTING.md",
+      "line": 56,
+      "reason": "Arquivo não encontrado: CONTRIBUTING.md"
+    },
+    {
+      "file": "_app/node_modules/node-addon-api/tools/README.md",
+      "link": "const Napi::CallbackInfo& info",
+      "line": 40,
+      "reason": "Arquivo não encontrado: const Napi::CallbackInfo& info"
+    },
+    {
+      "file": "_app/node_modules/node-addon-api/tools/README.md",
+      "link": "const Napi::CallbackInfo& info",
+      "line": 44,
+      "reason": "Arquivo não encontrado: const Napi::CallbackInfo& info"
+    },
+    {
+      "file": "_app/node_modules/normalize-path/README.md",
+      "link": "../../issues/new",
+      "line": 66,
+      "reason": "Arquivo não encontrado: ../../issues/new"
+    },
+    {
+      "file": "_app/node_modules/normalize-path/README.md",
+      "link": ".verb.md",
+      "line": 84,
+      "reason": "Arquivo não encontrado: .verb.md"
+    },
+    {
+      "file": "_app/node_modules/picomatch/README.md",
+      "link": "../../issues/new",
+      "line": 667,
+      "reason": "Arquivo não encontrado: ../../issues/new"
+    },
+    {
+      "file": "_app/node_modules/picomatch/README.md",
+      "link": ".github/contributing.md",
+      "line": 669,
+      "reason": "Arquivo não encontrado: .github/contributing.md"
+    },
+    {
+      "file": "_app/node_modules/picomatch/README.md",
+      "link": ".verb.md",
+      "line": 687,
+      "reason": "Arquivo não encontrado: .verb.md"
+    },
+    {
+      "file": "_app/node_modules/postcss-import/README.md",
+      "link": "test",
+      "line": 112,
+      "reason": "Arquivo não encontrado: test"
+    },
+    {
+      "file": "_app/node_modules/postcss-import/README.md",
+      "link": "CHANGELOG.md",
+      "line": 242,
+      "reason": "Arquivo não encontrado: CHANGELOG.md"
+    },
+    {
+      "file": "_app/node_modules/regexparam/readme.md",
+      "link": "?<year>[0-9]{4}",
+      "line": 150,
+      "reason": "Arquivo não encontrado: ?<year>[0-9]{4}"
+    },
+    {
+      "file": "_app/node_modules/regexparam/readme.md",
+      "link": "?<month>[0-9]{2}",
+      "line": 150,
+      "reason": "Arquivo não encontrado: ?<month>[0-9]{2}"
+    },
+    {
+      "file": "_app/node_modules/regexparam/readme.md",
+      "link": "?<title>[^\\/]+",
+      "line": 150,
+      "reason": "Arquivo não encontrado: ?<title>[^\\/]+"
+    },
+    {
+      "file": "_app/node_modules/regexparam/readme.md",
+      "link": "[0-9]{4}",
+      "line": 156,
+      "reason": "Arquivo não encontrado: [0-9]{4}"
+    },
+    {
+      "file": "_app/node_modules/regexparam/readme.md",
+      "link": "[0-9]{2}",
+      "line": 156,
+      "reason": "Arquivo não encontrado: [0-9]{2}"
+    },
+    {
+      "file": "_app/node_modules/regexparam/readme.md",
+      "link": "[^\\/]+",
+      "line": 156,
+      "reason": "Arquivo não encontrado: [^\\/]+"
+    },
+    {
+      "file": "_app/node_modules/resolve-pkg-maps/README.md",
+      "link": "/tests/",
+      "line": 5,
+      "reason": "Arquivo não encontrado: /tests/"
+    },
+    {
+      "file": "_app/node_modules/resolve-pkg-maps/README.md",
+      "link": "/tests/exports/compare-resolve.exports.ts",
+      "line": 216,
+      "reason": "Arquivo não encontrado: /tests/exports/compare-resolve.exports.ts"
+    },
+    {
+      "file": "_app/node_modules/safer-buffer/Porting-Buffer.md",
+      "link": "Slow",
+      "line": 12,
+      "reason": "Arquivo não encontrado: Slow"
+    },
+    {
+      "file": "_app/node_modules/source-map/CHANGELOG.md",
+      "link": "bugzil.la/1090768",
+      "line": 123,
+      "reason": "Arquivo não encontrado: bugzil.la/1090768"
+    },
+    {
+      "file": "_app/node_modules/source-map-js/README.md",
+      "link": "media/downloads.png",
+      "line": 13,
+      "reason": "Arquivo não encontrado: media/downloads.png"
+    },
+    {
+      "file": "_app/node_modules/tailwindcss-animate/README.md",
+      "link": "/docs/animation-delay.md",
+      "line": 79,
+      "reason": "Arquivo não encontrado: /docs/animation-delay.md"
+    },
+    {
+      "file": "_app/node_modules/tailwindcss-animate/README.md",
+      "link": "/docs/animation-direction.md",
+      "line": 92,
+      "reason": "Arquivo não encontrado: /docs/animation-direction.md"
+    },
+    {
+      "file": "_app/node_modules/tailwindcss-animate/README.md",
+      "link": "/docs/animation-duration.md",
+      "line": 104,
+      "reason": "Arquivo não encontrado: /docs/animation-duration.md"
+    },
+    {
+      "file": "_app/node_modules/tailwindcss-animate/README.md",
+      "link": "/docs/animation-fill-mode.md",
+      "line": 117,
+      "reason": "Arquivo não encontrado: /docs/animation-fill-mode.md"
+    },
+    {
+      "file": "_app/node_modules/tailwindcss-animate/README.md",
+      "link": "/docs/animation-iteration-count.md",
+      "line": 129,
+      "reason": "Arquivo não encontrado: /docs/animation-iteration-count.md"
+    },
+    {
+      "file": "_app/node_modules/tailwindcss-animate/README.md",
+      "link": "/docs/animation-play-state.md",
+      "line": 140,
+      "reason": "Arquivo não encontrado: /docs/animation-play-state.md"
+    },
+    {
+      "file": "_app/node_modules/tailwindcss-animate/README.md",
+      "link": "/docs/animation-timing-function.md",
+      "line": 153,
+      "reason": "Arquivo não encontrado: /docs/animation-timing-function.md"
+    },
+    {
+      "file": "_app/node_modules/tailwindcss-animate/README.md",
+      "link": "/docs/enter-animation-scale.md",
+      "line": 167,
+      "reason": "Arquivo não encontrado: /docs/enter-animation-scale.md"
+    },
+    {
+      "file": "_app/node_modules/tailwindcss-animate/README.md",
+      "link": "/docs/enter-animation-rotate.md",
+      "line": 167,
+      "reason": "Arquivo não encontrado: /docs/enter-animation-rotate.md"
+    },
+    {
+      "file": "_app/node_modules/tailwindcss-animate/README.md",
+      "link": "/docs/enter-animation-scale.md",
+      "line": 167,
+      "reason": "Arquivo não encontrado: /docs/enter-animation-scale.md"
+    },
+    {
+      "file": "_app/node_modules/tailwindcss-animate/README.md",
+      "link": "/docs/enter-animation-translate.md",
+      "line": 167,
+      "reason": "Arquivo não encontrado: /docs/enter-animation-translate.md"
+    },
+    {
+      "file": "_app/node_modules/tailwindcss-animate/README.md",
+      "link": "/docs/enter-animation.md",
+      "line": 177,
+      "reason": "Arquivo não encontrado: /docs/enter-animation.md"
+    },
+    {
+      "file": "_app/node_modules/tailwindcss-animate/README.md",
+      "link": "/docs/exit-animation-scale.md",
+      "line": 181,
+      "reason": "Arquivo não encontrado: /docs/exit-animation-scale.md"
+    },
+    {
+      "file": "_app/node_modules/tailwindcss-animate/README.md",
+      "link": "/docs/exit-animation-rotate.md",
+      "line": 181,
+      "reason": "Arquivo não encontrado: /docs/exit-animation-rotate.md"
+    },
+    {
+      "file": "_app/node_modules/tailwindcss-animate/README.md",
+      "link": "/docs/exit-animation-scale.md",
+      "line": 181,
+      "reason": "Arquivo não encontrado: /docs/exit-animation-scale.md"
+    },
+    {
+      "file": "_app/node_modules/tailwindcss-animate/README.md",
+      "link": "/docs/exit-animation-translate.md",
+      "line": 181,
+      "reason": "Arquivo não encontrado: /docs/exit-animation-translate.md"
+    },
+    {
+      "file": "_app/node_modules/tailwindcss-animate/README.md",
+      "link": "/docs/exit-animation.md",
+      "line": 191,
+      "reason": "Arquivo não encontrado: /docs/exit-animation.md"
+    },
+    {
+      "file": "_app/node_modules/tailwindcss-animate/README.md",
+      "link": "/docs/enter-animation-opacity.md",
+      "line": 204,
+      "reason": "Arquivo não encontrado: /docs/enter-animation-opacity.md"
+    },
+    {
+      "file": "_app/node_modules/tailwindcss-animate/README.md",
+      "link": "/docs/enter-animation-rotate.md",
+      "line": 217,
+      "reason": "Arquivo não encontrado: /docs/enter-animation-rotate.md"
+    },
+    {
+      "file": "_app/node_modules/tailwindcss-animate/README.md",
+      "link": "/docs/enter-animation-scale.md",
+      "line": 230,
+      "reason": "Arquivo não encontrado: /docs/enter-animation-scale.md"
+    },
+    {
+      "file": "_app/node_modules/tailwindcss-animate/README.md",
+      "link": "/docs/enter-animation-translate.md",
+      "line": 243,
+      "reason": "Arquivo não encontrado: /docs/enter-animation-translate.md"
+    },
+    {
+      "file": "_app/node_modules/tailwindcss-animate/README.md",
+      "link": "/docs/exit-animation-opacity.md",
+      "line": 256,
+      "reason": "Arquivo não encontrado: /docs/exit-animation-opacity.md"
+    },
+    {
+      "file": "_app/node_modules/tailwindcss-animate/README.md",
+      "link": "/docs/exit-animation-rotate.md",
+      "line": 269,
+      "reason": "Arquivo não encontrado: /docs/exit-animation-rotate.md"
+    },
+    {
+      "file": "_app/node_modules/tailwindcss-animate/README.md",
+      "link": "/docs/exit-animation-scale.md",
+      "line": 282,
+      "reason": "Arquivo não encontrado: /docs/exit-animation-scale.md"
+    },
+    {
+      "file": "_app/node_modules/tailwindcss-animate/README.md",
+      "link": "/docs/exit-animation-translate.md",
+      "line": 295,
+      "reason": "Arquivo não encontrado: /docs/exit-animation-translate.md"
+    },
+    {
+      "file": "_app/node_modules/to-regex-range/README.md",
+      "link": "./test/test.js",
+      "line": 62,
+      "reason": "Arquivo não encontrado: ./test/test.js"
+    },
+    {
+      "file": "_app/node_modules/to-regex-range/README.md",
+      "link": "../../issues/new",
+      "line": 238,
+      "reason": "Arquivo não encontrado: ../../issues/new"
+    },
+    {
+      "file": "_app/node_modules/to-regex-range/README.md",
+      "link": ".verb.md",
+      "line": 256,
+      "reason": "Arquivo não encontrado: .verb.md"
+    },
+    {
+      "file": "_app/node_modules/wouter/README.md",
+      "link": "[a-z]+",
+      "line": 224,
+      "reason": "Arquivo não encontrado: [a-z]+"
+    },
+    {
+      "file": "_app/node_modules/wouter/README.md",
+      "link": "?<word>[a-z]+",
+      "line": 226,
+      "reason": "Arquivo não encontrado: ?<word>[a-z]+"
+    },
+    {
+      "file": "_app/node_modules/wouter/README.md",
+      "link": "?<id>[0-9]+",
+      "line": 341,
+      "reason": "Arquivo não encontrado: ?<id>[0-9]+"
+    },
+    {
+      "file": "_app/node_modules/wouter/README.md",
+      "link": "your pattern",
+      "line": 450,
+      "reason": "Arquivo não encontrado: your pattern"
+    },
+    {
+      "file": "_app/node_modules/wouter/README.md",
+      "link": "your pattern",
+      "line": 451,
+      "reason": "Arquivo não encontrado: your pattern"
+    },
+    {
+      "file": "_app/node_modules/wouter/README.md",
+      "link": "framer.com/motion",
+      "line": 750,
+      "reason": "Arquivo não encontrado: framer.com/motion"
+    },
+    {
+      "file": "_app/node_modules/ws/README.md",
+      "link": "./doc/ws.md#ws_no_buffer_util",
+      "line": 74,
+      "reason": "Arquivo não encontrado: ./doc/ws.md"
+    },
+    {
+      "file": "_app/node_modules/ws/README.md",
+      "link": "./doc/ws.md#ws_no_utf_8_validate",
+      "line": 91,
+      "reason": "Arquivo não encontrado: ./doc/ws.md"
+    },
+    {
+      "file": "_app/node_modules/ws/README.md",
+      "link": "./doc/ws.md",
+      "line": 95,
+      "reason": "Arquivo não encontrado: ./doc/ws.md"
+    }
+  ],
+  "fileReports": [
+    {
+      "file": "ANALISE-PROBLEMAS-INSTALACAO.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "API_REFERENCE.md",
+      "totalLinks": 3,
+      "validLinks": 3,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "AUTO-SCANNER-GUIDE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "CHANGELOG_CONSOLIDADO.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "COMPATIBILITY-MANDATORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "DEPLOYMENT_READY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "FOUNDATION-ARCHITECTURE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "FOUNDATION_STATUS.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "GETTING_STARTED.md",
+      "totalLinks": 6,
+      "validLinks": 6,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "INSTALLATION_COMMANDS_CONSOLIDATED.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "LIMPEZA_ESTRUTURAL_ANALISE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "LIMPEZA_ESTRUTURAL_COMPLETA.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "MIGRATION-GUIDE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "NEW-PROJECT-GUIDE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "POST-INSTALLATION-CHECKLIST.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "PRE-INSTALLATION-CHECKLIST.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "README.md",
+      "totalLinks": 6,
+      "validLinks": 6,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "REPLIT_INTEGRATION_GUIDE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "REPLIT_ORDER_EXECUTION.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "REVISAO-DOCUMENTACAO-SUMMARY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "REVISAO_ABRANGENTE_FINAL.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "REVISAO_COMPLETA_FOUNDATION.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "REVISAO_CONTEUDO_FINAL.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "TROUBLESHOOTING.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@alloc/quick-lru/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@ampproject/remapping/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@babel/code-frame/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@babel/compat-data/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@babel/core/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@babel/generator/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@babel/helper-compilation-targets/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@babel/helper-module-imports/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@babel/helper-module-transforms/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@babel/helper-plugin-utils/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@babel/helper-string-parser/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@babel/helper-validator-identifier/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@babel/helper-validator-option/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@babel/helpers/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@babel/parser/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@babel/parser/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@babel/plugin-transform-react-jsx-self/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@babel/plugin-transform-react-jsx-source/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@babel/runtime/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@babel/template/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@babel/traverse/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@babel/types/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@esbuild-kit/core-utils/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@esbuild-kit/core-utils/node_modules/esbuild/LICENSE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@esbuild-kit/core-utils/node_modules/esbuild/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@esbuild-kit/esm-loader/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@floating-ui/core/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@floating-ui/dom/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@floating-ui/react-dom/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@floating-ui/utils/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@isaacs/cliui/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@jridgewell/gen-mapping/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@jridgewell/resolve-uri/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@jridgewell/set-array/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@jridgewell/sourcemap-codec/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@jridgewell/trace-mapping/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@neondatabase/serverless/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@neondatabase/serverless/CONFIG.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@neondatabase/serverless/DEPLOY.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@neondatabase/serverless/DEVELOP.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@neondatabase/serverless/README.md",
+      "totalLinks": 5,
+      "validLinks": 5,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@nodelib/fs.scandir/README.md",
+      "totalLinks": 3,
+      "validLinks": 0,
+      "brokenLinks": 3,
+      "errors": [
+        {
+          "link": "./src/types/index.ts",
+          "line": 80,
+          "reason": "Arquivo não encontrado: ./src/types/index.ts"
+        },
+        {
+          "link": "./src/utils/fs.ts",
+          "line": 80,
+          "reason": "Arquivo não encontrado: ./src/utils/fs.ts"
+        },
+        {
+          "link": "./src/adapters/fs.ts",
+          "line": 127,
+          "reason": "Arquivo não encontrado: ./src/adapters/fs.ts"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@nodelib/fs.stat/README.md",
+      "totalLinks": 1,
+      "validLinks": 0,
+      "brokenLinks": 1,
+      "errors": [
+        {
+          "link": "./src/adapters/fs.ts",
+          "line": 102,
+          "reason": "Arquivo não encontrado: ./src/adapters/fs.ts"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@nodelib/fs.walk/README.md",
+      "totalLinks": 4,
+      "validLinks": 0,
+      "brokenLinks": 4,
+      "errors": [
+        {
+          "link": "./src/types/index.ts",
+          "line": 91,
+          "reason": "Arquivo não encontrado: ./src/types/index.ts"
+        },
+        {
+          "link": "./src/settings.ts",
+          "line": 121,
+          "reason": "Arquivo não encontrado: ./src/settings.ts"
+        },
+        {
+          "link": "./src/settings.ts",
+          "line": 133,
+          "reason": "Arquivo não encontrado: ./src/settings.ts"
+        },
+        {
+          "link": "./src/settings.ts",
+          "line": 145,
+          "reason": "Arquivo não encontrado: ./src/settings.ts"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@pkgjs/parseargs/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@pkgjs/parseargs/README.md",
+      "totalLinks": 1,
+      "validLinks": 0,
+      "brokenLinks": 1,
+      "errors": [
+        {
+          "link": "CONTRIBUTING.md",
+          "line": 264,
+          "reason": "Arquivo não encontrado: CONTRIBUTING.md"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/number/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/primitive/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-accordion/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-alert-dialog/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-arrow/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-aspect-ratio/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-avatar/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-checkbox/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-collapsible/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-collection/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-compose-refs/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-context/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-context-menu/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-dialog/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-direction/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-dismissable-layer/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-dropdown-menu/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-focus-guards/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-focus-scope/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-hover-card/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-id/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-label/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-menu/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-menubar/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-navigation-menu/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-popover/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-popper/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-portal/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-presence/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-primitive/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-progress/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-radio-group/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-roving-focus/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-scroll-area/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-select/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-separator/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-slider/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-slot/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-switch/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-tabs/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-toast/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-toggle/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-toggle-group/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-tooltip/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-use-callback-ref/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-use-controllable-state/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-use-escape-keydown/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-use-layout-effect/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-use-previous/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-use-rect/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-use-size/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/react-visually-hidden/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@radix-ui/rect/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@rollup/rollup-linux-x64-gnu/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@rollup/rollup-linux-x64-musl/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@tailwindcss/node/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@tailwindcss/oxide-linux-x64-gnu/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@tailwindcss/oxide-linux-x64-musl/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@tailwindcss/typography/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@tailwindcss/vite/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/babel__core/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/babel__generator/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/babel__template/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/babel__traverse/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/bcrypt/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/body-parser/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/connect/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/connect-pg-simple/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/d3-array/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/d3-color/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/d3-ease/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/d3-interpolate/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/d3-path/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/d3-scale/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/d3-shape/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/d3-time/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/d3-timer/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/estree/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/express/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/express-serve-static-core/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/express-session/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/http-errors/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/mime/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/node/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/passport/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/passport-local/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/passport-strategy/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/pg/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/prop-types/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/qs/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/range-parser/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/react/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/react-dom/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/send/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/serve-static/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@types/ws/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/@vitejs/plugin-react/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/accepts/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/accepts/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/ansi-regex/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/ansi-styles/readme.md",
+      "totalLinks": 1,
+      "validLinks": 0,
+      "brokenLinks": 1,
+      "errors": [
+        {
+          "link": "screenshot.png",
+          "line": 7,
+          "reason": "Arquivo não encontrado: screenshot.png"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/any-promise/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/anymatch/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/arg/LICENSE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/arg/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/aria-hidden/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/array-flatten/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/balanced-match/LICENSE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/balanced-match/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/bcrypt/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/bcrypt/ISSUE_TEMPLATE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/bcrypt/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/binary-extensions/readme.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/body-parser/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/body-parser/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/body-parser/SECURITY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/body-parser/node_modules/debug/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/body-parser/node_modules/debug/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/body-parser/node_modules/ms/license.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/body-parser/node_modules/ms/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/brace-expansion/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/braces/README.md",
+      "totalLinks": 6,
+      "validLinks": 1,
+      "brokenLinks": 5,
+      "errors": [
+        {
+          "link": "CHANGELOG.md",
+          "line": 17,
+          "reason": "Arquivo não encontrado: CHANGELOG.md"
+        },
+        {
+          "link": "www.gnu.org/software/bash/",
+          "line": 23,
+          "reason": "Arquivo não encontrado: www.gnu.org/software/bash/"
+        },
+        {
+          "link": "test/support/generate.js",
+          "line": 484,
+          "reason": "Arquivo não encontrado: test/support/generate.js"
+        },
+        {
+          "link": "../../issues/new",
+          "line": 532,
+          "reason": "Arquivo não encontrado: ../../issues/new"
+        },
+        {
+          "link": ".verb.md",
+          "line": 550,
+          "reason": "Arquivo não encontrado: .verb.md"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/browserslist/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/buffer-from/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/bufferutil/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/bytes/History.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/bytes/Readme.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/call-bind/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/call-bind/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/camelcase-css/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/chokidar/README.md",
+      "totalLinks": 2,
+      "validLinks": 1,
+      "brokenLinks": 1,
+      "errors": [
+        {
+          "link": ".github/full_changelog.md",
+          "line": 289,
+          "reason": "Arquivo não encontrado: .github/full_changelog.md"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/chokidar/node_modules/glob-parent/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/chokidar/node_modules/glob-parent/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/class-variance-authority/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/clsx/readme.md",
+      "totalLinks": 2,
+      "validLinks": 0,
+      "brokenLinks": 2,
+      "errors": [
+        {
+          "link": "bench",
+          "line": 3,
+          "reason": "Arquivo não encontrado: bench"
+        },
+        {
+          "link": "bench",
+          "line": 110,
+          "reason": "Arquivo não encontrado: bench"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/cmdk/LICENSE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/cmdk/README.md",
+      "totalLinks": 2,
+      "validLinks": 0,
+      "brokenLinks": 2,
+      "errors": [
+        {
+          "link": "/ARCHITECTURE.md",
+          "line": 7,
+          "reason": "Arquivo não encontrado: /ARCHITECTURE.md"
+        },
+        {
+          "link": "website/styles/cmdk",
+          "line": 430,
+          "reason": "Arquivo não encontrado: website/styles/cmdk"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/color-convert/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/color-convert/README.md",
+      "totalLinks": 3,
+      "validLinks": 3,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/color-name/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/commander/CHANGELOG.md",
+      "totalLinks": 2,
+      "validLinks": 0,
+      "brokenLinks": 2,
+      "errors": [
+        {
+          "link": "./changelogs/CHANGELOG-1.md",
+          "line": 387,
+          "reason": "Arquivo não encontrado: ./changelogs/CHANGELOG-1.md"
+        },
+        {
+          "link": "./changelogs/CHANGELOG-0.md",
+          "line": 388,
+          "reason": "Arquivo não encontrado: ./changelogs/CHANGELOG-0.md"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/commander/Readme.md",
+      "totalLinks": 1,
+      "validLinks": 0,
+      "brokenLinks": 1,
+      "errors": [
+        {
+          "link": "./Readme_zh-CN.md",
+          "line": 10,
+          "reason": "Arquivo não encontrado: ./Readme_zh-CN.md"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/connect-pg-simple/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/content-disposition/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/content-disposition/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/content-type/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/content-type/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/convert-source-map/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/cookie/README.md",
+      "totalLinks": 2,
+      "validLinks": 1,
+      "brokenLinks": 1,
+      "errors": [
+        {
+          "link": "rfc-cutler-httpbis-partitioned-cookies",
+          "line": 112,
+          "reason": "Arquivo não encontrado: rfc-cutler-httpbis-partitioned-cookies"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/cookie/SECURITY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/cookie-signature/History.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/cookie-signature/Readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/cross-spawn/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/cssesc/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/csstype/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/d3-color/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/d3-ease/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/d3-interpolate/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/d3-path/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/d3-scale/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/d3-time/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/d3-timer/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/debug/README.md",
+      "totalLinks": 3,
+      "validLinks": 0,
+      "brokenLinks": 3,
+      "errors": [
+        {
+          "link": "./examples/node/app.js",
+          "line": 20,
+          "reason": "Arquivo não encontrado: ./examples/node/app.js"
+        },
+        {
+          "link": "./examples/node/worker.js",
+          "line": 43,
+          "reason": "Arquivo não encontrado: ./examples/node/worker.js"
+        },
+        {
+          "link": "./examples/node/stdout.js",
+          "line": 252,
+          "reason": "Arquivo não encontrado: ./examples/node/stdout.js"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/decimal.js-light/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/decimal.js-light/LICENCE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/decimal.js-light/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/define-data-property/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/define-data-property/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/depd/History.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/depd/Readme.md",
+      "totalLinks": 2,
+      "validLinks": 1,
+      "brokenLinks": 1,
+      "errors": [
+        {
+          "link": "files/message.png",
+          "line": 161,
+          "reason": "Arquivo não encontrado: files/message.png"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/destroy/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/detect-libc/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/detect-node-es/Readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/didyoumean/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/dlv/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/drizzle-kit/node_modules/esbuild/LICENSE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/drizzle-kit/node_modules/esbuild/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/drizzle-zod/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/eastasianwidth/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/ee-first/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/electron-to-chromium/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/embla-carousel/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/embla-carousel-react/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/embla-carousel-reactive-utils/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/emoji-regex/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/encodeurl/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/es-define-property/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/es-define-property/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/es-errors/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/es-errors/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/esbuild/LICENSE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/esbuild/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/esbuild-register/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/escalade/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/escape-html/Readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/etag/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/etag/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/eventemitter3/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/express/History.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/express/Readme.md",
+      "totalLinks": 3,
+      "validLinks": 1,
+      "brokenLinks": 2,
+      "errors": [
+        {
+          "link": "Contributing.md",
+          "line": 147,
+          "reason": "Arquivo não encontrado: Contributing.md"
+        },
+        {
+          "link": "Security.md",
+          "line": 151,
+          "reason": "Arquivo não encontrado: Security.md"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/express/node_modules/debug/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/express/node_modules/debug/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/express/node_modules/ms/license.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/express/node_modules/ms/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/express-session/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/express-session/README.md",
+      "totalLinks": 2,
+      "validLinks": 1,
+      "brokenLinks": 1,
+      "errors": [
+        {
+          "link": "rfc-cutler-httpbis-partitioned-cookies",
+          "line": 94,
+          "reason": "Arquivo não encontrado: rfc-cutler-httpbis-partitioned-cookies"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/express-session/node_modules/cookie/README.md",
+      "totalLinks": 2,
+      "validLinks": 1,
+      "brokenLinks": 1,
+      "errors": [
+        {
+          "link": "rfc-cutler-httpbis-partitioned-cookies",
+          "line": 112,
+          "reason": "Arquivo não encontrado: rfc-cutler-httpbis-partitioned-cookies"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/express-session/node_modules/cookie/SECURITY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/express-session/node_modules/cookie-signature/History.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/express-session/node_modules/cookie-signature/Readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/express-session/node_modules/debug/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/express-session/node_modules/debug/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/express-session/node_modules/ms/license.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/express-session/node_modules/ms/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/fast-glob/node_modules/glob-parent/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/fast-glob/node_modules/glob-parent/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/fastq/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/fill-range/README.md",
+      "totalLinks": 3,
+      "validLinks": 1,
+      "brokenLinks": 2,
+      "errors": [
+        {
+          "link": "../../issues/new",
+          "line": 177,
+          "reason": "Arquivo não encontrado: ../../issues/new"
+        },
+        {
+          "link": ".verb.md",
+          "line": 195,
+          "reason": "Arquivo não encontrado: .verb.md"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/finalhandler/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/finalhandler/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/finalhandler/SECURITY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/finalhandler/node_modules/debug/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/finalhandler/node_modules/debug/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/finalhandler/node_modules/ms/license.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/finalhandler/node_modules/ms/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/foreground-child/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/forwarded/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/forwarded/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/fraction.js/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/fresh/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/fresh/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/function-bind/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/function-bind/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/gensync/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/get-intrinsic/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/get-intrinsic/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/get-nonce/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/get-nonce/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/get-tsconfig/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/glob-parent/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/globals/readme.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/gopd/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/gopd/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/graceful-fs/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/has-property-descriptors/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/has-property-descriptors/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/has-proto/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/has-proto/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/has-symbols/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/has-symbols/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/hasown/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/hasown/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/http-errors/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/http-errors/README.md",
+      "totalLinks": 2,
+      "validLinks": 1,
+      "brokenLinks": 1,
+      "errors": [
+        {
+          "link": "\\[msg]\\",
+          "line": 97,
+          "reason": "Arquivo não encontrado: \\[msg]\\"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/iconv-lite/Changelog.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/iconv-lite/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/inherits/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/input-otp/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/internmap/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/ipaddr.js/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/is-binary-path/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/is-core-module/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/is-core-module/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/is-extglob/README.md",
+      "totalLinks": 2,
+      "validLinks": 0,
+      "brokenLinks": 2,
+      "errors": [
+        {
+          "link": "../../issues/new",
+          "line": 73,
+          "reason": "Arquivo não encontrado: ../../issues/new"
+        },
+        {
+          "link": ".verb.md",
+          "line": 77,
+          "reason": "Arquivo não encontrado: .verb.md"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/is-fullwidth-code-point/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/is-glob/README.md",
+      "totalLinks": 3,
+      "validLinks": 1,
+      "brokenLinks": 2,
+      "errors": [
+        {
+          "link": "../../issues/new",
+          "line": 144,
+          "reason": "Arquivo não encontrado: ../../issues/new"
+        },
+        {
+          "link": ".verb.md",
+          "line": 162,
+          "reason": "Arquivo não encontrado: .verb.md"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/is-number/README.md",
+      "totalLinks": 5,
+      "validLinks": 1,
+      "brokenLinks": 4,
+      "errors": [
+        {
+          "link": "./test.js",
+          "line": 34,
+          "reason": "Arquivo não encontrado: ./test.js"
+        },
+        {
+          "link": "./benchmark/index.js",
+          "line": 99,
+          "reason": "Arquivo não encontrado: ./benchmark/index.js"
+        },
+        {
+          "link": "../../issues/new",
+          "line": 126,
+          "reason": "Arquivo não encontrado: ../../issues/new"
+        },
+        {
+          "link": ".verb.md",
+          "line": 144,
+          "reason": "Arquivo não encontrado: .verb.md"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/isexe/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/jackspeak/LICENSE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/jackspeak/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/js-tokens/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/js-tokens/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/jsesc/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/json5/LICENSE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/json5/README.md",
+      "totalLinks": 2,
+      "validLinks": 1,
+      "brokenLinks": 1,
+      "errors": [
+        {
+          "link": "./SECURITY.md",
+          "line": 249,
+          "reason": "Arquivo não encontrado: ./SECURITY.md"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/lightningcss/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/lightningcss-linux-x64-gnu/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/lightningcss-linux-x64-musl/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/lilconfig/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/lines-and-columns/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/lodash.castarray/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/lodash.isplainobject/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/lodash.merge/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/loose-envify/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/lru-cache/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/magic-string/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/media-typer/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/media-typer/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/memorystore/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/memorystore/node_modules/lru-cache/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/memorystore/node_modules/yallist/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/merge-descriptors/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/merge-descriptors/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/merge2/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/methods/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/methods/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/micromatch/README.md",
+      "totalLinks": 20,
+      "validLinks": 14,
+      "brokenLinks": 6,
+      "errors": [
+        {
+          "link": "./test",
+          "line": 108,
+          "reason": "Arquivo não encontrado: ./test"
+        },
+        {
+          "link": ".github/contributing.md",
+          "line": 912,
+          "reason": "Arquivo não encontrado: .github/contributing.md"
+        },
+        {
+          "link": "../../issues",
+          "line": 918,
+          "reason": "Arquivo não encontrado: ../../issues"
+        },
+        {
+          "link": "../../issues/new",
+          "line": 932,
+          "reason": "Arquivo não encontrado: ../../issues/new"
+        },
+        {
+          "link": ".github/contributing.md",
+          "line": 934,
+          "reason": "Arquivo não encontrado: .github/contributing.md"
+        },
+        {
+          "link": ".verb.md",
+          "line": 952,
+          "reason": "Arquivo não encontrado: .verb.md"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/mime/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/mime/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/mime-db/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/mime-db/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/mime-types/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/mime-types/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/minipass/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/mitt/README.md",
+      "totalLinks": 2,
+      "validLinks": 0,
+      "brokenLinks": 2,
+      "errors": [
+        {
+          "link": "../../issues",
+          "line": 186,
+          "reason": "Arquivo não encontrado: ../../issues"
+        },
+        {
+          "link": "../../issues/new",
+          "line": 187,
+          "reason": "Arquivo não encontrado: ../../issues/new"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/modern-screenshot/README.md",
+      "totalLinks": 12,
+      "validLinks": 0,
+      "brokenLinks": 12,
+      "errors": [
+        {
+          "link": "src/converts/dom-to-png.ts",
+          "line": 102,
+          "reason": "Arquivo não encontrado: src/converts/dom-to-png.ts"
+        },
+        {
+          "link": "src/converts/dom-to-svg.ts",
+          "line": 103,
+          "reason": "Arquivo não encontrado: src/converts/dom-to-svg.ts"
+        },
+        {
+          "link": "src/converts/dom-to-jpeg.ts",
+          "line": 104,
+          "reason": "Arquivo não encontrado: src/converts/dom-to-jpeg.ts"
+        },
+        {
+          "link": "src/converts/dom-to-webp.ts",
+          "line": 105,
+          "reason": "Arquivo não encontrado: src/converts/dom-to-webp.ts"
+        },
+        {
+          "link": "src/converts/dom-to-data-url.ts",
+          "line": 106,
+          "reason": "Arquivo não encontrado: src/converts/dom-to-data-url.ts"
+        },
+        {
+          "link": "src/converts/dom-to-blob.ts",
+          "line": 110,
+          "reason": "Arquivo não encontrado: src/converts/dom-to-blob.ts"
+        },
+        {
+          "link": "src/converts/dom-to-pixel.ts",
+          "line": 111,
+          "reason": "Arquivo não encontrado: src/converts/dom-to-pixel.ts"
+        },
+        {
+          "link": "src/converts/dom-to-foreign-object-svg.ts",
+          "line": 115,
+          "reason": "Arquivo não encontrado: src/converts/dom-to-foreign-object-svg.ts"
+        },
+        {
+          "link": "src/converts/dom-to-image.ts",
+          "line": 116,
+          "reason": "Arquivo não encontrado: src/converts/dom-to-image.ts"
+        },
+        {
+          "link": "src/converts/dom-to-canvas.ts",
+          "line": 117,
+          "reason": "Arquivo não encontrado: src/converts/dom-to-canvas.ts"
+        },
+        {
+          "link": "src/options.ts",
+          "line": 121,
+          "reason": "Arquivo não encontrado: src/options.ts"
+        },
+        {
+          "link": "src/context.ts",
+          "line": 154,
+          "reason": "Arquivo não encontrado: src/context.ts"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/modern-screenshot/README.zh-CN.md",
+      "totalLinks": 12,
+      "validLinks": 0,
+      "brokenLinks": 12,
+      "errors": [
+        {
+          "link": "src/converts/dom-to-png.ts",
+          "line": 102,
+          "reason": "Arquivo não encontrado: src/converts/dom-to-png.ts"
+        },
+        {
+          "link": "src/converts/dom-to-svg.ts",
+          "line": 103,
+          "reason": "Arquivo não encontrado: src/converts/dom-to-svg.ts"
+        },
+        {
+          "link": "src/converts/dom-to-jpeg.ts",
+          "line": 104,
+          "reason": "Arquivo não encontrado: src/converts/dom-to-jpeg.ts"
+        },
+        {
+          "link": "src/converts/dom-to-webp.ts",
+          "line": 105,
+          "reason": "Arquivo não encontrado: src/converts/dom-to-webp.ts"
+        },
+        {
+          "link": "src/converts/dom-to-data-url.ts",
+          "line": 106,
+          "reason": "Arquivo não encontrado: src/converts/dom-to-data-url.ts"
+        },
+        {
+          "link": "src/converts/dom-to-blob.ts",
+          "line": 110,
+          "reason": "Arquivo não encontrado: src/converts/dom-to-blob.ts"
+        },
+        {
+          "link": "src/converts/dom-to-pixel.ts",
+          "line": 111,
+          "reason": "Arquivo não encontrado: src/converts/dom-to-pixel.ts"
+        },
+        {
+          "link": "src/converts/dom-to-foreign-object-svg.ts",
+          "line": 115,
+          "reason": "Arquivo não encontrado: src/converts/dom-to-foreign-object-svg.ts"
+        },
+        {
+          "link": "src/converts/dom-to-image.ts",
+          "line": 116,
+          "reason": "Arquivo não encontrado: src/converts/dom-to-image.ts"
+        },
+        {
+          "link": "src/converts/dom-to-canvas.ts",
+          "line": 117,
+          "reason": "Arquivo não encontrado: src/converts/dom-to-canvas.ts"
+        },
+        {
+          "link": "src/options.ts",
+          "line": 121,
+          "reason": "Arquivo não encontrado: src/options.ts"
+        },
+        {
+          "link": "src/context.ts",
+          "line": 154,
+          "reason": "Arquivo não encontrado: src/context.ts"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/motion-dom/LICENSE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/motion-utils/LICENSE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/ms/license.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/ms/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/mz/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/mz/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/nanoid/README.md",
+      "totalLinks": 3,
+      "validLinks": 0,
+      "brokenLinks": 3,
+      "errors": [
+        {
+          "link": "./README.ru.md",
+          "line": 6,
+          "reason": "Arquivo não encontrado: ./README.ru.md"
+        },
+        {
+          "link": "./README.zh-CN.md",
+          "line": 6,
+          "reason": "Arquivo não encontrado: ./README.zh-CN.md"
+        },
+        {
+          "link": "./README.id-ID.md",
+          "line": 6,
+          "reason": "Arquivo não encontrado: ./README.id-ID.md"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/negotiator/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/negotiator/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/next-themes/README.md",
+      "totalLinks": 1,
+      "validLinks": 0,
+      "brokenLinks": 1,
+      "errors": [
+        {
+          "link": "./examples/multi-theme/README.md",
+          "line": 293,
+          "reason": "Arquivo não encontrado: ./examples/multi-theme/README.md"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/next-themes/license.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/node-addon-api/LICENSE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/node-addon-api/README.md",
+      "totalLinks": 5,
+      "validLinks": 1,
+      "brokenLinks": 4,
+      "errors": [
+        {
+          "link": "doc/README.md",
+          "line": 12,
+          "reason": "Arquivo não encontrado: doc/README.md"
+        },
+        {
+          "link": "doc/README.md",
+          "line": 19,
+          "reason": "Arquivo não encontrado: doc/README.md"
+        },
+        {
+          "link": "CHANGELOG.md",
+          "line": 25,
+          "reason": "Arquivo não encontrado: CHANGELOG.md"
+        },
+        {
+          "link": "CONTRIBUTING.md",
+          "line": 56,
+          "reason": "Arquivo não encontrado: CONTRIBUTING.md"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/node-addon-api/tools/README.md",
+      "totalLinks": 2,
+      "validLinks": 0,
+      "brokenLinks": 2,
+      "errors": [
+        {
+          "link": "const Napi::CallbackInfo& info",
+          "line": 40,
+          "reason": "Arquivo não encontrado: const Napi::CallbackInfo& info"
+        },
+        {
+          "link": "const Napi::CallbackInfo& info",
+          "line": 44,
+          "reason": "Arquivo não encontrado: const Napi::CallbackInfo& info"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/node-gyp-build/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/node-gyp-build/SECURITY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/node-releases/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/normalize-path/README.md",
+      "totalLinks": 3,
+      "validLinks": 1,
+      "brokenLinks": 2,
+      "errors": [
+        {
+          "link": "../../issues/new",
+          "line": 66,
+          "reason": "Arquivo não encontrado: ../../issues/new"
+        },
+        {
+          "link": ".verb.md",
+          "line": 84,
+          "reason": "Arquivo não encontrado: .verb.md"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/normalize-range/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/object-assign/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/object-inspect/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/obuf/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/on-finished/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/on-finished/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/on-headers/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/on-headers/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/package-json-from-dist/LICENSE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/package-json-from-dist/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/parseurl/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/parseurl/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/passport/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/passport/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/passport-local/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/passport-strategy/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/path-key/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/path-parse/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/path-scurry/LICENSE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/path-scurry/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/path-to-regexp/Readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/pause/History.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/pause/Readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/pg/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/pg/node_modules/pg-types/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/pg/node_modules/postgres-array/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/pg/node_modules/postgres-bytea/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/pg/node_modules/postgres-date/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/pg/node_modules/postgres-interval/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/pg-cloudflare/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/pg-connection-string/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/pg-int8/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/pg-numeric/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/pg-numeric/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/pg-pool/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/pg-protocol/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/pg-types/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/pgpass/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/picocolors/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/picomatch/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/picomatch/README.md",
+      "totalLinks": 13,
+      "validLinks": 10,
+      "brokenLinks": 3,
+      "errors": [
+        {
+          "link": "../../issues/new",
+          "line": 667,
+          "reason": "Arquivo não encontrado: ../../issues/new"
+        },
+        {
+          "link": ".github/contributing.md",
+          "line": 669,
+          "reason": "Arquivo não encontrado: .github/contributing.md"
+        },
+        {
+          "link": ".verb.md",
+          "line": 687,
+          "reason": "Arquivo não encontrado: .verb.md"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/pify/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/pirates/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/postcss/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/postcss-import/README.md",
+      "totalLinks": 3,
+      "validLinks": 1,
+      "brokenLinks": 2,
+      "errors": [
+        {
+          "link": "test",
+          "line": 112,
+          "reason": "Arquivo não encontrado: test"
+        },
+        {
+          "link": "CHANGELOG.md",
+          "line": 242,
+          "reason": "Arquivo não encontrado: CHANGELOG.md"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/postcss-js/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/postcss-load-config/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/postcss-nested/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/postcss-selector-parser/API.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/postcss-selector-parser/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/postcss-selector-parser/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/postcss-value-parser/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/postgres-array/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/postgres-bytea/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/postgres-date/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/postgres-interval/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/postgres-range/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/prop-types/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/prop-types/node_modules/react-is/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/proxy-addr/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/proxy-addr/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/pseudomap/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/qs/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/qs/LICENSE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/qs/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/queue-microtask/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/random-bytes/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/random-bytes/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/range-parser/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/range-parser/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/raw-body/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/raw-body/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/raw-body/SECURITY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/react/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/react-is/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/react-refresh/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/react-remove-scroll/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/react-remove-scroll-bar/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/react-style-singleton/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/read-cache/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/readdirp/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/recharts-scale/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/recharts-scale/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/regenerator-runtime/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/regexparam/readme.md",
+      "totalLinks": 6,
+      "validLinks": 0,
+      "brokenLinks": 6,
+      "errors": [
+        {
+          "link": "?<year>[0-9]{4}",
+          "line": 150,
+          "reason": "Arquivo não encontrado: ?<year>[0-9]{4}"
+        },
+        {
+          "link": "?<month>[0-9]{2}",
+          "line": 150,
+          "reason": "Arquivo não encontrado: ?<month>[0-9]{2}"
+        },
+        {
+          "link": "?<title>[^\\/]+",
+          "line": 150,
+          "reason": "Arquivo não encontrado: ?<title>[^\\/]+"
+        },
+        {
+          "link": "[0-9]{4}",
+          "line": 156,
+          "reason": "Arquivo não encontrado: [0-9]{4}"
+        },
+        {
+          "link": "[0-9]{2}",
+          "line": 156,
+          "reason": "Arquivo não encontrado: [0-9]{2}"
+        },
+        {
+          "link": "[^\\/]+",
+          "line": 156,
+          "reason": "Arquivo não encontrado: [^\\/]+"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/resolve-pkg-maps/README.md",
+      "totalLinks": 2,
+      "validLinks": 0,
+      "brokenLinks": 2,
+      "errors": [
+        {
+          "link": "/tests/",
+          "line": 5,
+          "reason": "Arquivo não encontrado: /tests/"
+        },
+        {
+          "link": "/tests/exports/compare-resolve.exports.ts",
+          "line": 216,
+          "reason": "Arquivo não encontrado: /tests/exports/compare-resolve.exports.ts"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/reusify/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/run-parallel/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/safe-buffer/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/safer-buffer/Porting-Buffer.md",
+      "totalLinks": 1,
+      "validLinks": 0,
+      "brokenLinks": 1,
+      "errors": [
+        {
+          "link": "Slow",
+          "line": 12,
+          "reason": "Arquivo não encontrado: Slow"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/safer-buffer/Readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/scheduler/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/semver/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/send/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/send/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/send/SECURITY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/send/node_modules/debug/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/send/node_modules/debug/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/send/node_modules/debug/node_modules/ms/license.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/send/node_modules/debug/node_modules/ms/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/send/node_modules/encodeurl/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/send/node_modules/encodeurl/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/serve-static/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/serve-static/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/set-function-length/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/set-function-length/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/setprototypeof/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/shebang-command/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/shebang-regex/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/side-channel/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/side-channel/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/signal-exit/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/source-map/CHANGELOG.md",
+      "totalLinks": 1,
+      "validLinks": 0,
+      "brokenLinks": 1,
+      "errors": [
+        {
+          "link": "bugzil.la/1090768",
+          "line": 123,
+          "reason": "Arquivo não encontrado: bugzil.la/1090768"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/source-map/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/source-map-js/README.md",
+      "totalLinks": 1,
+      "validLinks": 0,
+      "brokenLinks": 1,
+      "errors": [
+        {
+          "link": "media/downloads.png",
+          "line": 13,
+          "reason": "Arquivo não encontrado: media/downloads.png"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/source-map-support/LICENSE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/source-map-support/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/split2/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/statuses/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/statuses/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/string-width/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/string-width-cjs/node_modules/ansi-regex/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/string-width-cjs/node_modules/emoji-regex/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/string-width-cjs/node_modules/strip-ansi/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/string-width-cjs/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/strip-ansi/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/strip-ansi-cjs/node_modules/ansi-regex/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/strip-ansi-cjs/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/supports-preserve-symlinks-flag/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/supports-preserve-symlinks-flag/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/tailwind-merge/LICENSE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/tailwind-merge/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/tailwindcss-animate/README.md",
+      "totalLinks": 25,
+      "validLinks": 0,
+      "brokenLinks": 25,
+      "errors": [
+        {
+          "link": "/docs/animation-delay.md",
+          "line": 79,
+          "reason": "Arquivo não encontrado: /docs/animation-delay.md"
+        },
+        {
+          "link": "/docs/animation-direction.md",
+          "line": 92,
+          "reason": "Arquivo não encontrado: /docs/animation-direction.md"
+        },
+        {
+          "link": "/docs/animation-duration.md",
+          "line": 104,
+          "reason": "Arquivo não encontrado: /docs/animation-duration.md"
+        },
+        {
+          "link": "/docs/animation-fill-mode.md",
+          "line": 117,
+          "reason": "Arquivo não encontrado: /docs/animation-fill-mode.md"
+        },
+        {
+          "link": "/docs/animation-iteration-count.md",
+          "line": 129,
+          "reason": "Arquivo não encontrado: /docs/animation-iteration-count.md"
+        },
+        {
+          "link": "/docs/animation-play-state.md",
+          "line": 140,
+          "reason": "Arquivo não encontrado: /docs/animation-play-state.md"
+        },
+        {
+          "link": "/docs/animation-timing-function.md",
+          "line": 153,
+          "reason": "Arquivo não encontrado: /docs/animation-timing-function.md"
+        },
+        {
+          "link": "/docs/enter-animation-scale.md",
+          "line": 167,
+          "reason": "Arquivo não encontrado: /docs/enter-animation-scale.md"
+        },
+        {
+          "link": "/docs/enter-animation-rotate.md",
+          "line": 167,
+          "reason": "Arquivo não encontrado: /docs/enter-animation-rotate.md"
+        },
+        {
+          "link": "/docs/enter-animation-scale.md",
+          "line": 167,
+          "reason": "Arquivo não encontrado: /docs/enter-animation-scale.md"
+        },
+        {
+          "link": "/docs/enter-animation-translate.md",
+          "line": 167,
+          "reason": "Arquivo não encontrado: /docs/enter-animation-translate.md"
+        },
+        {
+          "link": "/docs/enter-animation.md",
+          "line": 177,
+          "reason": "Arquivo não encontrado: /docs/enter-animation.md"
+        },
+        {
+          "link": "/docs/exit-animation-scale.md",
+          "line": 181,
+          "reason": "Arquivo não encontrado: /docs/exit-animation-scale.md"
+        },
+        {
+          "link": "/docs/exit-animation-rotate.md",
+          "line": 181,
+          "reason": "Arquivo não encontrado: /docs/exit-animation-rotate.md"
+        },
+        {
+          "link": "/docs/exit-animation-scale.md",
+          "line": 181,
+          "reason": "Arquivo não encontrado: /docs/exit-animation-scale.md"
+        },
+        {
+          "link": "/docs/exit-animation-translate.md",
+          "line": 181,
+          "reason": "Arquivo não encontrado: /docs/exit-animation-translate.md"
+        },
+        {
+          "link": "/docs/exit-animation.md",
+          "line": 191,
+          "reason": "Arquivo não encontrado: /docs/exit-animation.md"
+        },
+        {
+          "link": "/docs/enter-animation-opacity.md",
+          "line": 204,
+          "reason": "Arquivo não encontrado: /docs/enter-animation-opacity.md"
+        },
+        {
+          "link": "/docs/enter-animation-rotate.md",
+          "line": 217,
+          "reason": "Arquivo não encontrado: /docs/enter-animation-rotate.md"
+        },
+        {
+          "link": "/docs/enter-animation-scale.md",
+          "line": 230,
+          "reason": "Arquivo não encontrado: /docs/enter-animation-scale.md"
+        },
+        {
+          "link": "/docs/enter-animation-translate.md",
+          "line": 243,
+          "reason": "Arquivo não encontrado: /docs/enter-animation-translate.md"
+        },
+        {
+          "link": "/docs/exit-animation-opacity.md",
+          "line": 256,
+          "reason": "Arquivo não encontrado: /docs/exit-animation-opacity.md"
+        },
+        {
+          "link": "/docs/exit-animation-rotate.md",
+          "line": 269,
+          "reason": "Arquivo não encontrado: /docs/exit-animation-rotate.md"
+        },
+        {
+          "link": "/docs/exit-animation-scale.md",
+          "line": 282,
+          "reason": "Arquivo não encontrado: /docs/exit-animation-scale.md"
+        },
+        {
+          "link": "/docs/exit-animation-translate.md",
+          "line": 295,
+          "reason": "Arquivo não encontrado: /docs/exit-animation-translate.md"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/tapable/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/thenify/History.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/thenify/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/thenify-all/History.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/thenify-all/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/tiny-invariant/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/to-regex-range/README.md",
+      "totalLinks": 4,
+      "validLinks": 1,
+      "brokenLinks": 3,
+      "errors": [
+        {
+          "link": "./test/test.js",
+          "line": 62,
+          "reason": "Arquivo não encontrado: ./test/test.js"
+        },
+        {
+          "link": "../../issues/new",
+          "line": 238,
+          "reason": "Arquivo não encontrado: ../../issues/new"
+        },
+        {
+          "link": ".verb.md",
+          "line": 256,
+          "reason": "Arquivo não encontrado: .verb.md"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/toidentifier/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/toidentifier/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/ts-interface-checker/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/tslib/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/tslib/SECURITY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/tsx/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/tsx/node_modules/esbuild/LICENSE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/tsx/node_modules/esbuild/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/tw-animate-css/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/type-is/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/type-is/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/uid-safe/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/uid-safe/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/undici-types/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/unpipe/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/unpipe/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/update-browserslist-db/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/use-callback-ref/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/use-sidecar/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/use-sync-external-store/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/util-deprecate/History.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/util-deprecate/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/utils-merge/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/vary/HISTORY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/vary/README.md",
+      "totalLinks": 1,
+      "validLinks": 1,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/vaul/LICENSE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/vaul/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/vite/node_modules/esbuild/LICENSE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/vite/node_modules/esbuild/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/which/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/which/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/wouter/README.md",
+      "totalLinks": 6,
+      "validLinks": 0,
+      "brokenLinks": 6,
+      "errors": [
+        {
+          "link": "[a-z]+",
+          "line": 224,
+          "reason": "Arquivo não encontrado: [a-z]+"
+        },
+        {
+          "link": "?<word>[a-z]+",
+          "line": 226,
+          "reason": "Arquivo não encontrado: ?<word>[a-z]+"
+        },
+        {
+          "link": "?<id>[0-9]+",
+          "line": 341,
+          "reason": "Arquivo não encontrado: ?<id>[0-9]+"
+        },
+        {
+          "link": "your pattern",
+          "line": 450,
+          "reason": "Arquivo não encontrado: your pattern"
+        },
+        {
+          "link": "your pattern",
+          "line": 451,
+          "reason": "Arquivo não encontrado: your pattern"
+        },
+        {
+          "link": "framer.com/motion",
+          "line": 750,
+          "reason": "Arquivo não encontrado: framer.com/motion"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/wrap-ansi/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/wrap-ansi-cjs/node_modules/ansi-regex/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/wrap-ansi-cjs/node_modules/ansi-styles/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/wrap-ansi-cjs/node_modules/emoji-regex/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/wrap-ansi-cjs/node_modules/string-width/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/wrap-ansi-cjs/node_modules/strip-ansi/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/wrap-ansi-cjs/readme.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/ws/README.md",
+      "totalLinks": 4,
+      "validLinks": 1,
+      "brokenLinks": 3,
+      "errors": [
+        {
+          "link": "./doc/ws.md#ws_no_buffer_util",
+          "line": 74,
+          "reason": "Arquivo não encontrado: ./doc/ws.md"
+        },
+        {
+          "link": "./doc/ws.md#ws_no_utf_8_validate",
+          "line": 91,
+          "reason": "Arquivo não encontrado: ./doc/ws.md"
+        },
+        {
+          "link": "./doc/ws.md",
+          "line": 95,
+          "reason": "Arquivo não encontrado: ./doc/ws.md"
+        }
+      ],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/xtend/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/yallist/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "_app/node_modules/zod-validation-error/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "anomalies/ANOMALY_TRACKER.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "anomalies/solutions/ANO-2025-007.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "automation/replit.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "core/CHANGELOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "core/FOUNDATION_METADATA.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "core/FOUNDATION_SUMMARY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "core/GITHUB_INTEGRATION.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "core/IMPLEMENTACAO_MONITORAMENTO_AVANCADO.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "core/IMPLEMENTACAO_OBSERVABILIDADE_COMPLETA.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "core/INTEGRATION_FIXES_LOG.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "core/INTEGRATION_SUMMARY.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "core/PROCEDIMENTOS_IMPLEMENTACAO_COMPLETA.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "core/README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "core/REPLIT_MD_SETUP_GUIDE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "core/TEMPLATE_SYSTEM_GUIDE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "docs/INTEGRATION_LESSONS_LEARNED.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "docs/archive/FOUNDATION.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "docs/archive/FOUNDATION_APP_INSTALLATION_COMPLETE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "docs/archive/FOUNDATION_APP_INSTALLED.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "docs/archive/FOUNDATION_COMPLETE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "docs/archive/FOUNDATION_LESSONS_LEARNED_COMPLETE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "docs/archive/FOUNDATION_MIGRATION_SUCCESS.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "docs/archive/FOUNDATION_READY_TO_ACTIVATE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "docs/archive/IMPLEMENTATION_COMPLETE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "docs/archive/SETUP_README.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "docs/archive/TEMPLATE_SYSTEM_COMPLETE.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "docs/archive/URGENT_GAPS_COMPLETED.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "docs/rules.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    },
+    {
+      "file": "implementation-logs/urgent-gaps-implementation-log.md",
+      "totalLinks": 0,
+      "validLinks": 0,
+      "brokenLinks": 0,
+      "errors": [],
+      "warnings": []
+    }
+  ]
+}
