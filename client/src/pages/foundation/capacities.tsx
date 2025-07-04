@@ -31,7 +31,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { 
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -48,7 +48,22 @@ interface FoundationCapacity {
     ramMB: number;
     cpuCores: number;
     storageGB: number;
-    bandwidthMbps?: number;
+    bandwidthMbps: number;
+  };
+  performance: {
+    responseTimeTargetMs: number;
+    throughputRps: number;
+    availabilityTarget: number;
+    errorRateThreshold: number;
+  };
+  monitoring: {
+    scrapeInterval: string;
+    retentionDays: number;
+    alertThresholds: {
+      cpuPercent: number;
+      memoryPercent: number;
+      responseTimeMs: number;
+    };
   };
   useCases: string[];
 }
@@ -73,163 +88,105 @@ export default function CapacitiesPage() {
   const currentCapacity = (systemConfig as any)?.systemConfig?.foundationCapacity || "large";
   const currentCapacityData = capacities?.find(c => c.key === currentCapacity);
 
-  // Estatísticas
-  const stats = {
-    totalCapacities: capacities?.length || 6,
-    currentLevel: currentCapacity.toUpperCase(),
-    compatibleCapacities: 0,
-    incompatibleCapacities: 0,
-  };
-
-  // Calcular compatibilidades
-  if (capacities && hardwareInfo) {
-    capacities.forEach(capacity => {
-      const ramCompatible = (hardwareInfo as any).totalMemoryGB >= (capacity.resources.ramMB / 1024);
-      const cpuCompatible = (hardwareInfo as any).cpuCores >= capacity.resources.cpuCores;
-      
-      if (ramCompatible && cpuCompatible) {
-        stats.compatibleCapacities++;
-      } else {
-        stats.incompatibleCapacities++;
-      }
-    });
-  }
-
-  const alerts = [];
-  if (stats.incompatibleCapacities > 0) {
-    alerts.push({
-      type: "warning" as const,
-      message: `${stats.incompatibleCapacities} capacidades incompatíveis com hardware atual`,
-      count: stats.incompatibleCapacities
-    });
-  }
-
-  const totals = {
-    activeUsers: 1,
-    totalCapacities: stats.totalCapacities,
-    activeAlerts: alerts.length,
-    systemHealth: stats.incompatibleCapacities > 2 ? "degraded" as const : "healthy" as const
+  // Calcular compatibilidade com o hardware atual
+  const checkCompatibility = (capacity: FoundationCapacity) => {
+    const currentRam = hardwareInfo?.ramMB || 8192;
+    const currentCpu = hardwareInfo?.cpuCores || 4;
+    
+    const ramUsage = (capacity.resources.ramMB / currentRam) * 100;
+    const cpuUsage = (capacity.resources.cpuCores / currentCpu) * 100;
+    
+    return {
+      ramUsage: Math.min(ramUsage, 100),
+      cpuUsage: Math.min(cpuUsage, 100),
+      compatible: ramUsage <= 90 && cpuUsage <= 90
+    };
   };
 
   const getCapacityColor = (capacity: string) => {
-    const colors = {
-      nano: "bg-gray-100 text-gray-700 border-gray-300",
-      micro: "bg-blue-100 text-blue-700 border-blue-300",
-      small: "bg-green-100 text-green-700 border-green-300",
-      medium: "bg-yellow-100 text-yellow-700 border-yellow-300",
-      large: "bg-orange-100 text-orange-700 border-orange-300",
-      enterprise: "bg-red-100 text-red-700 border-red-300"
-    };
-    return colors[capacity as keyof typeof colors] || colors.small;
-  };
-
-  const formatNumber = (num: number) => {
-    if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
-    if (num >= 1000) return `${(num / 1000).toFixed(0)}K`;
-    return num.toString();
-  };
-
-  const checkCompatibility = (capacity: FoundationCapacity) => {
-    if (!hardwareInfo) return { 
-      compatible: true, 
-      issues: [], 
-      ramUsage: 0, 
-      cpuUsage: 0, 
-      ramAvailable: 0, 
-      cpuAvailable: 0,
-      ramDeficit: 0,
-      cpuDeficit: 0
-    };
-    
-    const issues = [];
-    const hw = hardwareInfo as any;
-    
-    const ramRequired = capacity.resources.ramMB / 1024;
-    const ramAvailable = hw.totalMemoryGB;
-    const cpuRequired = capacity.resources.cpuCores;
-    const cpuAvailable = hw.cpuCores;
-    
-    // Calcular porcentagens de uso (pode passar de 100% se hardware for insuficiente)
-    const ramUsage = (ramRequired / ramAvailable) * 100;
-    const cpuUsage = (cpuRequired / cpuAvailable) * 100;
-    
-    // Calcular recursos disponíveis
-    const ramFree = Math.max(ramAvailable - ramRequired, 0);
-    const cpuFree = Math.max(cpuAvailable - cpuRequired, 0);
-    
-    // Calcular déficits
-    const ramDeficit = Math.max(ramRequired - ramAvailable, 0);
-    const cpuDeficit = Math.max(cpuRequired - cpuAvailable, 0);
-    
-    if (ramAvailable < ramRequired) {
-      issues.push(`Memória: ${ramRequired}GB necessário, ${ramAvailable}GB disponível (falta ${ramDeficit.toFixed(1)}GB)`);
+    switch (capacity) {
+      case "nano": return "bg-gray-100 text-gray-800";
+      case "micro": return "bg-blue-100 text-blue-800";
+      case "small": return "bg-green-100 text-green-800";
+      case "medium": return "bg-yellow-100 text-yellow-800";
+      case "large": return "bg-orange-100 text-orange-800";
+      case "enterprise": return "bg-red-100 text-red-800";
+      default: return "bg-gray-100 text-gray-800";
     }
-    
-    if (cpuAvailable < cpuRequired) {
-      issues.push(`CPU: ${cpuRequired} cores necessários, ${cpuAvailable} disponíveis (falta ${cpuDeficit} cores)`);
-    }
-    
-    return {
-      compatible: issues.length === 0,
-      issues,
-      ramUsage,
-      cpuUsage,
-      ramAvailable: ramFree,
-      cpuAvailable: cpuFree,
-      ramDeficit,
-      cpuDeficit
-    };
   };
 
-  const getUsageBadgeColor = (percentage: number) => {
-    if (percentage < 100) return "bg-blue-500 text-white"; // Azul para uso eficiente (menos de 100%)
-    if (percentage === 100) return "bg-green-500 text-white"; // Verde para uso completo (exatamente 100%)
-    return "bg-red-500 text-white"; // Vermelho para incompatível (mais de 100%)
+  const getUsageBadgeColor = (usage: number) => {
+    if (usage <= 50) return "bg-green-100 text-green-800";
+    if (usage <= 75) return "bg-yellow-100 text-yellow-800";
+    return "bg-red-100 text-red-800";
   };
 
-  const getUsageBadgeText = (percentage: number) => {
-    return `${percentage.toFixed(0)}%`;
+  const getUsageBadgeText = (usage: number) => {
+    if (usage <= 50) return "Baixo";
+    if (usage <= 75) return "Moderado";
+    return "Alto";
+  };
+
+  const alerts = [
+    ...(currentCapacityData && checkCompatibility(currentCapacityData).ramUsage > 80 ? [{
+      type: "warning" as const,
+      message: "Uso de RAM acima de 80% - considere upgrade",
+      count: 1
+    }] : []),
+    ...(currentCapacityData && checkCompatibility(currentCapacityData).cpuUsage > 80 ? [{
+      type: "warning" as const,
+      message: "Uso de CPU acima de 80% - considere upgrade",
+      count: 1
+    }] : [])
+  ];
+
+  const totals = {
+    activeUsers: 1,
+    totalCapacities: capacities?.length || 6,
+    activeAlerts: alerts.length,
+    systemHealth: alerts.length > 0 ? "degraded" as const : "healthy" as const
   };
 
   return (
     <MainLayout 
-      title="Capacidades Foundation" 
+      title="Capacidades Foundation"
       totals={totals}
       alerts={alerts}
     >
       <div className="space-y-6">
-        {/* Status da Capacidade Atual */}
-        <Card className="border-2 border-blue-200 bg-blue-50">
+        {/* Capacidade Atual */}
+        <Card className="border-l-4 border-l-blue-500">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="flex items-center gap-2">
-                  <Target className="h-5 w-5 text-blue-600" />
-                  Capacidade Atual: {currentCapacity.toUpperCase()}
+                  <Layers className="h-5 w-5 text-blue-600" />
+                  Capacidade Atual
                 </CardTitle>
                 <CardDescription>
-                  {currentCapacityData?.description}
+                  Configuração ativa do sistema Foundation
                 </CardDescription>
               </div>
-              <Badge variant="default" className="text-sm px-3 py-1">
-                ATIVA
+              <Badge className={`${getCapacityColor(currentCapacity)} text-lg px-4 py-2`}>
+                {currentCapacity.toUpperCase()}
               </Badge>
             </div>
           </CardHeader>
+          
           {currentCapacityData && (
             <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 <div className="text-center">
                   <Users className="h-8 w-8 mx-auto text-blue-600 mb-2" />
                   <div className="text-2xl font-bold">
-                    {formatNumber(currentCapacityData.userRange.min)}-{formatNumber(currentCapacityData.userRange.max)}
+                    {currentCapacityData.userRange.min.toLocaleString()}-{currentCapacityData.userRange.max.toLocaleString()}
                   </div>
                   <p className="text-sm text-muted-foreground">Usuários</p>
                 </div>
                 
                 <div className="text-center">
                   <MemoryStick className="h-8 w-8 mx-auto text-green-600 mb-2" />
-                  <div className="text-2xl font-bold">{(currentCapacityData.resources.ramMB / 1024).toFixed(0)}GB</div>
+                  <div className="text-2xl font-bold">{(currentCapacityData.resources.ramMB / 1024).toFixed(1)}GB</div>
                   <p className="text-sm text-muted-foreground">RAM</p>
                 </div>
                 
@@ -281,414 +238,212 @@ export default function CapacitiesPage() {
                       <Badge className={`${getUsageBadgeColor(compatibility.ramUsage)} text-xs px-2 py-1`}>
                         RAM {getUsageBadgeText(compatibility.ramUsage)}
                       </Badge>
-                      
-                      {compatibility.compatible ? (
-                        <CheckCircle className="h-4 w-4 text-green-500" />
-                      ) : (
-                        <AlertTriangle className="h-4 w-4 text-red-500" />
-                      )}
                     </div>
                   </div>
+                  
                   <CardTitle className="text-lg">{capacity.name}</CardTitle>
                   <CardDescription className="text-sm">
                     {capacity.description}
                   </CardDescription>
                 </CardHeader>
-
-                <CardContent className="space-y-4">
-                  {/* Recursos */}
-                  <div className="grid grid-cols-2 gap-3 text-sm">
-                    <div className="flex items-center gap-2">
-                      <Users className="h-4 w-4 text-blue-500" />
-                      <span>{formatNumber(capacity.userRange.min)}-{formatNumber(capacity.userRange.max)}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <MemoryStick className="h-4 w-4 text-green-500" />
-                      <span>{(capacity.resources.ramMB / 1024).toFixed(0)}GB RAM</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Cpu className="h-4 w-4 text-orange-500" />
-                      <span>{capacity.resources.cpuCores} cores</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <HardDrive className="h-4 w-4 text-purple-500" />
-                      <span>{capacity.resources.storageGB}GB</span>
-                    </div>
-                  </div>
-
-                  {/* Análise de Recursos */}
-                  <div className="pt-3 border-t space-y-3">
-                    {compatibility.compatible ? (
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2 text-green-600">
-                          <CheckCircle className="h-4 w-4" />
-                          <span className="text-sm font-medium">
-                            {compatibility.ramAvailable > 0 || compatibility.cpuAvailable > 0 
-                              ? `Sobra ${Math.min(
-                                  Math.floor((hardwareInfo as any).totalMemoryGB / (capacity.resources.ramMB / 1024)),
-                                  Math.floor((hardwareInfo as any).cpuCores / capacity.resources.cpuCores)
-                                )}x capacidades` 
-                              : `Uso balanceado para ${capacity.key.toUpperCase()}`
-                            }
-                          </span>
+                
+                <CardContent>
+                  <div className="space-y-4">
+                    {/* Recursos */}
+                    <div>
+                      <h4 className="font-semibold text-sm mb-2 flex items-center gap-2">
+                        <Server className="h-4 w-4" />
+                        Recursos
+                      </h4>
+                      <div className="space-y-2 text-sm">
+                        <div className="flex justify-between">
+                          <span>RAM:</span>
+                          <span className="font-medium">{(capacity.resources.ramMB / 1024).toFixed(1)}GB</span>
                         </div>
-                        
-                        {/* Recursos Disponíveis (Azul) ou Uso Completo */}
-                        <div className="grid grid-cols-2 gap-2 text-xs">
-                          <div className={`border rounded p-2 ${
-                            compatibility.ramAvailable === 0 
-                              ? 'bg-green-50 border-green-200' 
-                              : 'bg-blue-50 border-blue-200'
-                          }`}>
-                            <div className={`flex items-center gap-1 mb-1 ${
-                              compatibility.ramAvailable === 0 
-                                ? 'text-green-600' 
-                                : 'text-blue-600'
-                            }`}>
-                              <MemoryStick className="h-3 w-3" />
-                              <span className="font-medium">
-                                {compatibility.ramAvailable === 0 ? 'RAM' : 'RAM Livre'}
-                              </span>
-                            </div>
-                            <div className={`font-bold ${
-                              compatibility.ramAvailable === 0 
-                                ? 'text-green-700' 
-                                : 'text-blue-700'
-                            }`}>
-                              {compatibility.ramAvailable === 0 
-                                ? 'USO COMPLETO' 
-                                : `${((compatibility.ramAvailable / (hardwareInfo as any).totalMemoryGB) * 100).toFixed(0)}% livre`
-                              }
-                            </div>
-                          </div>
-                          
-                          <div className={`border rounded p-2 ${
-                            compatibility.cpuAvailable === 0 
-                              ? 'bg-green-50 border-green-200' 
-                              : 'bg-blue-50 border-blue-200'
-                          }`}>
-                            <div className={`flex items-center gap-1 mb-1 ${
-                              compatibility.cpuAvailable === 0 
-                                ? 'text-green-600' 
-                                : 'text-blue-600'
-                            }`}>
-                              <Cpu className="h-3 w-3" />
-                              <span className="font-medium">
-                                {compatibility.cpuAvailable === 0 ? 'CPU' : 'CPU Livre'}
-                              </span>
-                            </div>
-                            <div className={`font-bold ${
-                              compatibility.cpuAvailable === 0 
-                                ? 'text-green-700' 
-                                : 'text-blue-700'
-                            }`}>
-                              {compatibility.cpuAvailable === 0 
-                                ? 'USO COMPLETO' 
-                                : `${((compatibility.cpuAvailable / (hardwareInfo as any).cpuCores) * 100).toFixed(0)}% livre`
-                              }
-                            </div>
-                          </div>
+                        <div className="flex justify-between">
+                          <span>CPU:</span>
+                          <span className="font-medium">{capacity.resources.cpuCores} cores</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Storage:</span>
+                          <span className="font-medium">{capacity.resources.storageGB}GB</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Bandwidth:</span>
+                          <span className="font-medium">{capacity.resources.bandwidthMbps}Mbps</span>
                         </div>
                       </div>
-                    ) : (
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2 text-red-600">
-                          <AlertTriangle className="h-4 w-4" />
-                          <span className="text-sm font-medium">Hardware Insuficiente</span>
+                    </div>
+                    
+                    {/* Performance */}
+                    <div>
+                      <h4 className="font-semibold text-sm mb-2 flex items-center gap-2">
+                        <Target className="h-4 w-4" />
+                        Performance
+                      </h4>
+                      <div className="space-y-2 text-sm">
+                        <div className="flex justify-between">
+                          <span>Response Time:</span>
+                          <span className="font-medium">{capacity.performance.responseTimeTargetMs}ms</span>
                         </div>
-                        
-                        {/* Déficits de Hardware (Vermelho) */}
-                        <div className="grid grid-cols-2 gap-2 text-xs">
-                          {compatibility.ramDeficit > 0 && (
-                            <div className="bg-red-50 border border-red-200 rounded p-2">
-                              <div className="flex items-center gap-1 text-red-600 mb-1">
-                                <MemoryStick className="h-3 w-3" />
-                                <span className="font-medium">Falta RAM</span>
-                              </div>
-                              <div className="text-red-700 font-bold">
-                                +{compatibility.ramDeficit.toFixed(1)}GB
-                              </div>
-                            </div>
-                          )}
-                          
-                          {compatibility.cpuDeficit > 0 && (
-                            <div className="bg-red-50 border border-red-200 rounded p-2">
-                              <div className="flex items-center gap-1 text-red-600 mb-1">
-                                <Cpu className="h-3 w-3" />
-                                <span className="font-medium">Falta CPU</span>
-                              </div>
-                              <div className="text-red-700 font-bold">
-                                +{compatibility.cpuDeficit} cores
-                              </div>
-                            </div>
-                          )}
+                        <div className="flex justify-between">
+                          <span>Throughput:</span>
+                          <span className="font-medium">{capacity.performance.throughputRps} RPS</span>
                         </div>
-                        
-                        {/* Recursos suficientes mesmo com déficit em outros */}
-                        {(compatibility.ramAvailable > 0 || compatibility.cpuAvailable > 0) && (
-                          <div className="grid grid-cols-2 gap-2 text-xs">
-                            {compatibility.ramAvailable > 0 && (
-                              <div className="bg-green-50 border border-green-200 rounded p-2">
-                                <div className="flex items-center gap-1 text-green-600 mb-1">
-                                  <MemoryStick className="h-3 w-3" />
-                                  <span className="font-medium">RAM Suficiente</span>
-                                </div>
-                                <div className="text-green-700 font-bold">
-                                  +{compatibility.ramAvailable.toFixed(1)}GB
-                                </div>
-                              </div>
-                            )}
-                            
-                            {compatibility.cpuAvailable > 0 && (
-                              <div className="bg-green-50 border border-green-200 rounded p-2">
-                                <div className="flex items-center gap-1 text-green-600 mb-1">
-                                  <Cpu className="h-3 w-3" />
-                                  <span className="font-medium">CPU Suficiente</span>
-                                </div>
-                                <div className="text-green-700 font-bold">
-                                  +{compatibility.cpuAvailable} cores
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        )}
+                        <div className="flex justify-between">
+                          <span>Availability:</span>
+                          <span className="font-medium">{(capacity.performance.availabilityTarget * 100).toFixed(2)}%</span>
+                        </div>
                       </div>
-                    )}
-                  </div>
-
-                  {/* Detalhes expandidos */}
-                  {selectedCapacity === capacity.key && (
-                    <div className="pt-3 border-t space-y-3">
+                    </div>
+                    
+                    {/* Compatibilidade */}
+                    <div>
+                      <h4 className="font-semibold text-sm mb-2 flex items-center gap-2">
+                        {compatibility.compatible ? 
+                          <CheckCircle className="h-4 w-4 text-green-500" /> :
+                          <AlertTriangle className="h-4 w-4 text-red-500" />
+                        }
+                        Compatibilidade
+                      </h4>
+                      <div className="space-y-2">
+                        <div>
+                          <div className="flex justify-between text-xs mb-1">
+                            <span>Uso de RAM</span>
+                            <span>{compatibility.ramUsage.toFixed(0)}%</span>
+                          </div>
+                          <Progress value={compatibility.ramUsage} className="h-2" />
+                        </div>
+                        <div>
+                          <div className="flex justify-between text-xs mb-1">
+                            <span>Uso de CPU</span>
+                            <span>{compatibility.cpuUsage.toFixed(0)}%</span>
+                          </div>
+                          <Progress value={compatibility.cpuUsage} className="h-2" />
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Casos de Uso */}
+                    {selectedCapacity === capacity.key && (
                       <div>
-                        <h4 className="font-medium text-sm mb-2">Casos de Uso:</h4>
-                        <ul className="text-xs text-muted-foreground space-y-1">
-                          {capacity.useCases.map((useCase, idx) => (
-                            <li key={idx} className="flex items-start gap-1">
-                              <span className="text-blue-500">•</span>
+                        <h4 className="font-semibold text-sm mb-2 flex items-center gap-2">
+                          <Globe className="h-4 w-4" />
+                          Casos de Uso
+                        </h4>
+                        <ul className="text-xs space-y-1">
+                          {capacity.useCases.map((useCase, index) => (
+                            <li key={index} className="flex items-start gap-2">
+                              <span className="w-1 h-1 bg-gray-400 rounded-full mt-2 flex-shrink-0"></span>
                               <span>{useCase}</span>
                             </li>
                           ))}
                         </ul>
                       </div>
-                      
-                      {!isActive && compatibility.compatible && (
-                        <Button 
-                          size="sm" 
-                          className="w-full"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setTargetCapacity(capacity.key);
-                            setChangeCapacityDialog(true);
-                          }}
-                        >
-                          {capacity.userRange.max > (currentCapacityData?.userRange.max || 0) ? (
-                            <>
-                              <ArrowUp className="h-4 w-4 mr-1" />
-                              Fazer Upgrade
-                            </>
-                          ) : (
-                            <>
-                              <ArrowDown className="h-4 w-4 mr-1" />
-                              Fazer Downgrade
-                            </>
-                          )}
-                        </Button>
-                      )}
-                      
-                      {/* Alertas para capacidades incompatíveis */}
-                      {!isActive && !compatibility.compatible && (
-                        <div className="space-y-3">
-                          <Alert variant="destructive">
-                            <AlertTriangle className="h-4 w-4" />
-                            <AlertDescription className="text-sm">
-                              <strong>Hardware Insuficiente:</strong><br/>
-                              {compatibility.ramDeficit > 0 && (
-                                <span>• Falta {compatibility.ramDeficit.toFixed(1)}GB de RAM<br/></span>
-                              )}
-                              {compatibility.cpuDeficit > 0 && (
-                                <span>• Falta {compatibility.cpuDeficit} cores de CPU<br/></span>
-                              )}
-                            </AlertDescription>
-                          </Alert>
-                          
-                          <div className="p-3 bg-amber-50 border border-amber-200 rounded-md">
-                            <div className="text-sm text-amber-800">
-                              <strong>💡 Recomendações:</strong>
-                              <ul className="mt-2 space-y-1 ml-2">
-                                <li>• Contratar hardware com configuração adequada</li>
-                                <li>• Migrar para capacidade compatível com seu hardware atual</li>
-                                <li>• Verificar capacidades verdes que são 100% compatíveis</li>
-                              </ul>
-                            </div>
-                          </div>
-                          
-                          {/* Sugestão de capacidade compatível */}
-                          {(() => {
-                            const compatibleCapacities = capacities?.filter(c => {
-                              const comp = checkCompatibility(c);
-                              return comp.compatible;
-                            }) || [];
-                            
-                            const recommendedCapacity = compatibleCapacities
-                              .filter(c => c.key !== currentCapacity)
-                              .sort((a, b) => b.userRange.max - a.userRange.max)[0];
-                            
-                            return recommendedCapacity && (
-                              <Button 
-                                size="sm" 
-                                variant="outline"
-                                className="w-full border-green-500 text-green-700 hover:bg-green-50"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setTargetCapacity(recommendedCapacity.key);
-                                  setChangeCapacityDialog(true);
-                                }}
-                              >
-                                <CheckCircle className="h-4 w-4 mr-2" />
-                                Migrar para {recommendedCapacity.key.toUpperCase()} (Recomendado)
-                              </Button>
-                            );
-                          })()}
-                        </div>
-                      )}
-                    </div>
-                  )}
+                    )}
+                    
+                    {/* Botão de Mudança */}
+                    {!isActive && compatibility.compatible && (
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="w-full"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setTargetCapacity(capacity.key);
+                          setChangeCapacityDialog(true);
+                        }}
+                      >
+                        {capacity.key === "enterprise" ? "Solicitar Upgrade" : 
+                         capacity.userRange.max > (currentCapacityData?.userRange.max || 0) ? "Upgrade" : "Downgrade"}
+                      </Button>
+                    )}
+                    
+                    {!compatibility.compatible && (
+                      <Alert>
+                        <AlertTriangle className="h-4 w-4" />
+                        <AlertDescription className="text-xs">
+                          Hardware insuficiente para esta capacidade
+                        </AlertDescription>
+                      </Alert>
+                    )}
+                  </div>
                 </CardContent>
               </Card>
             );
           })}
         </div>
-
-        {/* Comparação de Hardware */}
-        {hardwareInfo && (
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Server className="h-5 w-5" />
-                Comparação Hardware vs Capacidades
-              </CardTitle>
-              <CardDescription>
-                Análise de compatibilidade entre hardware atual e capacidades Foundation
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <h4 className="font-medium mb-3">Hardware Atual</h4>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span>CPU:</span>
-                        <span className="font-medium">{(hardwareInfo as any).cpuCores} cores</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>RAM:</span>
-                        <span className="font-medium">{(hardwareInfo as any).totalMemoryGB}GB</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Modelo CPU:</span>
-                        <span className="font-medium text-xs">{(hardwareInfo as any).cpuModel}</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <h4 className="font-medium mb-3">Status de Compatibilidade</h4>
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm">Capacidades Compatíveis:</span>
-                        <Badge variant="default">{stats.compatibleCapacities}</Badge>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm">Capacidades Incompatíveis:</span>
-                        <Badge variant="destructive">{stats.incompatibleCapacities}</Badge>
-                      </div>
-                      <Progress 
-                        value={(stats.compatibleCapacities / stats.totalCapacities) * 100} 
-                        className="mt-2"
-                      />
-                    </div>
-                  </div>
+      </div>
+      
+      {/* Dialog de Mudança de Capacidade */}
+      <Dialog open={changeCapacityDialog} onOpenChange={setChangeCapacityDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Alterar Capacidade Foundation</DialogTitle>
+            <DialogDescription>
+              Tem certeza que deseja alterar a capacidade de {currentCapacity.toUpperCase()} para {targetCapacity.toUpperCase()}?
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            <Alert>
+              <AlertTriangle className="h-4 w-4" />
+              <AlertDescription>
+                Esta operação pode causar indisponibilidade temporária do sistema durante a reconfiguração.
+              </AlertDescription>
+            </Alert>
+            
+            {targetCapacity && capacities && (
+              <div className="border rounded-lg p-4">
+                <h4 className="font-semibold mb-2">Alterações que serão aplicadas:</h4>
+                <div className="space-y-2 text-sm">
+                  {(() => {
+                    const target = capacities.find(c => c.key === targetCapacity);
+                    const current = capacities.find(c => c.key === currentCapacity);
+                    if (!target || !current) return null;
+                    
+                    return (
+                      <>
+                        <div className="flex justify-between">
+                          <span>Usuários:</span>
+                          <span>{current.userRange.max.toLocaleString()} → {target.userRange.max.toLocaleString()}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>RAM:</span>
+                          <span>{(current.resources.ramMB / 1024).toFixed(1)}GB → {(target.resources.ramMB / 1024).toFixed(1)}GB</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>CPU:</span>
+                          <span>{current.resources.cpuCores} → {target.resources.cpuCores} cores</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Storage:</span>
+                          <span>{current.resources.storageGB}GB → {target.resources.storageGB}GB</span>
+                        </div>
+                      </>
+                    );
+                  })()}
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Dialog de Confirmação para Mudança de Capacidade */}
-        <Dialog open={changeCapacityDialog} onOpenChange={setChangeCapacityDialog}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Confirmar Mudança de Capacidade</DialogTitle>
-              <DialogDescription>
-                Você está prestes a alterar a capacidade Foundation de <strong>{currentCapacity.toUpperCase()}</strong> para <strong>{targetCapacity.toUpperCase()}</strong>.
-              </DialogDescription>
-            </DialogHeader>
-            
-            <div className="space-y-4">
-              <Alert>
-                <AlertTriangle className="h-4 w-4" />
-                <AlertDescription>
-                  Esta ação irá:
-                  <ul className="mt-2 space-y-1 ml-4">
-                    <li>• Reconfigurar os recursos do sistema</li>
-                    <li>• Ajustar configurações de monitoramento</li>
-                    <li>• Aplicar novas configurações de segurança</li>
-                    <li>• Reiniciar alguns serviços do sistema</li>
-                  </ul>
-                </AlertDescription>
-              </Alert>
-
-              {targetCapacity && capacities?.find(c => c.key === targetCapacity) && (() => {
-                const targetCapacityData = capacities.find(c => c.key === targetCapacity)!;
-                const targetCompatibility = checkCompatibility(targetCapacityData);
-                
-                return (
-                  <div className="p-3 bg-blue-50 border border-blue-200 rounded-md">
-                    <h4 className="font-medium text-blue-800 mb-2">Nova Configuração:</h4>
-                    <div className="grid grid-cols-2 gap-2 text-sm text-blue-700">
-                      <div>Usuários: {formatNumber(targetCapacityData.userRange.min)}-{formatNumber(targetCapacityData.userRange.max)}</div>
-                      <div>RAM: {(targetCapacityData.resources.ramMB / 1024).toFixed(0)}GB</div>
-                      <div>CPU: {targetCapacityData.resources.cpuCores} cores</div>
-                      <div>Storage: {targetCapacityData.resources.storageGB}GB</div>
-                    </div>
-                    
-                    {targetCompatibility.compatible && (
-                      <div className="mt-2 flex items-center gap-2 text-green-600">
-                        <CheckCircle className="h-4 w-4" />
-                        <span className="text-sm font-medium">Hardware compatível</span>
-                      </div>
-                    )}
-                  </div>
-                );
-              })()}
-            </div>
-
-            <DialogFooter>
-              <Button 
-                variant="outline" 
-                onClick={() => setChangeCapacityDialog(false)}
-              >
-                Cancelar
-              </Button>
-              <Button 
-                onClick={async () => {
-                  try {
-                    // TODO: Implementar mudança real de capacidade
-                    console.log(`Changing capacity to ${targetCapacity}`);
-                    setChangeCapacityDialog(false);
-                    // Aqui você pode adicionar a lógica de mudança de capacidade
-                  } catch (error) {
-                    console.error('Erro ao alterar capacidade:', error);
-                  }
-                }}
-              >
-                Confirmar Alteração
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      </div>
+            )}
+          </div>
+          
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setChangeCapacityDialog(false)}>
+              Cancelar
+            </Button>
+            <Button 
+              onClick={() => {
+                // Implementar mudança de capacidade
+                console.log(`Alterando capacidade para: ${targetCapacity}`);
+                setChangeCapacityDialog(false);
+              }}
+            >
+              Confirmar Alteração
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </MainLayout>
   );
 }
