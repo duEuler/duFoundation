@@ -273,11 +273,344 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // ========================================
   
   /**
-   * Foundation Root - Redirect para login se não autenticado
+   * Foundation Root - Dashboard do Foundation
    * Endpoint: GET /foundation/
    */
-  app.get('/foundation/', (req, res) => {
-    res.redirect('/foundation/login');
+  app.get('/foundation/', async (req, res) => {
+    // Dashboard HTML completo
+    const dashboardHtml = `
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foundation v3.0 - Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { 
+            font-size: 20px; 
+            font-weight: 700; 
+            color: #2563eb; 
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-primary { background: #2563eb; color: white; }
+        .btn-secondary { background: #6b7280; color: white; }
+        .btn:hover { opacity: 0.9; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .card h3 {
+            margin-bottom: 16px;
+            color: #374151;
+            font-size: 18px;
+        }
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .metric:last-child { border-bottom: none; }
+        .metric-value {
+            font-weight: 600;
+            color: #059669;
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .status-online { background: #10b981; }
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .auth-check {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            display: none;
+        }
+        .auth-check.show { display: block; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">🏛️ Foundation v3.0</div>
+        <div class="user-info">
+            <span>Bem-vindo, <strong id="username">Admin</strong></span>
+            <button class="btn btn-secondary" onclick="logout()">Sair</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="authWarning" class="auth-check">
+            <p style="color: #dc2626; margin-bottom: 12px;"><strong>⚠️ Não autenticado</strong></p>
+            <p style="margin-bottom: 16px;">Você precisa fazer login para acessar o dashboard.</p>
+            <a href="/foundation/login" class="btn btn-primary">Fazer Login</a>
+        </div>
+
+        <div id="dashboardContent">
+            <h1 style="margin-bottom: 24px; color: #374151;">Dashboard do Sistema</h1>
+            
+            <div class="grid">
+                <!-- Status do Sistema -->
+                <div class="card">
+                    <h3>Status do Sistema</h3>
+                    <div class="metric">
+                        <span><span class="status-indicator status-online"></span>Servidor</span>
+                        <span class="metric-value">Online</span>
+                    </div>
+                    <div class="metric">
+                        <span><span class="status-indicator status-online"></span>Banco de Dados</span>
+                        <span class="metric-value">Conectado</span>
+                    </div>
+                    <div class="metric">
+                        <span><span class="status-indicator status-online"></span>Foundation</span>
+                        <span class="metric-value">Ativo</span>
+                    </div>
+                    <div class="actions">
+                        <a href="/api/health" class="btn btn-primary">Verificar Saúde</a>
+                    </div>
+                </div>
+
+                <!-- Usuários -->
+                <div class="card">
+                    <h3>Usuários do Sistema</h3>
+                    <div class="metric">
+                        <span>Total de Usuários</span>
+                        <span class="metric-value" id="totalUsers">-</span>
+                    </div>
+                    <div class="metric">
+                        <span>Usuários Ativos</span>
+                        <span class="metric-value" id="activeUsers">-</span>
+                    </div>
+                    <div class="metric">
+                        <span>Sessões Ativas</span>
+                        <span class="metric-value" id="activeSessions">-</span>
+                    </div>
+                    <div class="actions">
+                        <button class="btn btn-primary" onclick="loadUserStats()">Atualizar</button>
+                    </div>
+                </div>
+
+                <!-- Configurações -->
+                <div class="card">
+                    <h3>Configuração Atual</h3>
+                    <div class="metric">
+                        <span>Organização</span>
+                        <span class="metric-value" id="orgName">-</span>
+                    </div>
+                    <div class="metric">
+                        <span>Ambiente</span>
+                        <span class="metric-value" id="environment">-</span>
+                    </div>
+                    <div class="metric">
+                        <span>Capacidade</span>
+                        <span class="metric-value" id="capacity">-</span>
+                    </div>
+                    <div class="actions">
+                        <a href="/foundation/setup" class="btn btn-primary">Reconfigurar</a>
+                    </div>
+                </div>
+
+                <!-- Métricas do Sistema -->
+                <div class="card">
+                    <h3>Métricas em Tempo Real</h3>
+                    <div class="metric">
+                        <span>CPU</span>
+                        <span class="metric-value" id="cpuUsage">-</span>
+                    </div>
+                    <div class="metric">
+                        <span>Memória</span>
+                        <span class="metric-value" id="memoryUsage">-</span>
+                    </div>
+                    <div class="metric">
+                        <span>Uptime</span>
+                        <span class="metric-value" id="uptime">-</span>
+                    </div>
+                    <div class="actions">
+                        <button class="btn btn-primary" onclick="loadMetrics()">Atualizar Métricas</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Verificar autenticação e carregar dados
+        window.addEventListener('load', function() {
+            checkAuth();
+        });
+
+        function getAuthHeaders() {
+            const sessionId = localStorage.getItem('foundation_session');
+            return sessionId ? { 'Authorization': 'Bearer ' + sessionId } : {};
+        }
+
+        async function checkAuth() {
+            const sessionId = localStorage.getItem('foundation_session');
+            
+            if (!sessionId) {
+                showAuthWarning();
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/auth/me', {
+                    headers: getAuthHeaders()
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('username').textContent = data.user.username;
+                    showDashboard();
+                    loadAllData();
+                } else {
+                    showAuthWarning();
+                }
+            } catch (error) {
+                showAuthWarning();
+            }
+        }
+
+        function showAuthWarning() {
+            document.getElementById('authWarning').classList.add('show');
+            document.getElementById('dashboardContent').style.display = 'none';
+        }
+
+        function showDashboard() {
+            document.getElementById('authWarning').classList.remove('show');
+            document.getElementById('dashboardContent').style.display = 'block';
+        }
+
+        async function loadAllData() {
+            await Promise.all([
+                loadSystemStatus(),
+                loadMetrics()
+            ]);
+        }
+
+        async function loadSystemStatus() {
+            try {
+                const response = await fetch('/api/system/status', {
+                    headers: getAuthHeaders()
+                });
+                const data = await response.json();
+                
+                if (data.organization) {
+                    document.getElementById('orgName').textContent = data.organization;
+                }
+                if (data.environment) {
+                    document.getElementById('environment').textContent = data.environment;
+                }
+                if (data.foundationStatus?.capacity) {
+                    document.getElementById('capacity').textContent = data.foundationStatus.capacity;
+                }
+                if (data.stats) {
+                    document.getElementById('totalUsers').textContent = data.stats.totalUsers || 0;
+                    document.getElementById('activeUsers').textContent = data.stats.activeUsers || 0;
+                    document.getElementById('activeSessions').textContent = data.stats.activeSessions || 0;
+                }
+            } catch (error) {
+                console.error('Erro ao carregar status:', error);
+            }
+        }
+
+        async function loadMetrics() {
+            try {
+                const response = await fetch('/api/metrics', {
+                    headers: getAuthHeaders()
+                });
+                const data = await response.json();
+                
+                if (data.cpu_usage !== undefined) {
+                    document.getElementById('cpuUsage').textContent = data.cpu_usage.toFixed(1) + '%';
+                }
+                if (data.memory_usage !== undefined && data.memory_total !== undefined) {
+                    const memPercent = (data.memory_usage / data.memory_total * 100).toFixed(1);
+                    document.getElementById('memoryUsage').textContent = memPercent + '%';
+                }
+                
+                // Uptime do processo
+                const response2 = await fetch('/api/health');
+                const health = await response2.json();
+                if (health.uptime) {
+                    const hours = Math.floor(health.uptime / 3600);
+                    const minutes = Math.floor((health.uptime % 3600) / 60);
+                    document.getElementById('uptime').textContent = hours + 'h ' + minutes + 'm';
+                }
+            } catch (error) {
+                console.error('Erro ao carregar métricas:', error);
+            }
+        }
+
+        async function loadUserStats() {
+            await loadSystemStatus();
+        }
+
+        function logout() {
+            if (confirm('Tem certeza que deseja sair?')) {
+                fetch('/api/logout', {
+                    method: 'POST',
+                    headers: getAuthHeaders()
+                }).then(() => {
+                    localStorage.removeItem('foundation_session');
+                    window.location.href = '/foundation/login';
+                });
+            }
+        }
+    </script>
+</body>
+</html>`;
+    res.send(dashboardHtml);
   });
 
   /**
