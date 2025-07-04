@@ -5,7 +5,8 @@
     "foundation/README.md"
   ],
   "filesModified": [
-    "Adicionado import foundation-setup"
+    "Adicionado import foundation-setup",
+    "client/src/App.tsx (detecção Foundation)"
   ],
   "validationResults": {
     "success": true,
