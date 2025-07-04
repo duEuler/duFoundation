@@ -38,6 +38,11 @@
     {
       "severity": "SUCCESS",
       "message": "Dependências essenciais instaladas"
+    },
+    {
+      "severity": "INFO",
+      "message": "Foundation já instalado",
+      "recommendation": "Use foundation-remove para desinstalar antes de reinstalar"
     }
   ],
   "recommendations": [
@@ -333,7 +338,7 @@
       ]
     },
     "existingFoundation": {
-      "installed": false,
+      "installed": true,
       "hasDirectory": true
     }
   },

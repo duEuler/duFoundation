@@ -1,0 +1,42 @@
+{
+  "capacity": "nano",
+  "description": "Configuração para MVPs e protótipos (1K-10K usuários)",
+  "users": {
+    "concurrent_max": 1000,
+    "daily_max": 10000
+  },
+  "resources": {
+    "ram_mb": 512,
+    "cpu_cores": 1,
+    "storage_gb": 10,
+    "bandwidth_mbps": 10
+  },
+  "performance": {
+    "response_time_target_ms": 200,
+    "throughput_rps": 50,
+    "availability_target": 99.0,
+    "error_rate_threshold": 5.0
+  },
+  "monitoring": {
+    "scrape_interval": "30s",
+    "retention_days": 7,
+    "alert_thresholds": {
+      "cpu_percent": 80,
+      "memory_percent": 85,
+      "response_time_ms": 500
+    }
+  },
+  "features": {
+    "auto_scaling": false,
+    "load_balancer": false,
+    "clustering": false,
+    "caching": "basic",
+    "monitoring_level": "basic"
+  },
+  "use_cases": [
+    "MVPs e protótipos",
+    "Projetos de estudo",
+    "Aplicações internas pequenas",
+    "Desenvolvimento local"
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "capacity": "small",
+  "description": "Configuração recomendada para pequenas empresas (50K-100K usuários)",
+  "users": {
+    "concurrent_max": 5000,
+    "daily_max": 100000
+  },
+  "resources": {
+    "ram_mb": 2048,
+    "cpu_cores": 2,
+    "storage_gb": 50,
+    "bandwidth_mbps": 50
+  },
+  "performance": {
+    "response_time_target_ms": 100,
+    "throughput_rps": 200,
+    "availability_target": 99.5,
+    "error_rate_threshold": 2.0
+  },
+  "monitoring": {
+    "scrape_interval": "15s",
+    "retention_days": 30,
+    "alert_thresholds": {
+      "cpu_percent": 70,
+      "memory_percent": 80,
+      "response_time_ms": 200
+    }
+  },
+  "features": {
+    "auto_scaling": true,
+    "load_balancer": "basic",
+    "clustering": false,
+    "caching": "redis",
+    "monitoring_level": "advanced",
+    "security": {
+      "rate_limiting": true,
+      "request_validation": true,
+      "sql_injection_protection": true
+    }
+  },
+  "dashboard_features": [
+    "real_time_monitoring",
+    "user_management",
+    "performance_analytics",
+    "error_tracking",
+    "capacity_planning",
+    "automated_alerts",
+    "api_documentation",
+    "health_checks"
+  ],
+  "use_cases": [
+    "Pequenas empresas",
+    "SaaS startups",
+    "E-commerce médio",
+    "Aplicações B2B",
+    "Configuração mais popular"
+  ]
+}
