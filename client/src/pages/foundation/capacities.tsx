@@ -304,28 +304,62 @@ export default function CapacitiesPage() {
                       <div className="space-y-2">
                         <div className="flex items-center gap-2 text-green-600">
                           <CheckCircle className="h-4 w-4" />
-                          <span className="text-sm font-medium">100% Compatível</span>
+                          <span className="text-sm font-medium">Hardware Suporta {capacity.key.toUpperCase()}</span>
                         </div>
                         
-                        {/* Recursos Disponíveis (Azul) */}
+                        {/* Recursos Disponíveis (Azul) ou Uso Completo */}
                         <div className="grid grid-cols-2 gap-2 text-xs">
-                          <div className="bg-blue-50 border border-blue-200 rounded p-2">
-                            <div className="flex items-center gap-1 text-blue-600 mb-1">
+                          <div className={`border rounded p-2 ${
+                            compatibility.ramAvailable === 0 
+                              ? 'bg-green-50 border-green-200' 
+                              : 'bg-blue-50 border-blue-200'
+                          }`}>
+                            <div className={`flex items-center gap-1 mb-1 ${
+                              compatibility.ramAvailable === 0 
+                                ? 'text-green-600' 
+                                : 'text-blue-600'
+                            }`}>
                               <MemoryStick className="h-3 w-3" />
-                              <span className="font-medium">RAM Livre</span>
+                              <span className="font-medium">
+                                {compatibility.ramAvailable === 0 ? 'RAM' : 'RAM Livre'}
+                              </span>
                             </div>
-                            <div className="text-blue-700 font-bold">
-                              {compatibility.ramAvailable.toFixed(1)}GB
+                            <div className={`font-bold ${
+                              compatibility.ramAvailable === 0 
+                                ? 'text-green-700' 
+                                : 'text-blue-700'
+                            }`}>
+                              {compatibility.ramAvailable === 0 
+                                ? 'USO COMPLETO' 
+                                : `${compatibility.ramAvailable.toFixed(1)}GB`
+                              }
                             </div>
                           </div>
                           
-                          <div className="bg-blue-50 border border-blue-200 rounded p-2">
-                            <div className="flex items-center gap-1 text-blue-600 mb-1">
+                          <div className={`border rounded p-2 ${
+                            compatibility.cpuAvailable === 0 
+                              ? 'bg-green-50 border-green-200' 
+                              : 'bg-blue-50 border-blue-200'
+                          }`}>
+                            <div className={`flex items-center gap-1 mb-1 ${
+                              compatibility.cpuAvailable === 0 
+                                ? 'text-green-600' 
+                                : 'text-blue-600'
+                            }`}>
                               <Cpu className="h-3 w-3" />
-                              <span className="font-medium">CPU Livre</span>
+                              <span className="font-medium">
+                                {compatibility.cpuAvailable === 0 ? 'CPU' : 'CPU Livre'}
+                              </span>
                             </div>
-                            <div className="text-blue-700 font-bold">
-                              {compatibility.cpuAvailable} cores
+                            <div className={`font-bold ${
+                              compatibility.cpuAvailable === 0 
+                                ? 'text-green-700' 
+                                : 'text-blue-700'
+                            }`}>
+                              {compatibility.cpuAvailable === 0 
+                                ? 'USO COMPLETO' 
+                                : `${compatibility.cpuAvailable} cores`
+                              }
                             </div>
                           </div>
                         </div>
@@ -364,28 +398,28 @@ export default function CapacitiesPage() {
                           )}
                         </div>
                         
-                        {/* Recursos que têm disponíveis mesmo sendo incompatível */}
+                        {/* Recursos suficientes mesmo com déficit em outros */}
                         {(compatibility.ramAvailable > 0 || compatibility.cpuAvailable > 0) && (
                           <div className="grid grid-cols-2 gap-2 text-xs">
                             {compatibility.ramAvailable > 0 && (
-                              <div className="bg-blue-50 border border-blue-200 rounded p-2">
-                                <div className="flex items-center gap-1 text-blue-600 mb-1">
+                              <div className="bg-green-50 border border-green-200 rounded p-2">
+                                <div className="flex items-center gap-1 text-green-600 mb-1">
                                   <MemoryStick className="h-3 w-3" />
-                                  <span className="font-medium">RAM OK</span>
+                                  <span className="font-medium">RAM Suficiente</span>
                                 </div>
-                                <div className="text-blue-700 font-bold">
+                                <div className="text-green-700 font-bold">
                                   +{compatibility.ramAvailable.toFixed(1)}GB
                                 </div>
                               </div>
                             )}
                             
                             {compatibility.cpuAvailable > 0 && (
-                              <div className="bg-blue-50 border border-blue-200 rounded p-2">
-                                <div className="flex items-center gap-1 text-blue-600 mb-1">
+                              <div className="bg-green-50 border border-green-200 rounded p-2">
+                                <div className="flex items-center gap-1 text-green-600 mb-1">
                                   <Cpu className="h-3 w-3" />
-                                  <span className="font-medium">CPU OK</span>
+                                  <span className="font-medium">CPU Suficiente</span>
                                 </div>
-                                <div className="text-blue-700 font-bold">
+                                <div className="text-green-700 font-bold">
                                   +{compatibility.cpuAvailable} cores
                                 </div>
                               </div>
