@@ -42,7 +42,7 @@ Complete template and configuration system for automated project setup with capa
 
 ### 3. Automation Scripts
 
-#### foundation-setup.cjs (Master Script)
+#### foundation-installer.cjs (Master Script)
 Complete project configuration in single command:
 ```bash
 node foundation/foundation-installer.cjs --capacity enterprise --name "MyProject"
@@ -150,7 +150,7 @@ All templates support dynamic placeholder replacement:
 ### Setup Validation
 ```bash
 # Validate complete setup
-node dueuler-foundation/automation/foundation-setup.cjs --capacity enterprise
+node foundation/foundation-installer.cjs --capacity enterprise
 # Check: dueuler-foundation/logs/setup-report.json
 ```
 

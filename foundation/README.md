@@ -1,8 +1,8 @@
-# Foundation v3.0 - Sistema Instalado
+# Foundation v3.0 - Sistema de Gestão Empresarial
 
-## 🎉 Instalação Concluída
+## 📋 Visão Geral
 
-O Foundation v3.0 foi instalado com sucesso em seu projeto utilizando a arquitetura de **Padronização Progressiva Híbrida**.
+O Foundation v3.0 é um sistema empresarial sofisticado e portável que utiliza a arquitetura de **Padronização Progressiva Híbrida** para gestão de projetos e infraestrutura.
 
 ## 🌟 Recursos Instalados
 
@@ -23,11 +23,11 @@ O Foundation v3.0 foi instalado com sucesso em seu projeto utilizando a arquitet
 
 ## 🚀 Acesso ao Sistema
 
-**Interface Web:** http://localhost:5000/foundation/setup
+**Interface Web (após instalação):** http://localhost:5000/foundation/setup
 
 ## 🛠️ Comandos Disponíveis
 
-- `node foundation/foundation-installer.cjs` - Instalação do Foundation
+- `node foundation/foundation-installer.cjs` - Instalação completa do Foundation
 - `node foundation/foundation-scanner.cjs` - Scanner automático (primeira vez)
 - `node foundation/foundation-remover.cjs` - Desinstalação inteligente completa
 
@@ -42,7 +42,8 @@ O Foundation v3.0 foi instalado com sucesso em seu projeto utilizando a arquitet
 
 ## 📚 Documentação Essencial
 
-- **[FOUNDATION_STATUS.md](./FOUNDATION_STATUS.md)** - Status consolidado e métricas atuais
+- **[GETTING_STARTED.md](./GETTING_STARTED.md)** - Guia de primeiros passos para novos usuários
+- **[FOUNDATION_STATUS.md](./FOUNDATION_STATUS.md)** - Status consolidado e métricas atuais  
 - **[FOUNDATION-ARCHITECTURE.md](./FOUNDATION-ARCHITECTURE.md)** - Arquitetura técnica detalhada
 - **[INSTALLATION_COMMANDS_CONSOLIDATED.md](./INSTALLATION_COMMANDS_CONSOLIDATED.md)** - Todos os comandos e exemplos
 - **[TROUBLESHOOTING.md](./TROUBLESHOOTING.md)** - Resolução de problemas
