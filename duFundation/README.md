@@ -1,5 +1,10 @@
 # duFundation v3.1 - Enterprise Foundation Framework
 
+<!-- Tags: main, overview, architecture, enterprise, framework -->
+<!-- Dependencies: All duFundation components -->
+<!-- Related: IMPLEMENTATION-REPORT.md, AUDIT-REPORT.md, docs/INDEX.md -->
+<!-- Updated: 2025-07-04 -->
+
 ## 🏗️ **Estrutura Arquitetural Completa**
 
 ```

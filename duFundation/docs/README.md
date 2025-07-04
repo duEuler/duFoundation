@@ -1,4 +1,9 @@
-# Foundation v3.0 - Documentação Organizacional
+# duFundation v3.1 - Documentação Organizacional
+
+<!-- Tags: documentation, organization, navigation, technical -->
+<!-- Dependencies: docs/ directory structure -->
+<!-- Related: INDEX.md, guides/, references/, archive/ -->
+<!-- Updated: 2025-07-04 -->
 
 ## 📁 Estrutura da Documentação
 

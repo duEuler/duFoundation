@@ -1,5 +1,10 @@
 # Estratégia Foundation Microserviço - duFundation v3.1
 
+<!-- Tags: strategy, microservice, existing-projects, zero-impact, isolation -->
+<!-- Dependencies: Existing project structure, Node.js 18+, PostgreSQL -->
+<!-- Related: ../foundation-native/README.md, ../../docs/guides/quick-start.md -->
+<!-- Updated: 2025-07-04 -->
+
 ## 🎯 **Para Projetos Existentes**
 
 Esta estratégia permite integrar duFundation em projetos existentes **sem modificar o código atual**, rodando o dashboard como microserviço independente.

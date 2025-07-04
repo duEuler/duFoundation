@@ -1,5 +1,10 @@
 # Estratégia Foundation Nativo - duFundation v3.1
 
+<!-- Tags: strategy, native, new-projects, integration, setup -->
+<!-- Dependencies: Node.js 18+, PostgreSQL, Git -->
+<!-- Related: ../microservice/README.md, ../../docs/guides/quick-start.md -->
+<!-- Updated: 2025-07-04 -->
+
 ## 🎯 **Para Projetos Novos**
 
 Esta estratégia é ideal para projetos que serão criados do zero, permitindo máximo aproveitamento dos recursos duFundation desde o primeiro commit.

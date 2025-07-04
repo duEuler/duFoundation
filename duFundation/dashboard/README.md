@@ -1,5 +1,10 @@
 # duFundation Dashboard v3.1 - Aplicação de Gerenciamento Isolada
 
+<!-- Tags: dashboard, isolation, architecture, management, react, typescript -->
+<!-- Dependencies: Node.js 18+, PostgreSQL, Independent node_modules -->
+<!-- Related: ../../README.md, validate-isolation.cjs -->
+<!-- Updated: 2025-07-04 -->
+
 ## 🔒 **REGRAS CRÍTICAS DE ISOLAMENTO ARQUITETURAL**
 
 ### 🚫 **VIOLAÇÕES PROIBIDAS - NUNCA FAÇA:**

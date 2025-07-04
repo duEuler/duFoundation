@@ -22,7 +22,8 @@ let warnings = 0;
 function checkExternalImports() {
   console.log('\n1. Verificando imports externos...');
   
-  const files = getAllTSXFiles('.');
+  // Verificar apenas dentro do dashboard
+  const files = getAllTSXFiles('./');
   const externalImports = [];
   
   files.forEach(file => {
