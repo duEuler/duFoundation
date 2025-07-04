@@ -624,7 +624,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const systemMetrics = monitoringService.getLatestMetrics();
       
       const health = {
-        database: systemMetrics.database_connections > 0 ? 'connected' : 'disconnected',
+        database: systemMetrics.active_connections > 0 ? 'connected' : 'disconnected',
         server: systemMetrics.response_time_avg < 1000 ? 'healthy' : 'warning',
         monitoring: systemMetrics.active_connections > 0 ? 'active' : 'inactive'
       };
@@ -680,7 +680,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           await storage.createUser({
             username: "admin",
             email: "admin@foundation.local",
-            passwordHash: hashedPassword,
+            password: hashedPassword,
             role: "admin",
             isActive: true,
           });
@@ -729,12 +729,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      // Verificar se já existe configuração
+      // Verificar se já existe configuração (permitir reinstalação em desenvolvimento)
       const existingConfig = await storage.getSystemConfig();
-      if (existingConfig && existingConfig.setupCompleted) {
+      if (existingConfig && existingConfig.setupCompleted && !fullSetup) {
         return res.status(400).json({ 
           message: "Sistema já foi configurado. Use o painel administrativo para modificações." 
         });
+      }
+
+      // Se já existe configuração mas é reinstalação completa, limpar dados antigos
+      if (existingConfig && fullSetup) {
+        console.log("Reinstalação detectada - limpando configuração anterior");
+        await storage.updateSystemConfig({ setupCompleted: false });
       }
 
       // Validar capacidade
@@ -747,24 +753,62 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const config = getFoundationConfig(capacity);
       const finalMaxUsers = maxUsers || config.userRange.max;
 
-      // Criar usuário administrativo
+      // Criar usuário administrativo (verificar se já existe)
       const hashedPassword = await bcrypt.hash(adminPassword, 10);
-      const adminUser = await storage.createUser({
-        username: adminUsername,
-        password: hashedPassword,
-        email: adminEmail || null,
-        role: "admin"
-      });
+      let adminUser;
+      
+      try {
+        // Tentar criar novo usuário
+        adminUser = await storage.createUser({
+          username: adminUsername,
+          password: hashedPassword,
+          email: adminEmail || null,
+          role: "admin"
+        });
+      } catch (error) {
+        // Se usuário já existe, buscar o existente e atualizar senha
+        const existingUser = await storage.getUserByUsername(adminUsername);
+        if (existingUser && fullSetup) {
+          adminUser = await storage.updateUser(existingUser.id, {
+            password: hashedPassword,
+            email: adminEmail || existingUser.email,
+            role: "admin"
+          });
+          console.log(`Usuário admin '${adminUsername}' atualizado durante reinstalação`);
+        } else {
+          throw new Error(`Usuário '${adminUsername}' já existe. Use um nome diferente.`);
+        }
+      }
 
-      // Criar configuração do sistema
-      const systemConfig = await storage.createSystemConfig({
-        organizationName: organization,
-        environment: environment || 'production',
-        foundationCapacity: capacity,
-        maxConcurrentUsers: finalMaxUsers,
-        cacheTTL: cacheTTL || 300,
-        setupCompleted: true
-      });
+      if (!adminUser) {
+        throw new Error("Erro ao criar ou atualizar usuário administrativo");
+      }
+
+      // Criar ou atualizar configuração do sistema
+      let systemConfig;
+      if (existingConfig) {
+        systemConfig = await storage.updateSystemConfig({
+          organizationName: organization,
+          environment: environment || 'production',
+          foundationCapacity: capacity,
+          maxConcurrentUsers: finalMaxUsers,
+          cacheTTL: cacheTTL || 300,
+          setupCompleted: true
+        });
+      } else {
+        systemConfig = await storage.createSystemConfig({
+          organizationName: organization,
+          environment: environment || 'production',
+          foundationCapacity: capacity,
+          maxConcurrentUsers: finalMaxUsers,
+          cacheTTL: cacheTTL || 300,
+          setupCompleted: true
+        });
+      }
+
+      if (!systemConfig) {
+        throw new Error("Erro ao criar ou atualizar configuração do sistema");
+      }
 
       // Log da atividade
       await storage.createActivityLog({
@@ -817,9 +861,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
     } catch (error) {
       console.error("Erro na instalação Foundation:", error);
+      const errorMessage = error instanceof Error ? error.message : "Erro desconhecido";
       res.status(500).json({ 
         message: "Erro interno do servidor durante a instalação",
-        error: error.message 
+        error: errorMessage 
       });
     }
   });
