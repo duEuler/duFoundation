@@ -11,6 +11,7 @@ const path = require('path');
 
 // Import enterprise modules
 const HighPriorityIntegrator = require('./core/integration/high-priority-integrator');
+const MediumPriorityIntegrator = require('./core/integration/medium-priority-integrator');
 
 class EnterpriseCLI {
   constructor() {
@@ -41,6 +42,13 @@ class EnterpriseCLI {
       enableCICD: true,
       enableAutoScaling: this.isLargeCapacity(),
       enableGovernance: this.isMediumCapacity()
+    });
+    
+    this.mediumIntegrator = new MediumPriorityIntegrator({
+      capacity: this.capacity,
+      enableDevExperience: true,
+      enableIntegrations: this.isSmallCapacity(),
+      enableAnalytics: true
     });
   }
 
@@ -74,6 +82,15 @@ class EnterpriseCLI {
           break;
         case 'status':
           await this.handleStatus();
+          break;
+        case 'dev':
+          await this.handleDev();
+          break;
+        case 'integration':
+          await this.handleIntegration();
+          break;
+        case 'insights':
+          await this.handleInsights();
           break;
         case 'test':
           await this.handleTest();
@@ -384,6 +401,267 @@ class EnterpriseCLI {
     console.log('\n✅ All monitored systems operational');
   }
 
+  async handleDev() {
+    switch (this.subCommand) {
+      case 'hmr':
+        console.log('🔥 Hot Module Replacement Status...');
+        const hmrAnalytics = this.mediumIntegrator.devExperienceManager.getDevExperienceAnalytics();
+        console.log(`   Status: ${hmrAnalytics.hmr?.enabled ? 'Active' : 'Disabled'}`);
+        console.log(`   Watchers: ${hmrAnalytics.hmr?.watchers || 0}`);
+        console.log(`   Connected Clients: ${hmrAnalytics.hmr?.connectedClients || 0}`);
+        console.log(`   Reloads Today: ${hmrAnalytics.hmr?.reloadsToday || 0}`);
+        console.log(`   Average Reload Time: ${hmrAnalytics.hmr?.avgReloadTime || 0}ms`);
+        break;
+        
+      case 'debug':
+        if (!this.isMicroCapacity()) {
+          console.error('Debug tools require MICRO+ capacity');
+          process.exit(1);
+        }
+        
+        console.log('🐛 Starting debug session...');
+        const debugSession = await this.mediumIntegrator.devExperienceManager.startDebugSession({
+          target: this.options['target'] || 'main',
+          mode: this.options['mode'] || 'attach'
+        });
+        console.log('✅ Debug session started:', JSON.stringify(debugSession, null, 2));
+        break;
+        
+      case 'profile':
+        if (!this.isSmallCapacity()) {
+          console.error('Performance profiling requires SMALL+ capacity');
+          process.exit(1);
+        }
+        
+        const duration = parseInt(this.options['duration']) || 30000;
+        console.log(`📊 Starting performance profiling for ${duration}ms...`);
+        
+        const profiling = await this.mediumIntegrator.devExperienceManager.startProfiling({
+          duration,
+          includeMemory: this.options['memory'] === 'true'
+        });
+        console.log('✅ Profiling started:', JSON.stringify(profiling, null, 2));
+        break;
+        
+      case 'generate':
+        if (!this.isMediumCapacity()) {
+          console.error('Code generation requires MEDIUM+ capacity');
+          process.exit(1);
+        }
+        
+        const type = this.options['type'] || 'component';
+        const fileName = this.options['file'] || 'GeneratedComponent.tsx';
+        
+        console.log(`🔧 Generating ${type}: ${fileName}...`);
+        const generation = await this.mediumIntegrator.devExperienceManager.generateCode(type, {
+          fileName,
+          template: this.options['template'] || 'functional'
+        });
+        console.log('✅ Code generated:', JSON.stringify(generation, null, 2));
+        break;
+        
+      case 'workflow':
+        const workflowType = this.options['type'] || 'development_cycle';
+        console.log(`🔄 Executing development workflow: ${workflowType}...`);
+        
+        const workflowResult = await this.mediumIntegrator.executeDevelopmentWorkflow(workflowType, {
+          generateCode: this.options['generate-code'] === 'true',
+          codeConfig: { fileName: 'WorkflowComponent.tsx' }
+        });
+        console.log('✅ Workflow completed:', JSON.stringify(workflowResult, null, 2));
+        break;
+        
+      default:
+        console.log('Dev commands: hmr, debug, profile, generate, workflow');
+        console.log('Options: --target [main] --mode [attach] --duration [30000] --type [component] --file [name]');
+    }
+  }
+
+  async handleIntegration() {
+    switch (this.subCommand) {
+      case 'plugins':
+        if (!this.isSmallCapacity()) {
+          console.error('Plugin system requires SMALL+ capacity');
+          process.exit(1);
+        }
+        
+        if (this.options['install']) {
+          console.log(`🔌 Installing plugin: ${this.options['install']}...`);
+          const plugin = await this.mediumIntegrator.integrationManager.installPlugin({
+            name: this.options['install'],
+            version: this.options['version'] || '1.0.0',
+            hooks: this.options['hooks']?.split(',') || ['before_request']
+          });
+          console.log('✅ Plugin installed:', JSON.stringify(plugin, null, 2));
+        } else {
+          const analytics = this.mediumIntegrator.integrationManager.getIntegrationAnalytics();
+          console.log('🔌 Plugin System Status:');
+          console.log(`   Installed: ${analytics.plugins?.installed || 0}`);
+          console.log(`   Active: ${analytics.plugins?.active || 0}`);
+          console.log(`   Hooks: ${analytics.plugins?.hooks || 0}`);
+        }
+        break;
+        
+      case 'webhooks':
+        if (!this.isSmallCapacity()) {
+          console.error('Webhooks require SMALL+ capacity');
+          process.exit(1);
+        }
+        
+        if (this.options['create']) {
+          console.log(`🪝 Creating webhook: ${this.options['create']}...`);
+          const webhook = await this.mediumIntegrator.integrationManager.createWebhook({
+            name: this.options['create'],
+            endpoint: this.options['endpoint'] || 'https://example.com/webhook',
+            events: this.options['events']?.split(',') || ['user_created']
+          });
+          console.log('✅ Webhook created:', JSON.stringify(webhook, null, 2));
+        } else if (this.options['trigger']) {
+          const webhookId = this.options['trigger'];
+          console.log(`🚀 Triggering webhook: ${webhookId}...`);
+          const result = await this.mediumIntegrator.integrationManager.triggerWebhook(webhookId, {
+            event: 'test_event',
+            data: { message: 'CLI test trigger' }
+          });
+          console.log('✅ Webhook triggered:', JSON.stringify(result, null, 2));
+        } else {
+          const analytics = this.mediumIntegrator.integrationManager.getIntegrationAnalytics();
+          console.log('🪝 Webhook System Status:');
+          console.log(`   Active: ${analytics.webhooks?.active || 0}`);
+          console.log(`   Total Triggers: ${analytics.webhooks?.totalTriggers || 0}`);
+          console.log(`   Success Rate: ${analytics.webhooks?.successRate || 100}%`);
+        }
+        break;
+        
+      case 'api-gateway':
+        if (!this.isMediumCapacity()) {
+          console.error('API Gateway requires MEDIUM+ capacity');
+          process.exit(1);
+        }
+        
+        if (this.options['register']) {
+          console.log(`🌐 Registering API route: ${this.options['register']}...`);
+          const route = await this.mediumIntegrator.integrationManager.registerRoute({
+            path: this.options['register'],
+            method: this.options['method'] || 'GET',
+            handler: () => ({ message: 'Route registered via CLI' })
+          });
+          console.log('✅ Route registered:', JSON.stringify(route, null, 2));
+        } else {
+          const analytics = this.mediumIntegrator.integrationManager.getIntegrationAnalytics();
+          console.log('🌐 API Gateway Status:');
+          console.log(`   Routes: ${analytics.apiGateway?.routes || 0}`);
+          console.log(`   Total Requests: ${analytics.apiGateway?.totalRequests || 0}`);
+          console.log(`   Avg Response Time: ${analytics.apiGateway?.averageResponseTime || 0}ms`);
+        }
+        break;
+        
+      case 'events':
+        if (!this.isMediumCapacity()) {
+          console.error('Event-driven architecture requires MEDIUM+ capacity');
+          process.exit(1);
+        }
+        
+        if (this.options['publish']) {
+          console.log(`📡 Publishing event: ${this.options['publish']}...`);
+          const event = await this.mediumIntegrator.integrationManager.publishEvent(
+            this.options['publish'],
+            { message: 'CLI event', data: this.options['data'] || {} }
+          );
+          console.log('✅ Event published:', JSON.stringify(event, null, 2));
+        } else if (this.options['subscribe']) {
+          console.log(`📥 Subscribing to event: ${this.options['subscribe']}...`);
+          const subscription = await this.mediumIntegrator.integrationManager.subscribeToEvent(
+            this.options['subscribe'],
+            { handler: () => console.log('Event received via CLI subscription') }
+          );
+          console.log('✅ Subscription created:', JSON.stringify(subscription, null, 2));
+        } else {
+          const analytics = this.mediumIntegrator.integrationManager.getIntegrationAnalytics();
+          console.log('📡 Event System Status:');
+          console.log(`   Event Types: ${analytics.eventDriven?.eventTypes || 0}`);
+          console.log(`   Subscriptions: ${analytics.eventDriven?.subscriptions || 0}`);
+          console.log(`   Events Published: ${analytics.eventDriven?.eventsPublished || 0}`);
+        }
+        break;
+        
+      default:
+        console.log('Integration commands: plugins, webhooks, api-gateway, events');
+        console.log('Options: --install [name] --create [name] --endpoint [url] --events [list] --register [path]');
+    }
+  }
+
+  async handleInsights() {
+    switch (this.subCommand) {
+      case 'development':
+        console.log('🔍 Generating development insights...');
+        const devInsights = await this.mediumIntegrator.generateDevelopmentInsights();
+        
+        if (devInsights.insights.length === 0) {
+          console.log('✅ No development issues detected. Great work!');
+        } else {
+          console.log('📋 Development Insights:');
+          devInsights.insights.forEach((insight, index) => {
+            console.log(`  ${index + 1}. [${insight.severity.toUpperCase()}] ${insight.message}`);
+            console.log(`     Recommendation: ${insight.recommendation}`);
+          });
+        }
+        break;
+        
+      case 'analytics':
+        if (!this.isMediumCapacity()) {
+          console.error('Advanced analytics require MEDIUM+ capacity');
+          process.exit(1);
+        }
+        
+        console.log('📊 Generating analytics insight report...');
+        const report = await this.mediumIntegrator.analyticsManager.generateInsightReport({
+          metrics: this.options['metrics']?.split(',') || ['cpu_usage', 'response_time'],
+          events: this.options['events']?.split(',') || ['user_login', 'api_request'],
+          timeRange: this.options['time-range'] || '24h'
+        });
+        
+        console.log('📈 Analytics Insights:');
+        console.log(`  Metrics Analyzed: ${report.insights.metrics.length}`);
+        console.log(`  Events Analyzed: ${report.insights.events.length}`);
+        console.log(`  Recommendations: ${report.recommendations.length}`);
+        console.log(`  Generation Time: ${report.generationTime}ms`);
+        
+        if (this.options['output']) {
+          fs.writeFileSync(this.options['output'], JSON.stringify(report, null, 2));
+          console.log(`✅ Full report saved to: ${this.options['output']}`);
+        }
+        break;
+        
+      case 'unified':
+        console.log('🎯 Generating unified system insights...');
+        const unifiedAnalytics = this.mediumIntegrator.getUnifiedAnalytics();
+        
+        console.log('\n📊 Unified System Analytics:');
+        console.log(`  Developer Experience Health: ${unifiedAnalytics.devExperience.overallHealth}%`);
+        console.log(`  Integration Health: ${unifiedAnalytics.integration.overallHealth}%`);
+        console.log(`  Cross-System Health: ${unifiedAnalytics.crossSystem.unifiedMetrics.healthScore}%`);
+        
+        console.log('\n🔄 Workflows:');
+        console.log(`  Defined: ${unifiedAnalytics.crossSystem.workflows.defined}`);
+        console.log(`  Executed: ${unifiedAnalytics.crossSystem.workflows.executed}`);
+        
+        console.log('\n🤖 Automation:');
+        console.log(`  Rules: ${unifiedAnalytics.crossSystem.automation.rules}`);
+        console.log(`  Triggered: ${unifiedAnalytics.crossSystem.automation.triggered}`);
+        
+        if (this.options['output']) {
+          fs.writeFileSync(this.options['output'], JSON.stringify(unifiedAnalytics, null, 2));
+          console.log(`✅ Full analytics saved to: ${this.options['output']}`);
+        }
+        break;
+        
+      default:
+        console.log('Insights commands: development, analytics, unified');
+        console.log('Options: --metrics [list] --events [list] --time-range [24h] --output [file]');
+    }
+  }
+
   async handleTest() {
     console.log('🧪 Running Enterprise Systems Test...\n');
     
@@ -455,6 +733,10 @@ class EnterpriseCLI {
     return ['small', 'medium', 'large', 'enterprise'].includes(this.capacity);
   }
 
+  isMicroCapacity() {
+    return ['micro', 'small', 'medium', 'large', 'enterprise'].includes(this.capacity);
+  }
+
   isMediumCapacity() {
     return ['medium', 'large', 'enterprise'].includes(this.capacity);
   }
@@ -496,6 +778,24 @@ Commands:
   workflow         Unified workflow management
     list             List available workflows
     execute          Execute workflow (--name --context)
+
+  dev              Developer experience tools
+    hmr              Hot module replacement status
+    debug            Start debug session (MICRO+ only)
+    profile          Performance profiling (SMALL+ only)
+    generate         Code generation (MEDIUM+ only)
+    workflow         Execute development workflows
+
+  integration      Integration & extensibility
+    plugins          Plugin system management (SMALL+ only)
+    webhooks         Webhook management (SMALL+ only)
+    api-gateway      API Gateway management (MEDIUM+ only)
+    events           Event-driven architecture (MEDIUM+ only)
+
+  insights         Analytics & business intelligence
+    development      Development productivity insights
+    analytics        Advanced analytics reports (MEDIUM+ only)
+    unified          Cross-system unified insights
 
   status           Show overall enterprise system status
   test             Run comprehensive enterprise systems test
