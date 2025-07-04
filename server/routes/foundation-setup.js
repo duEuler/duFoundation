@@ -1,10 +1,21 @@
 // Foundation Setup Route - Auto-gerado (ES Modules)
 import express from 'express';
 import bcrypt from 'bcrypt';
+import { storage } from '../storage.js';
 const router = express.Router();
 
 // Rota principal do Foundation Setup - Serve o wizard diretamente
-router.get('/foundation/setup', (req, res) => {
+router.get('/foundation/setup', async (req, res) => {
+  // Verificar se Foundation já foi instalado
+  try {
+    const systemConfig = await storage.getSystemConfig();
+    if (systemConfig && systemConfig.setupCompleted) {
+      // Se já instalado, redirecionar para Foundation/
+      return res.redirect('/foundation/');
+    }
+  } catch (error) {
+    // Se erro na verificação, continuar com wizard
+  }
   const html = `
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -368,6 +379,16 @@ router.get('/foundation/setup', (req, res) => {
         if (response.ok) {
           // Mostrar credenciais na tela final
           document.getElementById('finalUsername').textContent = formData.adminUsername;
+          
+          // Adicionar botões de navegação
+          const step6Content = document.querySelector('#step6 .step-content');
+          const buttonsHtml = '<div style="margin-top: 30px; text-align: center;">' +
+            '<button onclick="window.location.href=\'/foundation/login\'" class="btn" style="margin: 10px;">' +
+            '🔐 Fazer Login</button>' +
+            '<button onclick="window.location.href=\'/foundation/\'" class="btn" style="margin: 10px;">' +
+            '📊 Ir para Dashboard</button></div>';
+          step6Content.innerHTML += buttonsHtml;
+          
           nextStep();
         } else {
           const errorData = await response.json();
@@ -387,6 +408,13 @@ router.get('/foundation/setup', (req, res) => {
   `;
   
   res.send(html);
+});
+
+// Rota raiz do Foundation - redireciona para login se não autenticado
+router.get('/foundation/', (req, res) => {
+  // Por enquanto redireciona direto para o dashboard da aplicação principal
+  // Depois pode implementar verificação de autenticação aqui
+  res.redirect('/foundation/login');
 });
 
 // Rota de instalação do Foundation (API) - movida para cá para evitar conflito com Vite
@@ -422,6 +450,21 @@ router.post('/api/foundation/install', async (req, res) => {
     // quando fullSetup é true
     if (fullSetup) {
       console.log('✅ Instalação autorizada (fullSetup=true)');
+      
+      // Salvar configuração no banco para marcar como instalado
+      try {
+        await storage.createSystemConfig({
+          organizationName: organization,
+          environment: environment || 'development',
+          foundationCapacity: capacity,
+          maxConcurrentUsers: maxUsers || 1000,
+          cacheTTL: parseInt(cacheTTL) || 300,
+          setupCompleted: true
+        });
+        console.log('✅ Configuração salva no banco');
+      } catch (error) {
+        console.log('ℹ️ Configuração já existe, atualizando...');
+      }
       
       res.json({
         success: true,
