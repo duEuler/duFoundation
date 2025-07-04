@@ -1,0 +1,19 @@
+{
+  "createdAt": "2025-07-04T04:58:36.600Z",
+  "reason": "foundation-uninstall",
+  "manifest": {
+    "version": "3.0.0",
+    "installedAt": "2025-07-04T04:48:04.840Z",
+    "installedBy": "foundation-detector",
+    "files": [
+      "server/routes/foundation-setup.js"
+    ],
+    "routeModifications": [],
+    "directories": [],
+    "backups": []
+  },
+  "originalFiles": [
+    "server/routes/foundation-setup.js"
+  ],
+  "canRestore": true
+}
