@@ -1,104 +1,108 @@
 import React, { useState, useEffect } from "react";
-import { Switch, Route } from "wouter";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "./lib/queryClient";
-import { Toaster } from "@/components/ui/toaster";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { AuthProvider, useAuth } from "@/hooks/use-auth";
-import { SetupWizard } from "@/components/SetupWizard";
-import SetupPage from "@/pages/setup";
-import LoginPage from "@/pages/login";
-import DashboardPage from "@/pages/dashboard";
-import DependenciesPage from "@/pages/dependencies";
-import CapacitiesPage from "@/pages/capacities";
-import NotFound from "@/pages/not-found";
 
-type AppMode = 'onboarding' | 'login' | 'app';
-
-function Router() {
-  return (
-    <Switch>
-      <Route path="/foundation/setup" component={SetupPage} />
-      <Route path="/foundation/login" component={LoginPage} />
-      <Route path="/foundation/" component={DashboardPage} />
-      <Route path="/foundation/dependencies" component={DependenciesPage} />
-      <Route path="/foundation/capacities" component={CapacitiesPage} />
-      <Route path="/foundation/" component={DashboardPage} />
-      <Route component={NotFound} />
-    </Switch>
-  );
-}
-
-function AppContent() {
-  const { user } = useAuth();
-  const [appMode, setAppMode] = useState<AppMode>('onboarding');
-  const [isSetupComplete, setIsSetupComplete] = useState<boolean | null>(null);
+// Aplicação "virgem" que funciona independentemente do Foundation
+function WelcomePage() {
+  const [foundationStatus, setFoundationStatus] = useState<'checking' | 'available' | 'not-found'>('checking');
 
   useEffect(() => {
-    checkSystemStatus();
+    checkFoundationStatus();
   }, []);
 
-  const checkSystemStatus = async () => {
+  const checkFoundationStatus = async () => {
     try {
-      // Verificar se o sistema já foi configurado
-      const response = await fetch('/api/system/status');
+      // Verificar se o Foundation está disponível
+      const response = await fetch('/foundation/api/status');
       if (response.ok) {
-        const data = await response.json();
-        if (data.setupComplete) {
-          setIsSetupComplete(true);
-          setAppMode(user ? 'app' : 'login');
-        } else {
-          setIsSetupComplete(false);
-          setAppMode('onboarding');
-        }
+        setFoundationStatus('available');
       } else {
-        setIsSetupComplete(false);
-        setAppMode('onboarding');
+        setFoundationStatus('not-found');
       }
     } catch (error) {
-      setIsSetupComplete(false);
-      setAppMode('onboarding');
+      setFoundationStatus('not-found');
     }
   };
 
-  const handleSetupComplete = () => {
-    setIsSetupComplete(true);
-    setAppMode('login');
+  const redirectToFoundation = () => {
+    window.location.href = '/foundation/setup';
   };
 
-  // Renderização baseada no modo atual
-  switch (appMode) {
-    case 'onboarding':
-      return (
-        <SetupWizard 
-          onComplete={handleSetupComplete}
-        />
-      );
-      
-    case 'login':
-      if (user) {
-        setAppMode('app');
-        return null; // Vai rerender para 'app'
-      }
-      return <LoginPage />;
-      
-    case 'app':
-    default:
-      return <Router />;
+  if (foundationStatus === 'checking') {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Verificando sistema...</p>
+        </div>
+      </div>
+    );
   }
+
+  if (foundationStatus === 'available') {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-8 text-center">
+          <div className="mb-6">
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Foundation Disponível</h1>
+            <p className="text-gray-600">O sistema Foundation v3.0 foi detectado e está pronto para uso.</p>
+          </div>
+          
+          <button
+            onClick={redirectToFoundation}
+            className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors font-semibold"
+          >
+            Acessar Foundation
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-8 text-center">
+        <div className="mb-6">
+          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H3m2 0h4M9 7h6m-6 4h6m-6 4h6" />
+            </svg>
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Projeto Base</h1>
+          <p className="text-gray-600 mb-6">
+            Este é um projeto base preparado para integração com o duEuler Foundation v3.0.
+            O Foundation não foi instalado ainda.
+          </p>
+        </div>
+        
+        <div className="space-y-4">
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-left">
+            <h3 className="font-semibold text-yellow-800 mb-2">Para instalar o Foundation:</h3>
+            <code className="text-sm text-yellow-700 bg-yellow-100 px-2 py-1 rounded">
+              node foundation/foundation-installer.cjs
+            </code>
+          </div>
+          
+          <div className="text-sm text-gray-500">
+            <p>O Foundation v3.0 oferece:</p>
+            <ul className="list-disc list-inside mt-2 space-y-1">
+              <li>Gestão empresarial completa</li>
+              <li>Monitoramento em tempo real</li>
+              <li>Sistema de capacidades flexível</li>
+              <li>Interface web integrada</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <AuthProvider>
-          <Toaster />
-          <AppContent />
-        </AuthProvider>
-      </TooltipProvider>
-    </QueryClientProvider>
-  );
+  return <WelcomePage />;
 }
 
 export default App;

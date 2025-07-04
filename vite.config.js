@@ -1,28 +1,11 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import path from "path";
-import { fileURLToPath } from 'url';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-export default defineConfig({
-  plugins: [react()],
+// Configuração mínima para evitar erro de módulo não encontrado
+export default {
+  plugins: [],
   resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "client", "src"),
-      "@shared": path.resolve(__dirname, "shared"),
-      "@assets": path.resolve(__dirname, "attached_assets"),
-    },
+    alias: {},
   },
-  root: path.resolve(__dirname, "client"),
+  root: "./client",
   build: {
-    outDir: path.resolve(__dirname, "dist/public"),
-    emptyOutDir: true,
+    outDir: "./dist/public",
   },
-  server: {
-    fs: {
-      strict: true,
-      deny: ["**/.*"],
-    },
-  },
-});
+};

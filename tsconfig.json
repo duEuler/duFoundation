@@ -1,39 +1,33 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["ES2022"],
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "es6"],
     "allowJs": true,
-    "strict": true,
     "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
     "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
-    "noImplicitAny": false,
-    "declaration": false,
-    "outDir": "./dist",
-    "rootDir": "./",
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./client/src/*"],
-      "@shared/*": ["./shared/*"]
-    },
-    "types": ["node"],
-    "jsx": "react-jsx"
+      "@/*": ["client/src/*"],
+      "@shared/*": ["shared/*"]
+    }
   },
   "include": [
-    "server/**/*",
-    "shared/**/*",
-    "client/src/**/*"
+    "client/src",
+    "shared",
+    "server"
   ],
   "exclude": [
-    "node_modules",
-    "dist",
-    "foundation"
-  ],
-  "ts-node": {
-    "esm": true
-  }
+    "foundation/**/*",
+    "node_modules"
+  ]
 }
