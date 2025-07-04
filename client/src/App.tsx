@@ -23,7 +23,14 @@ function WelcomePage() {
   };
 
   const redirectToFoundation = () => {
-    window.location.href = '/foundation/setup';
+    console.log('Redirecionando para /foundation/setup');
+    // Tentar múltiplas formas de redirecionamento
+    try {
+      window.location.href = '/foundation/setup';
+    } catch (error) {
+      console.error('Erro no redirecionamento:', error);
+      window.open('/foundation/setup', '_self');
+    }
   };
 
   if (foundationStatus === 'checking') {
@@ -51,12 +58,18 @@ function WelcomePage() {
             <p className="text-gray-600">O sistema Foundation v3.0 foi detectado e está pronto para uso.</p>
           </div>
           
-          <button
-            onClick={redirectToFoundation}
-            className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors font-semibold"
-          >
-            Acessar Foundation
-          </button>
+          <div className="space-y-3">
+            <button
+              onClick={redirectToFoundation}
+              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors font-semibold"
+            >
+              Acessar Foundation
+            </button>
+            
+            <p className="text-sm text-gray-500">
+              Ou acesse diretamente: <a href="/foundation/setup" className="text-blue-600 underline hover:text-blue-800">/foundation/setup</a>
+            </p>
+          </div>
         </div>
       </div>
     );
