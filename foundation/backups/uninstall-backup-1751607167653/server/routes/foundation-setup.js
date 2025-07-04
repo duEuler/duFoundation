@@ -1,4 +1,4 @@
-// Foundation Setup Route - Auto-gerado (ES Modules)
+// Foundation Setup Route - Auto-gerado
 import express from 'express';
 const router = express.Router();
 

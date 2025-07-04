@@ -234,9 +234,25 @@ class FoundationDetector {
   async setupFoundationRoute() {
     console.log('🛠️  Configurando rota /foundation/setup...');
     
-    const routeContent = `// Foundation Setup Route - Auto-gerado
+    // Detecta tipo de módulo para gerar template correto
+    const packageJson = JSON.parse(fs.readFileSync(path.join(this.projectRoot, 'package.json'), 'utf8'));
+    const isESModule = packageJson.type === 'module';
+    
+    let routeContent;
+    if (isESModule) {
+      // Template ES modules
+      routeContent = `// Foundation Setup Route - Auto-gerado (ES Modules)
+import express from 'express';
+const router = express.Router();`;
+    } else {
+      // Template CommonJS  
+      routeContent = `// Foundation Setup Route - Auto-gerado (CommonJS)
 const express = require('express');
-const router = express.Router();
+const router = express.Router();`;
+    }
+    
+    // Adiciona o resto do template
+    routeContent += `
 
 // Rota principal do Foundation Setup
 router.get('/foundation/setup', (req, res) => {
@@ -314,7 +330,7 @@ router.get('/foundation/setup', (req, res) => {
   res.send(html);
 });
 
-module.exports = router;
+${isESModule ? 'export default router;' : 'module.exports = router;'}
 `;
 
     const routePath = path.join(this.projectRoot, 'server', 'routes', 'foundation-setup.js');
@@ -333,8 +349,14 @@ module.exports = router;
       
       // Verifica se já tem a importação
       if (!routesContent.includes('foundation-setup')) {
-        // Adiciona importação
-        const importLine = "const foundationSetup = require('./routes/foundation-setup');\n";
+        // Detecta tipo de módulo para gerar import correto
+        const packageJson = JSON.parse(fs.readFileSync(path.join(this.projectRoot, 'package.json'), 'utf8'));
+        const isESModule = packageJson.type === 'module';
+        
+        // Adiciona importação correta
+        const importLine = isESModule 
+          ? "import foundationSetup from './routes/foundation-setup.js';\n"
+          : "const foundationSetup = require('./routes/foundation-setup');\n";
         routesContent = importLine + routesContent;
         
         // Adiciona uso da rota (procura por app.use)

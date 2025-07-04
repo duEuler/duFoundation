@@ -543,7 +543,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Register Foundation Setup routes
   app.use(foundationSetup);
-
+  
   const httpServer = createServer(app);
   return httpServer;
 }

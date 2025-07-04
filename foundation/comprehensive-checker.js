@@ -48,7 +48,7 @@ export class ComprehensiveFoundationChecker {
     await this.simulateInstallation();
     
     // 3. Verificação de conflitos
-    await this.checkInstallationConflicts();
+    await this.checkPlannedConflicts();
     
     // 4. Validação de templates
     await this.validateTemplates();
