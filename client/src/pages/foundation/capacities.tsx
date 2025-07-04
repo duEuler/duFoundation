@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { MainLayout } from "@/components/layout/main-layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,7 +22,6 @@ import {
   Shield,
   Globe
 } from "lucide-react";
-import { useState } from "react";
 import { 
   Dialog,
   DialogContent,
@@ -251,7 +251,7 @@ export default function CapacitiesPage() {
 
         {/* Grid de Todas as Capacidades */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {capacities?.map((capacity) => {
+          {capacities?.map((capacity): React.ReactElement => {
             const isActive = capacity.key === currentCapacity;
             const compatibility = checkCompatibility(capacity);
             
