@@ -70,9 +70,10 @@ ENTERPRISE (100K+ usuários) → Zero-trust + ML/AI + Service Mesh
 
 ### Comandos de Deploy
 
+<!-- REVISAR-AUSENTE: Caminho dueuler-foundation/automation/foundation-setup.cjs não existe mais -->
 ```bash
 # Inicializar projeto com duEuler Foundation
-node dueuler-foundation/automation/foundation-setup.cjs
+node foundation/foundation-installer.cjs
 
 # Selecionar tier (NANO/MICRO/SMALL/LARGE/ENTERPRISE)
 # Sistema configura automaticamente:

@@ -1,4 +1,5 @@
-# duEuler Foundation System v2.0
+<!-- REVISAR-DESATUALIZADO: Versão indicada como v2.0 mas sistema atual é v3.0 -->
+# duEuler Foundation System v3.0
 
 ## Overview
 
