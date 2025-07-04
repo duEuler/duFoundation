@@ -544,6 +544,105 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Foundation Status API - for simplified interface
+  app.get("/api/foundation/status", async (req, res) => {
+    try {
+      const systemConfig = await storage.getSystemConfig();
+      const installed = systemConfig?.setupCompleted || false;
+      
+      res.json({
+        installed,
+        capacity: systemConfig?.foundationCapacity || null,
+        organizationName: systemConfig?.organizationName || null,
+        environment: systemConfig?.environment || null
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Erro ao verificar status do Foundation" });
+    }
+  });
+
+  // System Health API - for simplified interface
+  app.get("/api/system/health", async (req, res) => {
+    try {
+      const systemMetrics = monitoringService.getLatestMetrics();
+      
+      const health = {
+        database: systemMetrics.database_connections > 0 ? 'connected' : 'disconnected',
+        server: systemMetrics.response_time_avg < 1000 ? 'healthy' : 'warning',
+        monitoring: systemMetrics.active_connections > 0 ? 'active' : 'inactive'
+      };
+      
+      res.json(health);
+    } catch (error) {
+      res.json({
+        database: 'error',
+        server: 'error',
+        monitoring: 'error'
+      });
+    }
+  });
+
+  // Foundation Install API - for wizard setup
+  app.post("/api/foundation/install", async (req, res) => {
+    try {
+      const { capacity, quickSetup, wizard } = req.body;
+      
+      if (!capacity) {
+        return res.status(400).json({ message: "Capacidade é obrigatória" });
+      }
+
+      // Check if already installed
+      const existingConfig = await storage.getSystemConfig();
+      if (existingConfig?.setupCompleted) {
+        return res.status(400).json({ message: "Foundation já está instalado" });
+      }
+
+      // Get Foundation config for the selected capacity
+      const foundationConfig = getFoundationConfig(capacity);
+      const maxConcurrentUsers = foundationConfig.userRange.max;
+
+      // Create default system configuration
+      const defaultConfig = {
+        organizationName: "Minha Organização",
+        environment: "development" as const,
+        foundationCapacity: capacity,
+        maxConcurrentUsers: maxConcurrentUsers,
+        cacheTTL: 3600,
+        setupCompleted: true,
+        lastUpdate: new Date(),
+      };
+
+      const config = await storage.createSystemConfig(defaultConfig);
+
+      // Create default admin user if quick setup
+      if (quickSetup || wizard) {
+        const defaultPassword = "admin123";
+        const hashedPassword = await bcrypt.hash(defaultPassword, 10);
+        
+        try {
+          await storage.createUser({
+            username: "admin",
+            email: "admin@foundation.local",
+            passwordHash: hashedPassword,
+            role: "admin",
+            isActive: true,
+          });
+        } catch (userError) {
+          // User might already exist, continue
+        }
+      }
+
+      res.json({
+        message: "Foundation instalado com sucesso",
+        config: config,
+        foundationConfig: foundationConfig,
+        quickSetup: quickSetup || wizard
+      });
+    } catch (error: any) {
+      res.status(500).json({ message: `Erro na instalação: ${error.message}` });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
