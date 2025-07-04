@@ -200,7 +200,10 @@ Changelog:
 - July 4, 2025. Corrigidos problemas de CSS (border-border) e configurações de Tailwind
 - July 4, 2025. Adicionado botão funcional e link direto para acessar Foundation v3.0
 - July 4, 2025. Sistema funcionando: aplicação externa detecta Foundation e oferece acesso via /foundation/setup
-- July 4, 2025. CORREÇÃO ARQUITETURAL: Removidos arquivos incorretos da raiz (tsconfig.json, vite.config.js, tailwind.config.js)  
+- July 4, 2025. Criado foundation-integrator-simple.cjs script que modifica apenas App.tsx em projeto raiz
+- July 4, 2025. Corrigida violação arquitetural: todas funcionalidades Foundation agora contidas dentro foundation/_app/
+- July 4, 2025. App.tsx raiz agora serve como ponte simples para Foundation, mantendo isolamento
+- July 4, 2025. Integração Foundation respeita design modular: modificar mínimo de arquivos externos para máxima portabilidade  
 - July 4, 2025. Implementado isolamento total do Foundation - todas funcionalidades dentro de foundation/_app/
 - July 4, 2025. Criado foundation/_app/README.md com regras de integração e modificação de arquivos externos
 - July 4, 2025. Aplicação externa configurada para funcionar independentemente do Foundation
