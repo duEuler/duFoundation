@@ -5,6 +5,7 @@
     "foundation/README.md"
   ],
   "filesModified": [
+    "Corrigido server/index para usar routes.ts em vez de routes-minimal",
     "Adicionado import foundation-setup",
     "client/src/App.tsx (detecção Foundation)"
   ],

@@ -1,13 +1,12 @@
 {
   "version": "3.0.0",
-  "installed": "2025-07-04T08:42:47.288Z",
+  "installed": "2025-07-04T08:35:46.691Z",
   "files": [
     "server/routes/foundation-setup.js",
     "foundation/.config/foundation.json",
     "foundation/README.md"
   ],
   "modifications": [
-    "Corrigido server/index para usar routes.ts em vez de routes-minimal",
     "Adicionado import foundation-setup",
     "client/src/App.tsx (detecção Foundation)"
   ],

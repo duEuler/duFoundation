@@ -260,6 +260,11 @@ Changelog:
 - July 4, 2025. Consolidados scripts de desinstalação: removido foundation-remover.cjs duplicado, mantido apenas foundation-uninstaller.cjs
 - July 4, 2025. Atualizado foundation-remove para chamar foundation-uninstaller.cjs em vez do removedor obsoleto
 - July 4, 2025. Sistema de instalação/desinstalação agora completamente automatizado: modifica e restaura App.tsx automaticamente
+- July 4, 2025. CORREÇÕES PREVENTIVAS IMPLEMENTADAS: Script instalador agora previne problemas de wizard
+- July 4, 2025. Adicionada função fixServerIndexRoutes() que corrige automaticamente routes-minimal → routes.ts
+- July 4, 2025. Template wizard atualizado com interface interativa React completa (4 etapas)
+- July 4, 2025. Sistema instalador agora gera wizard funcional em vez de página estática
+- July 4, 2025. Validações automáticas impedem reinstalação dos mesmos erros já corrigidos
 ```
 
 ## User Preferences
