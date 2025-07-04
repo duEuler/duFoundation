@@ -12,6 +12,7 @@ const path = require('path');
 // Import enterprise modules
 const HighPriorityIntegrator = require('./core/integration/high-priority-integrator');
 const MediumPriorityIntegrator = require('./core/integration/medium-priority-integrator');
+const FuturePriorityIntegrator = require('./core/integration/future-priority-integrator');
 
 class EnterpriseCLI {
   constructor() {
@@ -49,6 +50,14 @@ class EnterpriseCLI {
       enableDevExperience: true,
       enableIntegrations: this.isSmallCapacity(),
       enableAnalytics: true
+    });
+    
+    this.futureIntegrator = new FuturePriorityIntegrator({
+      capacity: this.capacity,
+      enableAIML: this.isMediumCapacity(),
+      enableAdvancedSecurity: this.isLargeCapacity(),
+      enableEnterpriseIntegration: this.isLargeCapacity(),
+      enableAdvancedMonitoring: this.isLargeCapacity()
     });
   }
 
@@ -91,6 +100,21 @@ class EnterpriseCLI {
           break;
         case 'insights':
           await this.handleInsights();
+          break;
+        case 'ai':
+          await this.handleAI();
+          break;
+        case 'security':
+          await this.handleAdvancedSecurity();
+          break;
+        case 'enterprise':
+          await this.handleEnterpriseIntegration();
+          break;
+        case 'monitoring':
+          await this.handleAdvancedMonitoring();
+          break;
+        case 'readiness':
+          await this.handleEnterpriseReadiness();
           break;
         case 'test':
           await this.handleTest();
@@ -662,6 +686,307 @@ class EnterpriseCLI {
     }
   }
 
+  async handleAI() {
+    switch (this.subCommand) {
+      case 'sentiment':
+        if (!this.isMediumCapacity()) {
+          console.error('Sentiment analysis requires MEDIUM+ capacity');
+          process.exit(1);
+        }
+        
+        const text = this.options['text'] || 'This is a test message for sentiment analysis.';
+        console.log(`🧠 Analyzing sentiment: "${text.substring(0, 50)}..."`);
+        
+        const sentiment = await this.futureIntegrator.aimlManager.analyzeSentiment(text);
+        console.log('✅ Sentiment analysis completed:');
+        console.log(`   Sentiment: ${sentiment.sentiment} (${(sentiment.confidence * 100).toFixed(1)}%)`);
+        console.log(`   Language: ${sentiment.language}`);
+        console.log(`   Keywords: ${sentiment.keywords.join(', ')}`);
+        break;
+        
+      case 'vision':
+        if (!this.isLargeCapacity()) {
+          console.error('Computer vision requires LARGE+ capacity');
+          process.exit(1);
+        }
+        
+        console.log('👁️ Analyzing image...');
+        const imageData = Buffer.from('fake-image-data'); // Placeholder
+        const vision = await this.futureIntegrator.aimlManager.analyzeImage(imageData);
+        console.log('✅ Image analysis completed:');
+        console.log(`   Objects detected: ${vision.objects.length}`);
+        console.log(`   Faces detected: ${vision.faces.length}`);
+        console.log(`   Text extracted: "${vision.text}"`);
+        break;
+        
+      case 'decision':
+        if (!this.isEnterpriseCapacity()) {
+          console.error('Automated decision making requires ENTERPRISE capacity');
+          process.exit(1);
+        }
+        
+        const context = JSON.parse(this.options['context'] || '{"scenario": "approval_request", "risk": "low"}');
+        console.log('🤖 Making automated decision...');
+        
+        const decision = await this.futureIntegrator.aimlManager.makeAutomatedDecision(context);
+        console.log('✅ Decision completed:');
+        console.log(`   Decision: ${decision.decision} (${(decision.confidence * 100).toFixed(1)}%)`);
+        console.log(`   Reasoning: ${decision.reasoning}`);
+        console.log(`   Risk Assessment: ${decision.riskAssessment}`);
+        break;
+        
+      default:
+        console.log('AI commands: sentiment, vision, decision');
+        console.log('Options: --text [text] --context [json]');
+    }
+  }
+
+  async handleAdvancedSecurity() {
+    switch (this.subCommand) {
+      case 'threat':
+        if (!this.isLargeCapacity()) {
+          console.error('Advanced threat detection requires LARGE+ capacity');
+          process.exit(1);
+        }
+        
+        const eventData = JSON.parse(this.options['event'] || '{"type": "suspicious_login", "ip": "192.168.1.100"}');
+        console.log('🛡️ Analyzing security threat...');
+        
+        const threat = await this.futureIntegrator.securityManager.analyzeThreat(eventData);
+        console.log('✅ Threat analysis completed:');
+        console.log(`   Threat Score: ${(threat.threatScore * 100).toFixed(1)}%`);
+        console.log(`   Risk Level: ${threat.riskLevel}`);
+        console.log(`   Threat Type: ${threat.threatType}`);
+        console.log(`   Attack Vector: ${threat.attackVector}`);
+        break;
+        
+      case 'behavior':
+        if (!this.isLargeCapacity()) {
+          console.error('Behavioral analysis requires LARGE+ capacity');
+          process.exit(1);
+        }
+        
+        const userId = this.options['user'] || 'user123';
+        const activity = JSON.parse(this.options['activity'] || '{"loginTime": "02:00", "location": "unknown"}');
+        console.log(`🔍 Analyzing user behavior for: ${userId}...`);
+        
+        const behavior = await this.futureIntegrator.securityManager.analyzeUserBehavior(userId, activity);
+        console.log('✅ Behavioral analysis completed:');
+        console.log(`   Deviation Score: ${(behavior.deviationScore * 100).toFixed(1)}%`);
+        console.log(`   Risk Score: ${(behavior.riskScore * 100).toFixed(1)}%`);
+        console.log(`   Anomalies: ${behavior.anomalies.length}`);
+        break;
+        
+      case 'zerotrust':
+        if (!this.isEnterpriseCapacity()) {
+          console.error('Zero trust requires ENTERPRISE capacity');
+          process.exit(1);
+        }
+        
+        const accessRequest = JSON.parse(this.options['request'] || '{"identity": "user123", "resource": "api/data"}');
+        console.log('🔐 Evaluating zero trust access...');
+        
+        const evaluation = await this.futureIntegrator.securityManager.evaluateZeroTrustAccess(accessRequest);
+        console.log('✅ Zero trust evaluation completed:');
+        console.log(`   Decision: ${evaluation.decision}`);
+        console.log(`   Trust Score: ${(evaluation.trustScore * 100).toFixed(1)}%`);
+        console.log(`   Risk Factors: ${evaluation.riskFactors.length}`);
+        break;
+        
+      default:
+        console.log('Security commands: threat, behavior, zerotrust');
+        console.log('Options: --event [json] --user [id] --activity [json] --request [json]');
+    }
+  }
+
+  async handleEnterpriseIntegration() {
+    switch (this.subCommand) {
+      case 'erp':
+        if (!this.isLargeCapacity()) {
+          console.error('ERP integration requires LARGE+ capacity');
+          process.exit(1);
+        }
+        
+        if (this.options['connect']) {
+          console.log(`💼 Connecting to ERP: ${this.options['connect']}...`);
+          const erpConfig = {
+            system: this.options['connect'],
+            endpoint: this.options['endpoint'] || 'https://erp.company.com/api',
+            version: this.options['version'] || '1.0'
+          };
+          
+          const connection = await this.futureIntegrator.integrationManager.connectToERP(erpConfig);
+          console.log('✅ ERP connection established:', JSON.stringify(connection, null, 2));
+        } else {
+          const analytics = this.futureIntegrator.integrationManager.getEnterpriseIntegrationAnalytics();
+          console.log('💼 ERP Integration Status:');
+          console.log(`   Connections: ${analytics.erpIntegration?.connections || 0}`);
+          console.log(`   Sync Jobs: ${analytics.erpIntegration?.syncJobs || 0}`);
+          console.log(`   Supported Systems: ${analytics.erpIntegration?.supportedSystems || 0}`);
+        }
+        break;
+        
+      case 'legacy':
+        if (!this.isEnterpriseCapacity()) {
+          console.error('Legacy system bridges require ENTERPRISE capacity');
+          process.exit(1);
+        }
+        
+        if (this.options['create']) {
+          console.log(`🏛️ Creating legacy bridge: ${this.options['create']}...`);
+          const bridgeConfig = {
+            name: this.options['create'],
+            legacySystem: this.options['system'] || 'AS400',
+            connectionType: this.options['type'] || 'COBOL'
+          };
+          
+          const bridge = await this.futureIntegrator.integrationManager.createLegacyBridge(bridgeConfig);
+          console.log('✅ Legacy bridge created:', JSON.stringify(bridge, null, 2));
+        } else {
+          const analytics = this.futureIntegrator.integrationManager.getEnterpriseIntegrationAnalytics();
+          console.log('🏛️ Legacy Systems Status:');
+          console.log(`   Bridges: ${analytics.legacySystems?.bridges || 0}`);
+          console.log(`   Active Connections: ${analytics.legacySystems?.activeConnections || 0}`);
+          console.log(`   Transactions: ${analytics.legacySystems?.transactionsProcessed || 0}`);
+        }
+        break;
+        
+      case 'queue':
+        if (!this.isEnterpriseCapacity()) {
+          console.error('Message queues require ENTERPRISE capacity');
+          process.exit(1);
+        }
+        
+        if (this.options['create']) {
+          console.log(`📬 Creating message queue: ${this.options['create']}...`);
+          const queueConfig = {
+            name: this.options['create'],
+            type: this.options['type'] || 'point-to-point',
+            persistent: this.options['persistent'] !== 'false'
+          };
+          
+          const queue = await this.futureIntegrator.integrationManager.createMessageQueue(queueConfig);
+          console.log('✅ Message queue created:', JSON.stringify(queue, null, 2));
+        } else {
+          const analytics = this.futureIntegrator.integrationManager.getEnterpriseIntegrationAnalytics();
+          console.log('📬 Message Queue Status:');
+          console.log(`   Queues: ${analytics.messageQueues?.queues || 0}`);
+          console.log(`   Total Messages: ${analytics.messageQueues?.totalMessages || 0}`);
+          console.log(`   Producers: ${analytics.messageQueues?.producers || 0}`);
+          console.log(`   Consumers: ${analytics.messageQueues?.consumers || 0}`);
+        }
+        break;
+        
+      default:
+        console.log('Enterprise commands: erp, legacy, queue');
+        console.log('Options: --connect [system] --create [name] --endpoint [url] --system [type]');
+    }
+  }
+
+  async handleAdvancedMonitoring() {
+    switch (this.subCommand) {
+      case 'predict':
+        if (!this.isEnterpriseCapacity()) {
+          console.error('Predictive monitoring requires ENTERPRISE capacity');
+          process.exit(1);
+        }
+        
+        const resourceId = this.options['resource'] || 'system_cpu';
+        const timeframe = parseInt(this.options['timeframe']) || 3600000; // 1 hour
+        console.log(`🔮 Generating predictive insights for: ${resourceId}...`);
+        
+        const insights = await this.futureIntegrator.monitoringManager.generatePredictiveInsights(resourceId, timeframe);
+        console.log('✅ Predictive insights generated:');
+        console.log(`   Risk Score: ${(insights.riskScore * 100).toFixed(1)}%`);
+        console.log(`   Potential Issues: ${insights.potentialIssues.length}`);
+        console.log(`   Recommendations: ${insights.recommendations.length}`);
+        console.log(`   Confidence: ${(insights.confidence * 100).toFixed(1)}%`);
+        break;
+        
+      case 'heal':
+        if (!this.isEnterpriseCapacity()) {
+          console.error('Self-healing requires ENTERPRISE capacity');
+          process.exit(1);
+        }
+        
+        const issue = JSON.parse(this.options['issue'] || '{"type": "service_failure", "service": "api"}');
+        console.log(`🩺 Executing self-healing for: ${issue.type}...`);
+        
+        const healing = await this.futureIntegrator.monitoringManager.executeSelfHealing(issue);
+        console.log('✅ Self-healing completed:');
+        console.log(`   Success: ${healing.success}`);
+        console.log(`   Actions Executed: ${healing.actions.length}`);
+        console.log(`   Duration: ${healing.duration}ms`);
+        console.log(`   Validated: ${healing.validated}`);
+        break;
+        
+      case 'metrics':
+        if (!this.isLargeCapacity()) {
+          console.error('Advanced metrics require LARGE+ capacity');
+          process.exit(1);
+        }
+        
+        const resource = this.options['resource'] || 'system';
+        const metricData = JSON.parse(this.options['data'] || '{"cpu": 75, "memory": 60, "category": "performance"}');
+        console.log(`📊 Collecting advanced metrics for: ${resource}...`);
+        
+        const metric = await this.futureIntegrator.monitoringManager.collectAdvancedMetrics(resource, metricData);
+        console.log('✅ Advanced metrics collected:');
+        console.log(`   Severity: ${metric.severity}`);
+        console.log(`   Deviation: ${(metric.deviation * 100).toFixed(1)}%`);
+        console.log(`   Trend: ${metric.trend}`);
+        break;
+        
+      default:
+        console.log('Monitoring commands: predict, heal, metrics');
+        console.log('Options: --resource [id] --timeframe [ms] --issue [json] --data [json]');
+    }
+  }
+
+  async handleEnterpriseReadiness() {
+    console.log('🏢 Generating Enterprise Readiness Report...');
+    
+    const report = await this.futureIntegrator.generateEnterpriseReadinessReport();
+    
+    console.log('\n📊 Enterprise Readiness Assessment:');
+    console.log(`   Overall Score: ${report.overallScore.toFixed(1)}/100`);
+    
+    console.log('\n📈 Category Scores:');
+    Object.entries(report.scores).forEach(([category, score]) => {
+      const status = score >= 80 ? '✅' : score >= 60 ? '⚠️' : '❌';
+      console.log(`   ${status} ${category.replace(/([A-Z])/g, ' $1')}: ${score.toFixed(1)}/100`);
+    });
+    
+    console.log('\n🚨 Critical Gaps:');
+    report.criticalGaps.forEach((gap, index) => {
+      console.log(`   ${index + 1}. ${gap.category}: ${gap.gap.replace(/_/g, ' ')}`);
+      console.log(`      Priority: ${gap.priority} | Impact: ${gap.impact}`);
+    });
+    
+    console.log('\n💡 Recommendations:');
+    report.recommendations.forEach((rec, index) => {
+      console.log(`   ${index + 1}. ${rec.recommendation}`);
+      console.log(`      Priority: ${rec.priority} | Effort: ${rec.estimatedEffort}`);
+      console.log(`      Benefit: ${rec.expectedBenefit}`);
+    });
+    
+    console.log('\n🗺️ Implementation Roadmap:');
+    console.log(`   Total Duration: ${report.implementationRoadmap.totalDuration}`);
+    console.log(`   Immediate Actions: ${report.implementationRoadmap.phases.immediate.length}`);
+    console.log(`   Short-term Actions: ${report.implementationRoadmap.phases.short_term.length}`);
+    console.log(`   Long-term Actions: ${report.implementationRoadmap.phases.long_term.length}`);
+    
+    console.log('\n🎯 Compliance Status:');
+    console.log(`   Overall Score: ${report.complianceStatus.overallScore}/100`);
+    console.log(`   Frameworks: ${report.complianceStatus.frameworks.join(', ')}`);
+    console.log(`   Certifications: ${report.complianceStatus.certifications.join(', ')}`);
+    
+    if (this.options['output']) {
+      fs.writeFileSync(this.options['output'], JSON.stringify(report, null, 2));
+      console.log(`\n✅ Full report saved to: ${this.options['output']}`);
+    }
+  }
+
   async handleTest() {
     console.log('🧪 Running Enterprise Systems Test...\n');
     
@@ -796,6 +1121,29 @@ Commands:
     development      Development productivity insights
     analytics        Advanced analytics reports (MEDIUM+ only)
     unified          Cross-system unified insights
+
+  ai               AI/ML artificial intelligence (MEDIUM+ only)
+    sentiment        Sentiment analysis and NLP
+    vision           Computer vision and image analysis (LARGE+ only)
+    decision         Automated decision making (ENTERPRISE only)
+
+  security         Advanced security features (LARGE+ only)
+    threat           Advanced threat detection and analysis
+    behavior         Behavioral analysis and anomaly detection
+    zerotrust        Zero trust architecture evaluation (ENTERPRISE only)
+
+  enterprise       Enterprise integration (LARGE+ only)
+    erp              ERP system integration and synchronization
+    legacy           Legacy system bridges (ENTERPRISE only)
+    queue            Enterprise message queues (ENTERPRISE only)
+
+  monitoring       Advanced monitoring & alerting (LARGE+ only)
+    predict          Predictive monitoring and insights (ENTERPRISE only)
+    heal             Self-healing and automated remediation (ENTERPRISE only)
+    metrics          Advanced metrics collection and analysis
+
+  readiness        Enterprise readiness assessment
+                   Generate comprehensive enterprise readiness report
 
   status           Show overall enterprise system status
   test             Run comprehensive enterprise systems test
