@@ -1,0 +1,46 @@
+{
+  "createdAt": "2025-07-04T05:01:12.933Z",
+  "reason": "foundation-uninstall",
+  "manifest": {
+    "version": "3.0.0",
+    "capacity": "SMALL",
+    "installedAt": "2025-07-04T05:01:04.682Z",
+    "installedBy": "foundation-detector",
+    "files": [
+      "server/routes/foundation-setup.js"
+    ],
+    "routeModifications": [
+      {
+        "file": "server/routes.ts",
+        "type": "import",
+        "description": "Adicionada importação do foundation-setup",
+        "content": "const foundationSetup = require('./routes/foundation-setup');\n",
+        "line": 1
+      },
+      {
+        "file": "server/routes.ts",
+        "type": "route",
+        "description": "Adicionado uso da rota foundation",
+        "content": "app.use(foundationSetup);\n",
+        "searchPattern": "app.use("
+      }
+    ],
+    "directories": [
+      "server/routes"
+    ],
+    "configurations": {
+      "routes": {
+        "/foundation/setup": "Foundation setup interface"
+      }
+    },
+    "uninstall": {
+      "canRevert": true,
+      "requiresBackup": true,
+      "cleanupDirectories": true
+    }
+  },
+  "originalFiles": [
+    "server/routes/foundation-setup.js"
+  ],
+  "canRestore": true
+}

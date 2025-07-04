@@ -1,4 +1,3 @@
-const foundationSetup = require('./routes/foundation-setup');
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage-minimal";
@@ -13,8 +12,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   const SETUP_PASSWORD = "dueuler2024";
   
   // Apply foundation setup route
-  app.use(foundationSetup);
-
+  
   // Setup endpoint
   app.post("/api/setup", async (req, res) => {
     try {
