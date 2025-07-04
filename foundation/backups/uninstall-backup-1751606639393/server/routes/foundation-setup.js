@@ -1,5 +1,5 @@
 // Foundation Setup Route - Auto-gerado
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
 // Rota principal do Foundation Setup
@@ -78,4 +78,4 @@ router.get('/foundation/setup', (req, res) => {
   res.send(html);
 });
 
-module.exports = router;
+export default router;

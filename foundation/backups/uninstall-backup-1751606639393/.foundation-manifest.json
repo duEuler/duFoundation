@@ -1,7 +1,7 @@
 {
   "version": "3.0.0",
   "capacity": "SMALL",
-  "installedAt": "2025-07-04T05:24:44.091Z",
+  "installedAt": "2025-07-04T05:16:22.825Z",
   "installedBy": "foundation-detector",
   "files": [
     "server/routes/foundation-setup.js"
