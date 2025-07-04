@@ -86,25 +86,7 @@ export function Sidebar() {
           </div>
         )}
 
-        {shouldShowAdminMenu && (
-          <div className="mt-6">
-            <div className="px-6 mb-4">
-              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
-                Foundation Analytics
-              </h3>
-            </div>
-            <ul className="space-y-1 px-3">
-              {foundationMenuItems.map((item) => (
-                <li key={item.href}>
-                  <a href={item.href} className="nav-item">
-                    <item.icon size={20} className="mr-3" />
-                    {item.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+
 
         {shouldShowManagerMenu && (
           <div className="mt-6">
