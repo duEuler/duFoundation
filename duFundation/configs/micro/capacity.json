@@ -1,42 +1,43 @@
 {
-  "capacity": "nano",
-  "description": "Configuração para MVPs e protótipos (1K-10K usuários)",
+  "capacity": "micro",
+  "description": "Configuração para startups (10K-50K usuários)",
   "users": {
-    "concurrent_max": 1000,
-    "daily_max": 10000
+    "concurrent_max": 2500,
+    "daily_max": 50000
   },
   "resources": {
-    "ram_mb": 512,
+    "ram_mb": 1024,
     "cpu_cores": 1,
-    "storage_gb": 10,
-    "bandwidth_mbps": 10
+    "storage_gb": 25,
+    "bandwidth_mbps": 25
   },
   "performance": {
-    "response_time_target_ms": 200,
-    "throughput_rps": 50,
-    "availability_target": 99.0,
-    "error_rate_threshold": 5.0
+    "response_time_target_ms": 150,
+    "throughput_rps": 100,
+    "availability_target": 99.2,
+    "error_rate_threshold": 3.0
   },
   "monitoring": {
-    "scrape_interval": "30s",
-    "retention_days": 7,
+    "scrape_interval": "20s",
+    "retention_days": 14,
     "alert_thresholds": {
-      "cpu_percent": 80,
-      "memory_percent": 85,
-      "response_time_ms": 500
+      "cpu_percent": 75,
+      "memory_percent": 80,
+      "response_time_ms": 300
     }
   },
   "features": {
     "auto_scaling": false,
     "load_balancer": false,
     "clustering": false,
-    "caching": "basic",
-    "monitoring_level": "basic"
+    "caching": "redis",
+    "monitoring_level": "intermediate"
   },
   "use_cases": [
-    "MVPs e protótipos",
-    "Projetos de estudo",
-    "Aplicações internas pequenas",
-    "Desenvolvimento local"
+    "Startups em crescimento",
+    "SaaS pequenos",
+    "Apps móveis",
+    "APIs internas",
+    "E-commerce pequeno"
   ]
 }

@@ -1,45 +1,66 @@
 {
-  "capacity": "medium",
-  "description": "Configuração para médias empresas (100K-500K usuários)",
+  "capacity": "enterprise",
+  "description": "Configuração para corporações globais (1M+ usuários)",
   "users": {
-    "concurrent_max": 25000,
-    "daily_max": 500000
+    "concurrent_max": "unlimited",
+    "daily_max": "unlimited"
   },
   "resources": {
-    "ram_mb": 4096,
-    "cpu_cores": 4,
-    "storage_gb": 100,
-    "bandwidth_mbps": 100
+    "ram_mb": 16384,
+    "cpu_cores": 16,
+    "storage_gb": 500,
+    "bandwidth_mbps": 1000
   },
   "performance": {
-    "response_time_target_ms": 75,
-    "throughput_rps": 500,
-    "availability_target": 99.8,
-    "error_rate_threshold": 1.0
+    "response_time_target_ms": 25,
+    "throughput_rps": 5000,
+    "availability_target": 99.99,
+    "error_rate_threshold": 0.1
   },
   "monitoring": {
-    "scrape_interval": "10s",
-    "retention_days": 60,
+    "scrape_interval": "1s",
+    "retention_days": 365,
     "alert_thresholds": {
-      "cpu_percent": 60,
-      "memory_percent": 75,
-      "response_time_ms": 150
+      "cpu_percent": 40,
+      "memory_percent": 60,
+      "response_time_ms": 50
     }
   },
   "features": {
     "auto_scaling": true,
-    "load_balancer": "advanced",
+    "load_balancer": "enterprise",
     "clustering": true,
     "caching": "redis_cluster",
-    "monitoring_level": "enterprise",
+    "monitoring_level": "enterprise_plus",
     "microservices": true,
-    "service_mesh": "basic"
+    "service_mesh": "istio",
+    "multi_region": true,
+    "cdn": true,
+    "edge_computing": true,
+    "ai_optimization": true,
+    "security": {
+      "waf": true,
+      "ddos_protection": true,
+      "zero_trust": true,
+      "audit_logging": true,
+      "compliance": ["SOC2", "ISO27001", "GDPR", "HIPAA"],
+      "encryption": "AES-256",
+      "key_management": "HSM"
+    },
+    "sla": {
+      "availability": 99.99,
+      "response_time_p95": "50ms",
+      "response_time_p99": "100ms",
+      "mttr": "15min",
+      "support": "24/7"
+    }
   },
   "use_cases": [
-    "Médias empresas",
-    "SaaS em crescimento",
-    "E-commerce grande",
-    "Aplicações B2B/B2C",
-    "Sistemas corporativos"
+    "Corporações multinacionais",
+    "Plataformas globais",
+    "Banking & Finance",
+    "Healthcare enterprise",
+    "Government systems",
+    "Mission-critical applications"
   ]
 }

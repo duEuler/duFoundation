@@ -1,45 +1,53 @@
 {
-  "capacity": "medium",
-  "description": "Configuração para médias empresas (100K-500K usuários)",
+  "capacity": "large",
+  "description": "Configuração para grandes empresas (500K-1M usuários)",
   "users": {
-    "concurrent_max": 25000,
-    "daily_max": 500000
+    "concurrent_max": 100000,
+    "daily_max": 1000000
   },
   "resources": {
-    "ram_mb": 4096,
-    "cpu_cores": 4,
-    "storage_gb": 100,
-    "bandwidth_mbps": 100
+    "ram_mb": 8192,
+    "cpu_cores": 8,
+    "storage_gb": 200,
+    "bandwidth_mbps": 200
   },
   "performance": {
-    "response_time_target_ms": 75,
-    "throughput_rps": 500,
-    "availability_target": 99.8,
-    "error_rate_threshold": 1.0
+    "response_time_target_ms": 50,
+    "throughput_rps": 1000,
+    "availability_target": 99.9,
+    "error_rate_threshold": 0.5
   },
   "monitoring": {
-    "scrape_interval": "10s",
-    "retention_days": 60,
+    "scrape_interval": "5s",
+    "retention_days": 90,
     "alert_thresholds": {
-      "cpu_percent": 60,
-      "memory_percent": 75,
-      "response_time_ms": 150
+      "cpu_percent": 50,
+      "memory_percent": 70,
+      "response_time_ms": 100
     }
   },
   "features": {
     "auto_scaling": true,
-    "load_balancer": "advanced",
+    "load_balancer": "enterprise",
     "clustering": true,
     "caching": "redis_cluster",
     "monitoring_level": "enterprise",
     "microservices": true,
-    "service_mesh": "basic"
+    "service_mesh": "istio",
+    "multi_region": true,
+    "cdn": true,
+    "security": {
+      "waf": true,
+      "ddos_protection": true,
+      "zero_trust": true,
+      "audit_logging": true
+    }
   },
   "use_cases": [
-    "Médias empresas",
-    "SaaS em crescimento",
-    "E-commerce grande",
-    "Aplicações B2B/B2C",
-    "Sistemas corporativos"
+    "Grandes empresas",
+    "SaaS enterprise",
+    "E-commerce enterprise",
+    "Plataformas globais",
+    "Sistemas mission-critical"
   ]
 }
