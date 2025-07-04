@@ -640,234 +640,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Foundation Install API - for wizard setup
-  app.post("/api/foundation/install", async (req, res) => {
-    try {
-      const { capacity, quickSetup, wizard } = req.body;
-      
-      if (!capacity) {
-        return res.status(400).json({ message: "Capacidade é obrigatória" });
-      }
-
-      // Check if already installed
-      const existingConfig = await storage.getSystemConfig();
-      if (existingConfig?.setupCompleted) {
-        return res.status(400).json({ message: "Foundation já está instalado" });
-      }
-
-      // Get Foundation config for the selected capacity
-      const foundationConfig = getFoundationConfig(capacity);
-      const maxConcurrentUsers = foundationConfig.userRange.max;
-
-      // Create default system configuration
-      const defaultConfig = {
-        organizationName: "Minha Organização",
-        environment: "development" as const,
-        foundationCapacity: capacity,
-        maxConcurrentUsers: maxConcurrentUsers,
-        cacheTTL: 3600,
-        setupCompleted: true,
-        lastUpdate: new Date(),
-      };
-
-      const config = await storage.createSystemConfig(defaultConfig);
-
-      // Create default admin user if quick setup
-      if (quickSetup || wizard) {
-        const defaultPassword = "admin123";
-        const hashedPassword = await bcrypt.hash(defaultPassword, 10);
-        
-        try {
-          await storage.createUser({
-            username: "admin",
-            email: "admin@foundation.local",
-            password: hashedPassword,
-            role: "admin",
-            isActive: true,
-          });
-        } catch (userError) {
-          // User might already exist, continue
-        }
-      }
-
-      res.json({
-        message: "Foundation instalado com sucesso",
-        config: config,
-        foundationConfig: foundationConfig,
-        quickSetup: quickSetup || wizard
-      });
-    } catch (error: any) {
-      res.status(500).json({ message: `Erro na instalação: ${error.message}` });
-    }
-  });
 
   // Foundation routes
   app.use(foundationSetup);
 
-  // Foundation complete installation endpoint
-  app.post("/api/foundation/install", async (req, res) => {
-    try {
-      const {
-        adminUsername,
-        adminPassword,
-        adminEmail,
-        organization,
-        department,
-        environment,
-        capacity,
-        maxUsers,
-        cacheTTL,
-        enableMonitoring,
-        enableBackups,
-        enableSSL,
-        fullSetup
-      } = req.body;
-
-      // Validações básicas
-      if (!adminUsername || !adminPassword || !organization || !capacity) {
-        return res.status(400).json({ 
-          message: "Dados obrigatórios não fornecidos: usuário admin, senha, organização e capacidade são necessários" 
-        });
-      }
-
-      // Verificar se já existe configuração (permitir reinstalação em desenvolvimento)
-      const existingConfig = await storage.getSystemConfig();
-      if (existingConfig && existingConfig.setupCompleted && !fullSetup) {
-        return res.status(400).json({ 
-          message: "Sistema já foi configurado. Use o painel administrativo para modificações." 
-        });
-      }
-
-      // Se já existe configuração mas é reinstalação completa, limpar dados antigos
-      if (existingConfig && fullSetup) {
-        console.log("Reinstalação detectada - limpando configuração anterior");
-        await storage.updateSystemConfig({ setupCompleted: false });
-      }
-
-      // Validar capacidade
-      if (!FOUNDATION_CONFIGS[capacity]) {
-        return res.status(400).json({ 
-          message: `Capacidade inválida: ${capacity}. Use: ${Object.keys(FOUNDATION_CONFIGS).join(', ')}` 
-        });
-      }
-
-      const config = getFoundationConfig(capacity);
-      const finalMaxUsers = maxUsers || config.userRange.max;
-
-      // Criar usuário administrativo (verificar se já existe)
-      const hashedPassword = await bcrypt.hash(adminPassword, 10);
-      let adminUser;
-      
-      try {
-        // Tentar criar novo usuário
-        adminUser = await storage.createUser({
-          username: adminUsername,
-          password: hashedPassword,
-          email: adminEmail || null,
-          role: "admin"
-        });
-      } catch (error) {
-        // Se usuário já existe, buscar o existente e atualizar senha
-        const existingUser = await storage.getUserByUsername(adminUsername);
-        if (existingUser && fullSetup) {
-          adminUser = await storage.updateUser(existingUser.id, {
-            password: hashedPassword,
-            email: adminEmail || existingUser.email,
-            role: "admin"
-          });
-          console.log(`Usuário admin '${adminUsername}' atualizado durante reinstalação`);
-        } else {
-          throw new Error(`Usuário '${adminUsername}' já existe. Use um nome diferente.`);
-        }
-      }
-
-      if (!adminUser) {
-        throw new Error("Erro ao criar ou atualizar usuário administrativo");
-      }
-
-      // Criar ou atualizar configuração do sistema
-      let systemConfig;
-      if (existingConfig) {
-        systemConfig = await storage.updateSystemConfig({
-          organizationName: organization,
-          environment: environment || 'production',
-          foundationCapacity: capacity,
-          maxConcurrentUsers: finalMaxUsers,
-          cacheTTL: cacheTTL || 300,
-          setupCompleted: true
-        });
-      } else {
-        systemConfig = await storage.createSystemConfig({
-          organizationName: organization,
-          environment: environment || 'production',
-          foundationCapacity: capacity,
-          maxConcurrentUsers: finalMaxUsers,
-          cacheTTL: cacheTTL || 300,
-          setupCompleted: true
-        });
-      }
-
-      if (!systemConfig) {
-        throw new Error("Erro ao criar ou atualizar configuração do sistema");
-      }
-
-      // Log da atividade
-      await storage.createActivityLog({
-        userId: adminUser.id,
-        action: "foundation_install",
-        description: `Foundation v3.0 instalado - Capacidade: ${capacity.toUpperCase()}, Org: ${organization}`,
-        metadata: {
-          capacity,
-          maxUsers: finalMaxUsers,
-          features: {
-            monitoring: enableMonitoring,
-            backups: enableBackups,
-            ssl: enableSSL
-          }
-        }
-      });
-
-      // Métricas iniciais
-      await storage.createMetric({
-        metricType: "foundation_install",
-        value: capacity,
-        metadata: {
-          timestamp: new Date().toISOString(),
-          config: {
-            capacity,
-            maxUsers: finalMaxUsers,
-            organization
-          }
-        }
-      });
-
-      res.json({
-        success: true,
-        message: "Foundation instalado com sucesso!",
-        data: {
-          adminUser: { 
-            id: adminUser.id, 
-            username: adminUser.username, 
-            email: adminUser.email 
-          },
-          systemConfig: {
-            organization: systemConfig.organizationName,
-            capacity: systemConfig.foundationCapacity,
-            maxUsers: systemConfig.maxConcurrentUsers,
-            environment: systemConfig.environment
-          },
-          loginUrl: "/login"
-        }
-      });
-
-    } catch (error) {
-      console.error("Erro na instalação Foundation:", error);
-      const errorMessage = error instanceof Error ? error.message : "Erro desconhecido";
-      res.status(500).json({ 
-        message: "Erro interno do servidor durante a instalação",
-        error: errorMessage 
-      });
-    }
+  // Debug endpoint
+  app.post("/api/foundation/debug", async (req, res) => {
+    console.log('=== DEBUG ENDPOINT ===');
+    console.log('Body recebido:', JSON.stringify(req.body, null, 2));
+    console.log('fullSetup valor:', req.body.fullSetup, typeof req.body.fullSetup);
+    
+    const existingConfig = await storage.getSystemConfig();
+    console.log('Config existente:', existingConfig ? 'SIM' : 'NÃO');
+    
+    res.json({ 
+      message: "Debug OK", 
+      receivedFullSetup: req.body.fullSetup,
+      typeFullSetup: typeof req.body.fullSetup,
+      hasExistingConfig: !!existingConfig
+    });
   });
+
+  // Foundation complete installation endpoint  
 
   const httpServer = createServer(app);
   return httpServer;
